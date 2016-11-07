@@ -1,0 +1,1077 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="模版引擎," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+接触过一些不同种类的前端模版引擎 Mustache ejs mustache coffeecup…,大体上这些引擎都有相似的语法和功能，本质上都是通过弥补html与生俱来的缺陷，比如在模版种使用变量，循环，条件判断等加快应用的开发，本文要介绍的jade与上述模版引擎有些许不同，他是采用缩进的形式来组织html的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玩转jade">
+<meta property="og:url" content="https://qianlongo.github.io/2016/04/16/jade语法详解/index.html">
+<meta property="og:site_name" content="谦龙的小天地">
+<meta property="og:description" content="前言
+接触过一些不同种类的前端模版引擎 Mustache ejs mustache coffeecup…,大体上这些引擎都有相似的语法和功能，本质上都是通过弥补html与生俱来的缺陷，比如在模版种使用变量，循环，条件判断等加快应用的开发，本文要介绍的jade与上述模版引擎有些许不同，他是采用缩进的形式来组织html的。">
+<meta property="og:updated_time" content="2016-04-16T11:39:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="玩转jade">
+<meta name="twitter:description" content="前言
+接触过一些不同种类的前端模版引擎 Mustache ejs mustache coffeecup…,大体上这些引擎都有相似的语法和功能，本质上都是通过弥补html与生俱来的缺陷，比如在模版种使用变量，循环，条件判断等加快应用的开发，本文要介绍的jade与上述模版引擎有些许不同，他是采用缩进的形式来组织html的。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://qianlongo.github.io/2016/04/16/jade语法详解/"/>
+
+  <title> 玩转jade | 谦龙的小天地 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?06bde654070024b7b126d3d6286e6a8a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <!-- 设置背景canvas -->
+  <div id="particles"></div>
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">谦龙的小天地</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">因上努力 果上随缘</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input" placeholder="输入关键字搜索您希望看的文章内容">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                玩转jade
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-16T14:23:14+08:00" content="2016-04-16">
+              2016-04-16
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/16/jade语法详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/16/jade语法详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/04/16/jade语法详解/" class="leancloud_visitors" data-flag-title="玩转jade">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>接触过一些不同种类的前端模版引擎 <code>Mustache</code> <code>ejs</code> <code>mustache</code> <code>coffeecup</code>…,大体上这些引擎都有相似的语法和功能，本质上都是通过弥补html与生俱来的缺陷，比如在模版种使用变量，循环，条件判断等加快应用的开发，本文要介绍的<code>jade</code>与上述模版引擎有些许不同，他是采用缩进的形式来组织html的。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><blockquote>
+<p>这篇文章默认你已经知道用”-“开头可以声明js变量与使用js语句,使用#{name}获取name变量的值, 文本在标签后空一个空格。</p>
+</blockquote>
+<h2 id="1-标签"><a href="#1-标签" class="headerlink" title="1. 标签"></a>1. 标签</h2><blockquote>
+<p>jade中默认一行中的第一个单词就是标签名称，如果不写标签名则默认创建一个div</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.tag#tag</div><div class="line">  ul.list</div><div class="line">    li item1</div><div class="line">    li item2</div><div class="line">    li item3</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;wrap&quot; class=&quot;wrap&quot;&gt;</div><div class="line">  &lt;ul class=&quot;list&quot;&gt;</div><div class="line">    &lt;li&gt;item1&lt;/li&gt;</div><div class="line">    &lt;li&gt;item2&lt;/li&gt;</div><div class="line">    &lt;li&gt;item3&lt;/li&gt;</div><div class="line">    &lt;/ul&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<h2 id="2-属性"><a href="#2-属性" class="headerlink" title="2. 属性"></a>2. 属性</h2><blockquote>
+<p>一般我们需要在标签上面挂载一些属性，jade中标签的属性放在()中，多个属性之间使用<strong>,</strong>逗号隔开</p>
+</blockquote>
+<h3 id="2-1-基本用法"><a href="#2-1-基本用法" class="headerlink" title="2.1 基本用法"></a>2.1 基本用法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a(href=&quot;google.com&quot;) google.com</div><div class="line">a(class=&quot;button&quot;, href=&quot;google.com&quot;) google.com</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;google.com&quot;&gt;google.com&lt;/a&gt;</div><div class="line">&lt;a href=&quot;google.com&quot; class=&quot;button&quot;&gt;google.com&lt;/a&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-2-模版中夹杂js语句"><a href="#2-2-模版中夹杂js语句" class="headerlink" title="2.2 模版中夹杂js语句"></a>2.2 模版中夹杂js语句</h3><blockquote>
+<p>当然了绝大多的js语句是可以模版中运行的</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- var test = true; // 这里的test只要 弱为真即可( 注意前面的-符号 )</div><div class="line">a(href=test ? &apos;google.com&apos;: &apos;baidu.com&apos;) js语句</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;google.com&quot;&gt;js语句&lt;/a&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-2-多个属性"><a href="#2-2-多个属性" class="headerlink" title="2.2 多个属性"></a>2.2 多个属性</h3><blockquote>
+<p>想象一下，当你要给标签上面挂载多个属性的时候，全部写在一行必然不是什么好玩的事情，于是我们可以像下面这样写</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">input(</div><div class="line">  type=&quot;checkbox&quot;,</div><div class="line">  name= &quot;qianlong&quot;,</div><div class="line">  checked </div><div class="line">)</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;input type=&quot;checkbox&quot; name=&quot;qianlong&quot; checked /&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-3-boolean类型属性"><a href="#2-3-boolean类型属性" class="headerlink" title="2.3 boolean类型属性"></a>2.3 boolean类型属性</h3><p>&gt;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">input(type=&quot;checkbox&quot;, checked )</div><div class="line">input(type=&quot;checkbox&quot;, checked=true )</div><div class="line">input(type=&quot;checkbox&quot;, checked=false )</div><div class="line">input(type=&quot;checkbox&quot;, checked=true &amp;&amp; &apos;checked&apos; )</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;input type=&quot;checkbox&quot; checked&gt;</div><div class="line">&lt;input type=&quot;checkbox&quot; checked&gt;</div><div class="line">&lt;input type=&quot;checkbox&quot;&gt;</div><div class="line">&lt;input type=&quot;checkbox&quot; checked=&quot;checked&quot;&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-4-style-书写行间样式"><a href="#2-4-style-书写行间样式" class="headerlink" title="2.4 style 书写行间样式"></a>2.4 style 书写行间样式</h3><blockquote>
+<p>当我们要在行间给一个元素单独的设置一段样式的时候，应该怎么做呢？直接给style属性赋值一段js对象即可</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- styles = &#123;color: &apos;red&apos;, background: &apos;green&apos;&#125; </div><div class="line">a(href=&quot;google.com&quot;, style=styles) google.com</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;google.com&quot; style=&quot;color:red;background:green&quot;&gt;google.com&lt;/a&gt;</div></pre></td></tr></table></figure>
+<h3 id="2-5-单独添加class属性"><a href="#2-5-单独添加class属性" class="headerlink" title="2.5 单独添加class属性"></a>2.5 单独添加class属性</h3><blockquote>
+<p>前面在tag章节我们讲过可以通过.className的形式添加class，这里我们也可以把类当成是某个属性来书写，并且可以把一个数组直接赋值给class属性，亦可以是个对象类型的条件判断赋值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- var classes = [&apos;qianlong&apos;, &apos;tianxiang&apos;, &apos;doubi&apos;];</div><div class="line">- var objTest = false;</div><div class="line"></div><div class="line">a(class=classes, href=&quot;google.com&quot;) google.com</div><div class="line">// 这里结合.className的形式</div><div class="line">a.firstName.qianlong(class=classes, class=&quot;firstName&quot;, href=&quot;google.com&quot;) google.com</div><div class="line">// 对象形式</div><div class="line">a(class=&#123;&apos;active&apos;: objTest&#125;, href=&quot;google.com&quot;) google.com</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;google.com&quot; class=&quot;qianlong tianxiang doubi&quot;&gt;google.com&lt;/a&gt;</div><div class="line">&lt;a href=&quot;google.com&quot; class=&quot;firstName qianlong qianlong tianxiang doubi firstName&quot;&gt;google.com&lt;/a&gt;</div><div class="line">&lt;a href=&quot;google.com&quot; class=&quot;active&quot;&gt;google.com&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p><strong>1. 可以看出当我们同时使用.className和属性书写的形式并且两者有相同的类名的时候，jade并不会非常智能地给我们只留下一下一个类，而是重复相同的类名多次</strong></p>
+<p><strong>2. 我们可以利用使用对象类型添加class的方式来给不同的元素添加不同的类</strong></p>
+<h2 id="3-循环each-amp-amp-条件判断-if"><a href="#3-循环each-amp-amp-条件判断-if" class="headerlink" title="3. 循环each &amp;&amp; 条件判断 if"></a>3. 循环each &amp;&amp; 条件判断 if</h2><blockquote>
+<p>在模版引擎中除了使用变量动态的获取我们需要的数据，很多时候我们做的事是根据数据<strong>循环</strong>生成dom元素以及根据<strong>条件判断</strong>来涮选数据，很幸运jade给我们提供了这样的机制</p>
+</blockquote>
+<h2 id="3-1-each-for"><a href="#3-1-each-for" class="headerlink" title="3.1 each || for"></a>3.1 each || for</h2><blockquote>
+<p>我们可以通过each和js中的for语句来根据数据循环生成dom结构</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- var list = [&apos;qianlong&apos;, &apos;tianxiang&apos;, &apos;doubi&apos;];</div><div class="line"></div><div class="line">ul.list1</div><div class="line">  each val, index in list</div><div class="line">    li 值是:#&#123;val&#125; 索引是: #&#123;index&#125;  </div><div class="line">ul.list2</div><div class="line">  - for(var i = 0, len = list.length; i &lt; len; i++)</div><div class="line">    li 值是:#&#123;list[i]&#125; 索引是: #&#123;i&#125;</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;ul class=&quot;list1&quot;&gt;</div><div class="line">  &lt;li&gt;值是:qianlong 索引是: 0  &lt;/li&gt;</div><div class="line">  &lt;li&gt;值是:tianxiang 索引是: 1  &lt;/li&gt;</div><div class="line">  &lt;li&gt;值是:doubi 索引是: 2  &lt;/li&gt;</div><div class="line">&lt;/ul&gt;</div><div class="line">&lt;ul class=&quot;list2&quot;&gt;</div><div class="line">  &lt;li&gt;值是:qianlong 索引是: 0  &lt;/li&gt;</div><div class="line">  &lt;li&gt;值是:tianxiang 索引是: 1  &lt;/li&gt;</div><div class="line">  &lt;li&gt;值是:doubi 索引是: 2  &lt;/li&gt;</div><div class="line">&lt;/ul&gt;</div></pre></td></tr></table></figure>
+<p><strong>可见两种方式都可以达到相同的遍历效果，但是后者代码量较大稍显繁琐，推荐使用第一种方式</strong></p>
+<h2 id="3-2-if"><a href="#3-2-if" class="headerlink" title="3.2 if"></a>3.2 if</h2><blockquote>
+<p>通过if关键字来进行条件判断</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- var ifTest = 0;</div><div class="line">  if ifTest &gt; 10</div><div class="line">    p ifTest 大于10    </div><div class="line">  else if ifTest == 10</div><div class="line">    p ifTest 等于10</div><div class="line">  else</div><div class="line">    p ifTest 小于10</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;p&gt;ifTest 小于10   &lt;/p&gt;</div></pre></td></tr></table></figure>
+<h2 id="4-case-vs-switch"><a href="#4-case-vs-switch" class="headerlink" title="4. case vs switch"></a>4. case vs switch</h2><blockquote>
+<p>在jade模版里面我们通过case、when和default关键字可以实现类似于编程语句中switch的效果</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- var friends = 10;</div><div class="line">case friends</div><div class="line">  when 0</div><div class="line">    p you have no friends</div><div class="line">  when 1</div><div class="line">    p you have a friends</div><div class="line">  default</div><div class="line">    p you have #&#123;friends&#125; friends</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;p&gt;you have 10 friends&lt;/p&gt;</div></pre></td></tr></table></figure>
+<p><strong>可见当when中没有与之相匹配的项时，会走默认的default,接下来我们来看一下这几种情形</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- var friends = 0;</div><div class="line">case friends</div><div class="line">  when 0</div><div class="line">  when 1</div><div class="line">    p you have a friends</div><div class="line">  default</div><div class="line">    p you have #&#123;friends&#125; friends</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;p&gt;you have a friends&lt;/p&gt;</div></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- var friends = 1;</div><div class="line">case friends</div><div class="line">  when 0</div><div class="line">    p you have no friends</div><div class="line">  when 1</div><div class="line">    p you have a friends</div><div class="line">  default</div><div class="line">    p you have #&#123;friends&#125; friends</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;p&gt;you have a friends&lt;/p&gt;</div></pre></td></tr></table></figure>
+<h2 id="5-extends"><a href="#5-extends" class="headerlink" title="5. extends"></a>5. extends</h2><blockquote>
+<p>在构建应用的过程中，我们可能需要扩展自己，以弥补自己的不足。这时候便可以能用到<strong>extends</strong></p>
+</blockquote>
+<p><code>layout.jade</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">doctype html</div><div class="line">html</div><div class="line">  head</div><div class="line">    block title</div><div class="line">  body</div><div class="line">    block content</div></pre></td></tr></table></figure>
+<p><code>main.jade</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">extends ./layout.jade</div><div class="line"></div><div class="line">block title</div><div class="line">  title 我是main title</div><div class="line">block content</div><div class="line">  .content 我是main中的content部分</div></pre></td></tr></table></figure>
+<p>最终main.jade编译后dom结构是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;title&gt;我是main title&lt;/title&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;div class=&quot;content&quot;&gt;我是main中的content部分  &lt;/div&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p><strong>这里就好像是在layout.jade中先埋好title和content这两个坑，然后在main.jade中把这两个坑给填上了，并且也继承了layout.jade的dom结构</strong></p>
+<h2 id="6-include"><a href="#6-include" class="headerlink" title="6. include"></a>6. include</h2><blockquote>
+<p>一张网页的很多模块是公用的比如头部和尾部，我们可以将这些可以复用的部分作为单独的模块，然后被他页面的嵌入，在jade要实现这种效果用的是include关键字</p>
+</blockquote>
+<p><code>head.jade</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">head</div><div class="line">  title 我是head部分</div><div class="line">  link(rel=&quot;stylesheet&quot;, type=&quot;text/css&quot;, href=&quot;../styles/index.css&quot;)</div></pre></td></tr></table></figure>
+<p><code>footer.jade</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#footer 我是footer部分</div></pre></td></tr></table></figure>
+<p><code>index.jade</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">doctype html</div><div class="line">html</div><div class="line">  include ./header.jade</div><div class="line">  body</div><div class="line">  #main 我是主题部分</div><div class="line">  include ./footer.jade</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">  &lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">      &lt;title&gt;我是head部分&lt;/title&gt;</div><div class="line">      &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../styles/index.css&quot;&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;div id=&quot;main&quot;&gt;我是主题部分&lt;/div&gt;</div><div class="line">      &lt;div id=&quot;footer&quot;&gt;我是footer部分&lt;/div&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">  &lt;/html&gt;</div></pre></td></tr></table></figure>
+<p><strong>怎么样，是不是有当前使用jsp include的那种感觉，别着急include的强大之处并不仅仅是引进<code>.jade</code>类型的文件，他还可以引进类似<code>.css``.js</code>等的文件</strong></p>
+<p><code>index.css</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">body&#123;</div><div class="line">  background-color: green;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>index.jade</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">doctype html</div><div class="line">html</div><div class="line">  head</div><div class="line">    title include test</div><div class="line">    style</div><div class="line">      include ../public/styles/index.css</div><div class="line">  body</div><div class="line">    #main 我是主题部分</div></pre></td></tr></table></figure>
+<p><strong>编译后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;title&gt;include test&lt;/title&gt;</div><div class="line">    &lt;style&gt;</div><div class="line">      body&#123;</div><div class="line">        background-color: green;</div><div class="line">      &#125;</div><div class="line">    &lt;/style&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;div id=&quot;main&quot;&gt;我是主题部分&lt;/div&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><blockquote>
+<p>jade还有其他相关的语法，日常工作中需要我们常用的结合上述所说灵活使用</p>
+</blockquote>
+<p><strong>参考资料</strong><br><a href="http://jade-lang.com/" target="_blank" rel="external">jade官网</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/模版引擎/" rel="tag">#模版引擎</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/14/前端性能优化之DOM篇章/" rel="next" title="前端性能优化之DOM篇章">
+                <i class="fa fa-chevron-left"></i> 前端性能优化之DOM篇章
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/19/聊一聊这些常见而且实用的css技巧/" rel="prev" title="聊一聊这些常见而且实用的css技巧">
+                聊一聊这些常见而且实用的css技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/16/jade语法详解/"
+     data-title="玩转jade"
+     data-content=""
+     data-url="https://qianlongo.github.io/2016/04/16/jade语法详解/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/16/jade语法详解/"
+           data-title="玩转jade" data-url="https://qianlongo.github.io/2016/04/16/jade语法详解/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://sfault-avatar.b0.upaiyun.com/893/290/893290401-5621cb66a2ed6_huge256"
+               alt="谦龙" />
+          <p class="site-author-name" itemprop="name">谦龙</p>
+          <p class="site-description motion-element" itemprop="description">热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qianlongo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5607962277/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qian-long-16-72" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明"><span class="nav-number">2.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-标签"><span class="nav-number">3.</span> <span class="nav-text">1. 标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-属性"><span class="nav-number">4.</span> <span class="nav-text">2. 属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-基本用法"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-模版中夹杂js语句"><span class="nav-number">4.2.</span> <span class="nav-text">2.2 模版中夹杂js语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-多个属性"><span class="nav-number">4.3.</span> <span class="nav-text">2.2 多个属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-boolean类型属性"><span class="nav-number">4.4.</span> <span class="nav-text">2.3 boolean类型属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-style-书写行间样式"><span class="nav-number">4.5.</span> <span class="nav-text">2.4 style 书写行间样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-单独添加class属性"><span class="nav-number">4.6.</span> <span class="nav-text">2.5 单独添加class属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-循环each-amp-amp-条件判断-if"><span class="nav-number">5.</span> <span class="nav-text">3. 循环each && 条件判断 if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-each-for"><span class="nav-number">6.</span> <span class="nav-text">3.1 each || for</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-if"><span class="nav-number">7.</span> <span class="nav-text">3.2 if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-case-vs-switch"><span class="nav-number">8.</span> <span class="nav-text">4. case vs switch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-extends"><span class="nav-number">9.</span> <span class="nav-text">5. extends</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-include"><span class="nav-number">10.</span> <span class="nav-text">6. include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">11.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谦龙</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"qianlongo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+
+    $(document).click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("nnrLyBcuNRbOdTn45bzlEBC5-gzGzoHsz", "ru8RIcugE0RouivkbirObO9j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
