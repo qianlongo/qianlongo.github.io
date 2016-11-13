@@ -4,6 +4,22 @@
   
     
     <entry>
+      <title></title>
+      <url>https://qianlongo.github.io/2016/11/10/reviewee-%20%E5%98%BF%E5%98%BF/</url>
+      <content type="html"><![CDATA[<h2 id="reviewee-bob"><a href="#reviewee-bob" class="headerlink" title="reviewee: bob"></a>reviewee: bob</h2><h2 id="reviewer-嘿嘿-王敏-安冬"><a href="#reviewer-嘿嘿-王敏-安冬" class="headerlink" title="reviewer: 嘿嘿, 王敏, 安冬"></a>reviewer: 嘿嘿, 王敏, 安冬</h2><p>.重点 MVC (详细如何实现，期待bob讲解)</p>
+<p>. fetch (safari 不支持 version ? )</p>
+<p>. Q 切换页面如何做的？</p>
+<p><strong>注意点</strong><br>. 动画结束的方法 vivo不支持？ 注意兼容性<br>. 滚动问题 子父滚动</p>
+<p>. handlebar</p>
+<p>. skeleton css响应模版(可以专业选择)</p>
+<p>. 抽出公用模版而不是大小问题专业角度问题</p>
+<p>. 协议头写死，不利于http 与 https的切换，但同时在离线的场景下会导致资源无法加载</p>
+<p>. todoMVC</p>
+<p>. 写文章（大概每人，半年会要写一次）</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[一起来实现es5中新增的数组方法]]></title>
       <url>https://qianlongo.github.io/2016/10/22/%E4%B8%80%E8%B5%B7%E6%9D%A5%E5%AE%9E%E7%8E%B0es5%E4%B8%AD%E6%96%B0%E5%A2%9E%E7%9A%84%E6%95%B0%E7%BB%84%E6%96%B9%E6%B3%95/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
@@ -476,7 +492,7 @@
 <h2 id="1、清除浮动"><a href="#1、清除浮动" class="headerlink" title="1、清除浮动"></a>1、清除浮动</h2><blockquote>
 <p>浮动给我们的代码带来的麻烦，想必不需要多说，我们会用很多方式来避免这种麻烦，其中我觉得最方便也是兼容性最好的一种是….</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 清除浮动</span></div><div class="line">.clearfox&#123;</div><div class="line">  <span class="attr">zoom</span>: <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line">.clearfox:after&#123;</div><div class="line">  <span class="attr">display</span>: block;</div><div class="line">  content: <span class="string">''</span>;</div><div class="line">  clear: both;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 清除浮动</span></div><div class="line">.clearfix&#123;</div><div class="line">  <span class="attr">zoom</span>: <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line">.clearfix:after&#123;</div><div class="line">  <span class="attr">display</span>: block;</div><div class="line">  content: <span class="string">''</span>;</div><div class="line">  clear: both;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="2、垂直水平居中"><a href="#2、垂直水平居中" class="headerlink" title="2、垂直水平居中"></a>2、垂直水平居中</h2><blockquote>
 <p>在css的世界里水平居中比垂直居中来的简单一些，经过了多年的演化，依然没有好的方式来让元素垂直居中(各种方式各有优缺点，但都不能达到兼容性好，破坏力小的目标)，以下是几种常见的实现方式</p>
 </blockquote>
