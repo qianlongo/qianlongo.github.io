@@ -284,6 +284,141 @@
             
               
                 
+                <a class="post-title-link" href="/2016/12/31/this-想说爱你不容易/" itemprop="url">
+                  this-想说爱你不容易
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-31T22:05:25+08:00" content="2016-12-31">
+              2016-12-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/31/this-想说爱你不容易/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/31/this-想说爱你不容易/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/31/this-想说爱你不容易/" class="leancloud_visitors" data-flag-title="this-想说爱你不容易">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/1403754134344.png" alt=""></p>
+<h2 id="他是个啥"><a href="#他是个啥" class="headerlink" title="他是个啥"></a>他是个啥</h2><blockquote>
+<p>首先<code>this</code>是Javascript语言的关键字之一，指函数<code>运行</code>时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？</p>
+</blockquote>
+<ol>
+<li>方法调用</li>
+<li>函数调用</li>
+<li>构造函数调用</li>
+<li>apply、call调用</li>
+</ol>
+<p><strong>我擦，有木有一千只草泥马在心里蹦腾不息，人家是要弄懂this，你这又是整的哪一出</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg" alt=""><br><strong>我们慢慢来，一步步从这些调用模式中探究this这个神器的远古神兽</strong></p>
+<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><blockquote>
+<p>函数调用 即 <code>functionName ()</code> 模式，这也是我们使用的最多的一种方式，其属于全局调用，浏览中默认情况下函数内部的this指向<code>window</code>。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">this.name = &apos;qianlong&apos;;</div><div class="line"></div><div class="line">function showName () &#123;</div><div class="line">  console.log(this.name);</div><div class="line">  console.log(this === window);</div><div class="line">&#125;</div><div class="line"></div><div class="line">showName() </div><div class="line">/* </div><div class="line">  qianlong</div><div class="line">  true</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>上面的例子中输出了我们期望的值，但是别急，既然说默认情况下函数调用时内部的this指向window，那不是默认情况下呢？接下来请看…</p>
+<h2 id="apply、call调用"><a href="#apply、call调用" class="headerlink" title="apply、call调用"></a>apply、call调用</h2><blockquote>
+</blockquote>
+<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><blockquote>
+<p>当函数（Function）作为对象属性时被称为方法（Method）。 此方法在被该对象调用的时候，内部的this会绑定到该对象。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  name: &apos;qianlong&apos;,</div><div class="line">  showName: function () &#123;</div><div class="line">    console.log(this.name);</div><div class="line">  &#125;		</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var tempShowName = obj.showName;</div><div class="line"></div><div class="line">obj.showName() // qianlong</div><div class="line">tempShowName() // undefined</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/20/大学回忆-初入校门的那些囧事/" itemprop="url">
                   大学回忆-初入校门的那些囧事
                 </a>
@@ -723,121 +858,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/16/underscore源码分析系列－2/" itemprop="url">
-                  underscore源码分析系列－2－常见简单函数分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-16T00:36:17+08:00" content="2016-10-16">
-              2016-10-16
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/16/underscore源码分析系列－2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/16/underscore源码分析系列－2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/10/16/underscore源码分析系列－2/" class="leancloud_visitors" data-flag-title="underscore源码分析系列－2－常见简单函数分析">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>这一篇源码分析中，我们会试着去看<code>underscore</code>几个比较常见的函数</p>
-</blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/075139_ey1FV7wc.jpg" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/16/underscore源码分析系列－2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -883,7 +903,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -893,7 +913,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

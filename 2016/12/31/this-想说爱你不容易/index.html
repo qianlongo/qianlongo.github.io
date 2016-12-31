@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="性能优化," />
+  <meta name="keywords" content="javascript,前端,this," />
 
 
 
@@ -85,18 +85,57 @@
 
 
 <meta name="description" content="前言
-前端经常需要和DOM打交道，增加、删除、替换是常见的DOM操作，然而就是这些操作时常成为网站性能的瓶颈，为了提高我们的网站性能，我们需要在DOM上面花不少心思。">
+javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。
+
+
+他是个啥
+首先this是Javascript语言的关键字之一，指函数运行时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？
+
+
+方法调用
+函数调用
+构造函数调用
+apply、call调用
+
+我擦，有木有一千只草泥马在心里蹦腾不息，人家">
 <meta property="og:type" content="article">
-<meta property="og:title" content="前端性能优化之DOM篇章">
-<meta property="og:url" content="https://qianlongo.github.io/2016/04/14/前端性能优化之DOM篇章/index.html">
+<meta property="og:title" content="this-想说爱你不容易">
+<meta property="og:url" content="https://qianlongo.github.io/2016/12/31/this-想说爱你不容易/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-前端经常需要和DOM打交道，增加、删除、替换是常见的DOM操作，然而就是这些操作时常成为网站性能的瓶颈，为了提高我们的网站性能，我们需要在DOM上面花不少心思。">
-<meta property="og:updated_time" content="2016-08-14T06:25:50.000Z">
+javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。
+
+
+他是个啥
+首先this是Javascript语言的关键字之一，指函数运行时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？
+
+
+方法调用
+函数调用
+构造函数调用
+apply、call调用
+
+我擦，有木有一千只草泥马在心里蹦腾不息，人家">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/1403754134344.png">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg">
+<meta property="og:updated_time" content="2016-12-31T15:32:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="前端性能优化之DOM篇章">
+<meta name="twitter:title" content="this-想说爱你不容易">
 <meta name="twitter:description" content="前言
-前端经常需要和DOM打交道，增加、删除、替换是常见的DOM操作，然而就是这些操作时常成为网站性能的瓶颈，为了提高我们的网站性能，我们需要在DOM上面花不少心思。">
+javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。
+
+
+他是个啥
+首先this是Javascript语言的关键字之一，指函数运行时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？
+
+
+方法调用
+函数调用
+构造函数调用
+apply、call调用
+
+我擦，有木有一千只草泥马在心里蹦腾不息，人家">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/1403754134344.png">
 
 
 
@@ -117,9 +156,9 @@
 
 
 
-  <link rel="canonical" href="https://qianlongo.github.io/2016/04/14/前端性能优化之DOM篇章/"/>
+  <link rel="canonical" href="https://qianlongo.github.io/2016/12/31/this-想说爱你不容易/"/>
 
-  <title> 前端性能优化之DOM篇章 | 谦龙的小天地 </title>
+  <title> this-想说爱你不容易 | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -285,7 +324,7 @@
             
             
               
-                前端性能优化之DOM篇章
+                this-想说爱你不容易
               
             
           </h1>
@@ -297,8 +336,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-14T00:36:18+08:00" content="2016-04-14">
-              2016-04-14
+            <time itemprop="dateCreated" datetime="2016-12-31T22:05:25+08:00" content="2016-12-31">
+              2016-12-31
             </time>
           </span>
 
@@ -308,8 +347,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/04/14/前端性能优化之DOM篇章/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/14/前端性能优化之DOM篇章/" itemprop="commentsCount"></span>
+                <a href="/2016/12/31/this-想说爱你不容易/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/31/this-想说爱你不容易/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -319,7 +358,7 @@
 
           
           
-             <span id="/2016/04/14/前端性能优化之DOM篇章/" class="leancloud_visitors" data-flag-title="前端性能优化之DOM篇章">
+             <span id="/2016/12/31/this-想说爱你不容易/" class="leancloud_visitors" data-flag-title="this-想说爱你不容易">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -342,39 +381,31 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>前端经常需要和DOM打交道，增加、删除、替换是常见的DOM操作，然而就是这些操作时常成为网站性能的瓶颈，为了提高我们的网站性能，我们需要在DOM上面花不少心思。</p>
+<p>javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。</p>
 </blockquote>
-<a id="more"></a>
-<h2 id="1-使用DOM的引用"><a href="#1-使用DOM的引用" class="headerlink" title="1.  使用DOM的引用"></a>1.  使用DOM的引用</h2><blockquote>
-<p>在进行DOM操作前，我们先要对元素进行查找，或者需要根据后台返回的数据动态的创建元素，比如我们得到一个数组类型的数据data，需求是根据data往一个id为main的元素中添加li。我们可能会进行下面的DOM操作</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/1403754134344.png" alt=""></p>
+<h2 id="他是个啥"><a href="#他是个啥" class="headerlink" title="他是个啥"></a>他是个啥</h2><blockquote>
+<p>首先<code>this</code>是Javascript语言的关键字之一，指函数<code>运行</code>时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.length; i++ )&#123;</div><div class="line">  <span class="keyword">var</span> li = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</div><div class="line">  li.innerText = data[i];</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'main'</span>).appendChild(li);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>上面的代码每次循环都会去计算一个data的length值，查询并得到main元素，可想而之其效率应该有多低下，好的方式是在进行循环之前便将data的length以及main元素缓存下来，在循环的时候使用其引用即可。</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> oMain = <span class="built_in">document</span>.getElementById(<span class="string">'main'</span>);</div><div class="line"><span class="keyword">var</span> len = data.length;</div><div class="line"><span class="keyword">var</span> i,li;</div><div class="line"></div><div class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; i++ )&#123;</div><div class="line">  li = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</div><div class="line">  li.innerText = data[i];</div><div class="line">  oMain.appendChild(li);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>注意元素的查找默认根元素是document，当我们需要对某些元素进行频繁的查找的时候，可以先将某个元素缓存下来，后面的元素查找则是基于该元素，从而减短查找路径</strong></p>
-<h2 id="2-使用文档碎片"><a href="#2-使用文档碎片" class="headerlink" title="2.  使用文档碎片"></a>2.  使用文档碎片</h2><blockquote>
-<p>上面的操作中还有一个非常耗费性能的地方，<code>oMain.appendChild(li)</code>，每次循环都会进行一次元素添加操作，进而导致浏览器重排，我们知道浏览器的重排和重绘是需要耗费大量的时间进行的，所以提高网页性能的一方面是考虑尽量减少重排和重绘的次数。将频繁的DOM操作先在内存中完成，最后一次性将节点推进页面当中，这里我们会用到一个方法<code>document.createDocumentFragment</code>,重新修改上诉例子如下</p>
+<ol>
+<li>方法调用</li>
+<li>函数调用</li>
+<li>构造函数调用</li>
+<li>apply、call调用</li>
+</ol>
+<p><strong>我擦，有木有一千只草泥马在心里蹦腾不息，人家是要弄懂this，你这又是整的哪一出</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg" alt=""><br><strong>我们慢慢来，一步步从这些调用模式中探究this这个神器的远古神兽</strong></p>
+<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><blockquote>
+<p>函数调用 即 <code>functionName ()</code> 模式，这也是我们使用的最多的一种方式，其属于全局调用，浏览中默认情况下函数内部的this指向<code>window</code>。</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> oMain = <span class="built_in">document</span>.getElementById(<span class="string">'main'</span>);</div><div class="line"><span class="keyword">var</span> frag = <span class="built_in">document</span>.createDocumentFragment </div><div class="line"><span class="keyword">var</span> len = data.length;</div><div class="line"><span class="keyword">var</span> i,li;</div><div class="line"></div><div class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; i++ )&#123;</div><div class="line">  li = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</div><div class="line">  li.innerText = data[i];</div><div class="line">  frag.appendChild(li); <span class="comment">// 所有的操作在内存中完成，这个时候不会触发重排</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">oMain.appendChild(frag); <span class="comment">// 最后一次性添加到页面中，只出发浏览器一次重排</span></div></pre></td></tr></table></figure>
-<h2 id="3-使用innerHTML一次性添加DOM节点"><a href="#3-使用innerHTML一次性添加DOM节点" class="headerlink" title="3. 使用innerHTML一次性添加DOM节点"></a>3. 使用innerHTML一次性添加DOM节点</h2><blockquote>
-<p>以上的代码中每次都要通过<code>document.createElement(&#39;li&#39;)</code>创建元素，通过<code>li.innerText = data[i]</code>设置文本信息，蛋疼的很，我们可以尝试着使用innerHTML来一次性添加元素，当然前提是你要先以字符串的形式把元素和数据拼接好</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">this.name = &apos;qianlong&apos;;</div><div class="line"></div><div class="line">function showName () &#123;</div><div class="line">  console.log(this.name);</div><div class="line">  console.log(this === window);</div><div class="line">&#125;</div><div class="line"></div><div class="line">showName() </div><div class="line">/* </div><div class="line">  qianlong</div><div class="line">  true</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>上面的例子中输出了我们期望的值，但是别急，既然说默认情况下函数调用时内部的this指向window，那不是默认情况下呢？接下来请看…</p>
+<h2 id="apply、call调用"><a href="#apply、call调用" class="headerlink" title="apply、call调用"></a>apply、call调用</h2><blockquote>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> oMain = <span class="built_in">document</span>.getElementById(<span class="string">'main'</span>);</div><div class="line"><span class="keyword">var</span> sHtml = <span class="string">''</span>;</div><div class="line"><span class="keyword">var</span> len = data.length;</div><div class="line"><span class="keyword">var</span> i,li;</div><div class="line"></div><div class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; i++ )&#123;</div><div class="line">  sHtml += <span class="string">'&lt;li&gt;'</span>+ data[i] +<span class="string">'&lt;/li&gt;'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">oMain.innerHTMl = sHtml; <span class="comment">// 最后一次性添加到页面中，只出发浏览器一次重排</span></div></pre></td></tr></table></figure>
-<p><strong>虽然这样做效率有所提升，但是当页面的DOM结构一旦复杂起来，拼接字符串便会变成一件相当恶心的事情</strong></p>
-<h2 id="4-使用事件代理批量处理事件"><a href="#4-使用事件代理批量处理事件" class="headerlink" title="4. 使用事件代理批量处理事件"></a>4. 使用事件代理批量处理事件</h2><blockquote>
-<p>事件代理本质上就是将原本自己该干的事情，委托给别人( 这里是指父节点或者祖先节点 )做。<br><strong>还是用上面的例子，假设我们现在要给每个li都添加上一个点击事件，可能会写出下面的代码</strong></p>
+<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><blockquote>
+<p>当函数（Function）作为对象属性时被称为方法（Method）。 此方法在被该对象调用的时候，内部的this会绑定到该对象。</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> oMain = <span class="built_in">document</span>.getElementById(<span class="string">'main'</span>);</div><div class="line"><span class="keyword">var</span> frag = <span class="built_in">document</span>.createDocumentFragment </div><div class="line"><span class="keyword">var</span> len = data.length;</div><div class="line"><span class="keyword">var</span> i,li;</div><div class="line"></div><div class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; i++ )&#123;</div><div class="line">  li = <span class="built_in">document</span>.createElement(<span class="string">'li'</span>);</div><div class="line">  li.innerText = data[i];</div><div class="line">  li.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// do something</span></div><div class="line">  &#125;,<span class="literal">false</span>)</div><div class="line">  frag.appendChild(li); </div><div class="line">&#125;</div><div class="line"></div><div class="line">oMain.appendChild(frag);</div></pre></td></tr></table></figure>
-<p><strong>很显然data的lenth有多大，循环就得执行多少次addEventListener这个函数多少次，当数据量很大的时候效率自然低了不少，所以我们可以尝试使用事件代理的形式将事件委托到main元素上</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> oMain = <span class="built_in">document</span>.getElementById(<span class="string">'main'</span>);</div><div class="line"><span class="keyword">var</span> sHtml = <span class="string">''</span>;</div><div class="line"><span class="keyword">var</span> len = data.length;</div><div class="line"><span class="keyword">var</span> i,li,target;</div><div class="line"></div><div class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; i++ )&#123;</div><div class="line">  sHtml += <span class="string">'&lt;li&gt;'</span>+ data[i] +<span class="string">'&lt;/li&gt;'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">oMain.innerHTMl = sHtml; <span class="comment">// 最后一次性添加到页面中，只出发浏览器一次重排</span></div><div class="line">oMain.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</div><div class="line">  target = ev.target || ev.srcElement;</div><div class="line">  <span class="keyword">if</span>(target.tagName.toLowerCase() == <span class="string">'li'</span>)&#123;</div><div class="line">    <span class="comment">// do something</span></div><div class="line">  &#125;</div><div class="line">&#125;, <span class="literal">false</span>)</div></pre></td></tr></table></figure>
-<h2 id="5-通过className来批量修改元素样式"><a href="#5-通过className来批量修改元素样式" class="headerlink" title="5. 通过className来批量修改元素样式"></a>5. 通过className来批量修改元素样式</h2><blockquote>
-<p>经常有这样的场景，我们需要在js中批量的修改元素的样式，比如</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ele.style.width = <span class="number">100</span> + <span class="string">'px'</span>;</div><div class="line">ele.style.height = <span class="number">100</span> + <span class="string">'px'</span>;</div><div class="line">ele.style.backgrounfColor = <span class="string">'red'</span>;</div><div class="line">ele.style.border = <span class="string">'solid 1px green'</span>;</div></pre></td></tr></table></figure>
-<p><strong>以上代码会多次出发浏览器重绘和重排，一种好的方式是将需要修改的样式在样式文件中先写好，通过给元素赋值className的形式批量修改样式</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.active&#123;</div><div class="line">  <span class="attr">width</span>: <span class="number">100</span>px;</div><div class="line">  height: <span class="number">100</span>px;</div><div class="line">  backgroung-color: red;</div><div class="line">  border: solid <span class="number">1</span>px green;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>给元素赋值className</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ele.className += <span class="string">' active'</span>; <span class="comment">// 注意前面的空格</span></div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  name: &apos;qianlong&apos;,</div><div class="line">  showName: function () &#123;</div><div class="line">    console.log(this.name);</div><div class="line">  &#125;		</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var tempShowName = obj.showName;</div><div class="line"></div><div class="line">obj.showName() // qianlong</div><div class="line">tempShowName() // undefined</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -397,7 +428,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/性能优化/" rel="tag">#性能优化</a>
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+            <a href="/tags/this/" rel="tag">#this</a>
           
         </div>
       
@@ -406,17 +441,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/03/dragToSort记一次排序插件开发/" rel="next" title="dragToSort记一次排序组件开发">
-                <i class="fa fa-chevron-left"></i> dragToSort记一次排序组件开发
+              <a href="/2016/11/20/大学回忆-初入校门的那些囧事/" rel="next" title="大学回忆-初入校门的那些囧事">
+                <i class="fa fa-chevron-left"></i> 大学回忆-初入校门的那些囧事
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/04/16/jade语法详解/" rel="prev" title="玩转jade">
-                玩转jade <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -431,10 +462,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/04/14/前端性能优化之DOM篇章/"
-     data-title="前端性能优化之DOM篇章"
+        <div class="ds-share flat" data-thread-key="2016/12/31/this-想说爱你不容易/"
+     data-title="this-想说爱你不容易"
      data-content=""
-     data-url="https://qianlongo.github.io/2016/04/14/前端性能优化之DOM篇章/">
+     data-url="https://qianlongo.github.io/2016/12/31/this-想说爱你不容易/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -461,8 +492,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/04/14/前端性能优化之DOM篇章/"
-           data-title="前端性能优化之DOM篇章" data-url="https://qianlongo.github.io/2016/04/14/前端性能优化之DOM篇章/">
+      <div class="ds-thread" data-thread-key="2016/12/31/this-想说爱你不容易/"
+           data-title="this-想说爱你不容易" data-url="https://qianlongo.github.io/2016/12/31/this-想说爱你不容易/">
       </div>
     
   </div>
@@ -575,7 +606,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-使用DOM的引用"><span class="nav-number">2.</span> <span class="nav-text">1.  使用DOM的引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用文档碎片"><span class="nav-number">3.</span> <span class="nav-text">2.  使用文档碎片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-使用innerHTML一次性添加DOM节点"><span class="nav-number">4.</span> <span class="nav-text">3. 使用innerHTML一次性添加DOM节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-使用事件代理批量处理事件"><span class="nav-number">5.</span> <span class="nav-text">4. 使用事件代理批量处理事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-通过className来批量修改元素样式"><span class="nav-number">6.</span> <span class="nav-text">5. 通过className来批量修改元素样式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#他是个啥"><span class="nav-number">2.</span> <span class="nav-text">他是个啥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用"><span class="nav-number">3.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apply、call调用"><span class="nav-number">4.</span> <span class="nav-text">apply、call调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用"><span class="nav-number">5.</span> <span class="nav-text">方法调用</span></a></li></ol></div>
             
           </div>
         </section>
