@@ -85,57 +85,21 @@
 
 
 <meta name="description" content="前言
-javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。
-
-
-他是个啥
-首先this是Javascript语言的关键字之一，指函数运行时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？
-
-
-方法调用
-函数调用
-构造函数调用
-apply、call调用
-
-我擦，有木有一千只草泥马在心里蹦腾不息，人家">
+javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="this-想说爱你不容易">
 <meta property="og:url" content="https://qianlongo.github.io/2016/12/31/this-想说爱你不容易/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。
-
-
-他是个啥
-首先this是Javascript语言的关键字之一，指函数运行时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？
-
-
-方法调用
-函数调用
-构造函数调用
-apply、call调用
-
-我擦，有木有一千只草泥马在心里蹦腾不息，人家">
-<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/1403754134344.png">
+javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD111.jpeg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg">
-<meta property="og:updated_time" content="2016-12-31T15:32:26.000Z">
+<meta property="og:updated_time" content="2017-01-01T13:05:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="this-想说爱你不容易">
 <meta name="twitter:description" content="前言
-javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。
-
-
-他是个啥
-首先this是Javascript语言的关键字之一，指函数运行时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？
-
-
-方法调用
-函数调用
-构造函数调用
-apply、call调用
-
-我擦，有木有一千只草泥马在心里蹦腾不息，人家">
-<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/1403754134344.png">
+javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD111.jpeg">
 
 
 
@@ -383,29 +347,96 @@ apply、call调用
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。</p>
 </blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/1403754134344.png" alt=""></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD111.jpeg" alt=""></p>
+<a id="more"></a>
 <h2 id="他是个啥"><a href="#他是个啥" class="headerlink" title="他是个啥"></a>他是个啥</h2><blockquote>
 <p>首先<code>this</code>是Javascript语言的关键字之一，指函数<code>运行</code>时的当前对象。那既然和函数运行有关，js中函数有哪些调用模式呢？</p>
 </blockquote>
 <ol>
-<li>方法调用</li>
-<li>函数调用</li>
+<li>纯粹的函数调用</li>
+<li>对象的方法调用</li>
 <li>构造函数调用</li>
 <li>apply、call调用</li>
 </ol>
 <p><strong>我擦，有木有一千只草泥马在心里蹦腾不息，人家是要弄懂this，你这又是整的哪一出</strong></p>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg" alt=""><br><strong>我们慢慢来，一步步从这些调用模式中探究this这个神器的远古神兽</strong></p>
-<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><blockquote>
-<p>函数调用 即 <code>functionName ()</code> 模式，这也是我们使用的最多的一种方式，其属于全局调用，浏览中默认情况下函数内部的this指向<code>window</code>。</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/1440757221622060.jpg" alt=""></p>
+<p><strong>我们慢慢来，一步步从这些调用模式中探究this这个神奇的远古神兽</strong></p>
+<h2 id="纯粹的函数调用"><a href="#纯粹的函数调用" class="headerlink" title="纯粹的函数调用"></a>纯粹的函数调用</h2><blockquote>
+<p>函数调用 即 <code>functionName ()</code> 模式，这也是我们使用的最多的一种方式，其属于全局调用，浏览中默认情况下函数内部的this指向<code>window</code>，当然是在非严格模式下。</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">this.name = &apos;qianlong&apos;;</div><div class="line"></div><div class="line">function showName () &#123;</div><div class="line">  console.log(this.name);</div><div class="line">  console.log(this === window);</div><div class="line">&#125;</div><div class="line"></div><div class="line">showName() </div><div class="line">/* </div><div class="line">  qianlong</div><div class="line">  true</div><div class="line">*/</div></pre></td></tr></table></figure>
-<p>上面的例子中输出了我们期望的值，但是别急，既然说默认情况下函数调用时内部的this指向window，那不是默认情况下呢？接下来请看…</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.name = <span class="string">'qianlong'</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">showName</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span> === <span class="built_in">window</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">showName() </div><div class="line"> </div><div class="line"><span class="comment">// qianlong</span></div><div class="line"><span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h2 id="对象的方法调用"><a href="#对象的方法调用" class="headerlink" title="对象的方法调用"></a>对象的方法调用</h2><blockquote>
+<p>当一个函数作为对象的某个属性方法被调用的时候</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.showName();</div><div class="line"><span class="comment">// qianlong</span></div></pre></td></tr></table></figure>
+<p><strong>可以看出<code>this</code>指向是obj这个对象，其实本质上讲函数调用形式内部<code>this</code>就是指向调用它的那个对象</strong></p>
+<p>上面的例子相当于</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.showName()</div></pre></td></tr></table></figure>
+<p>这也是为什么可以读取到全局定义的name属性的原因。</p>
+<p><code>再来</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> showName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;,</div><div class="line">  obj = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">    <span class="attr">showName</span>: showName</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  obj.showName();</div></pre></td></tr></table></figure>
+<p><strong>这个时候输出的是什么呢</strong></p>
+<p>结果是不变的，在js中，一切都是对象，而这里也只是将，obj的showName属性指向，showNmae函数的引用地址。</p>
+<p><code>继续</code></p>
+<p>当我们把<code>showName</code>方法赋值给了一个变量，又会有什么事情发生呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> tempShowName = obj.showName;</div><div class="line"></div><div class="line">tempShowName()</div><div class="line"></div><div class="line"><span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<p>为什么不是期望的那样输出 qianlong呢。obj的showName方法是一个对象，当把它赋值给了tempShowName变量，此时便和obj没有什么关系了，而这个时候的调用和下面是等价的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.tempShowName()</div></pre></td></tr></table></figure>
+<p>window上此事并没有<code>name</code>属性，自然输出是<code>undefined</code>。</p>
+<h2 id="构造函数调用"><a href="#构造函数调用" class="headerlink" title="构造函数调用"></a>构造函数调用</h2><blockquote>
+<p>当使用 <code>new</code> 去调用一个构造函数的时候，内部的this，指向的是实例化出来的对象。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.name = name;</div><div class="line">  <span class="keyword">this</span>.sex = sex;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">'qianlong'</span>, <span class="string">'boy'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Person &#123;name: 'qianlong', sex: 'boy'&#125;;</span></div></pre></td></tr></table></figure>
+<p>构造函数也是函数，所以当你用普通调用方式调用时</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.name = name;</div><div class="line">  <span class="keyword">this</span>.sex = sex;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Person(<span class="string">'qianlong'</span>, <span class="string">'boy'</span>);</div><div class="line"></div><div class="line"><span class="comment">// 这个时候相当于给window对象添加了name和sex两个属性。</span></div><div class="line"></div><div class="line"><span class="built_in">window</span>.name <span class="comment">// 'qianlong'</span></div><div class="line"><span class="built_in">window</span>.sex <span class="comment">// 'boy'</span></div></pre></td></tr></table></figure>
 <h2 id="apply、call调用"><a href="#apply、call调用" class="headerlink" title="apply、call调用"></a>apply、call调用</h2><blockquote>
+<p>使用call和apply方式去调用一个函数的时候，内部的this指向的是传进来的第一个参数，当第一个参数是<code>undefined</code>或者<code>null</code>的时候，依旧指向<code>window</code></p>
 </blockquote>
-<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><blockquote>
-<p>当函数（Function）作为对象属性时被称为方法（Method）。 此方法在被该对象调用的时候，内部的this会绑定到该对象。</p>
+<p>关于call和apply欢迎查看另一篇文章</p>
+<p><a href="https://qianlongo.github.io/2016/04/26/js%E4%B8%ADcall%E3%80%81apply%E3%80%81bind%E9%82%A3%E4%BA%9B%E4%BA%8B/">js中call、apply、bind那些事</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> showName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">showName() <span class="comment">// window</span></div><div class="line">showName.call(<span class="literal">undefined</span>) <span class="comment">// window</span></div><div class="line">showName.call(<span class="literal">null</span>) <span class="comment">// window</span></div><div class="line">showName.call(&#123;<span class="attr">name</span>: <span class="string">'qianlong'</span>&#125;) <span class="comment">// &#123;name: 'qianlong'&#125;</span></div></pre></td></tr></table></figure>
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><blockquote>
+<p>在 ES6 的新规范中，加入了箭头函数，它和普通函数最不一样的一点就是 this 的指向，普通函数中的this，是运行时候决定的，而箭头函数却是定义时候就决定了。</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  name: &apos;qianlong&apos;,</div><div class="line">  showName: function () &#123;</div><div class="line">    console.log(this.name);</div><div class="line">  &#125;		</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var tempShowName = obj.showName;</div><div class="line"></div><div class="line">obj.showName() // qianlong</div><div class="line">tempShowName() // undefined</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">showNameLater</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;, <span class="number">1000</span>)</div><div class="line">  &#125;		</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.showNameLater();</div><div class="line"></div><div class="line"><span class="comment">// qianlong</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.showName();</div><div class="line"><span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<p><strong>一些坑</strong></p>
+<ol>
+<li>setTimeout</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">showNameLater</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </div><div class="line">    setTimeout(<span class="keyword">this</span>.showName, <span class="number">1000</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.showNameLater();</div><div class="line"></div><div class="line"><span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<p>这里在执行setTimeout这个函数的时候传了obj的showName函数作为第一个参数，其效果与</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> showName = obj.showName</div></pre></td></tr></table></figure>
+<p>是相同的。而setTimeout内部其实也是执行了传进去这个函数而已，即。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">showName();</div></pre></td></tr></table></figure>
+<p>还记得这种调用方式和<code>window.showName()</code>是类似的效果吗？这个时候输入为undefined也就好理解了。</p>
+<p>那么怎么解决这个问题呢，毕竟我们期望的效果是输出<code>qianlong</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">showNameLater</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      self.showName();</div><div class="line">    &#125;, <span class="number">1000</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.showNameLater();</div></pre></td></tr></table></figure>
+<p><code>或者</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">showNameLater</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </div><div class="line">    setTimeout(<span class="keyword">this</span>.showName.bind(<span class="keyword">this</span>), <span class="number">1000</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj.showNameLater();</div></pre></td></tr></table></figure>
+<ol>
+<li>setTimeout</li>
+</ol>
+<blockquote>
+<p>尼玛坑爹啊，居然还是因为你。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">show(); <span class="comment">// undefined </span></div><div class="line"></div><div class="line">setTimeout(show, <span class="number">1</span>); <span class="comment">// window</span></div></pre></td></tr></table></figure>
+<p>在严格模式下面，函数调用的时候没有指定this的情况下，内部this的表现为<code>undefined</code>,但是setTimeout却不同，其内部默认还是指向window。</p>
+<ol>
+<li>为构造函数指定this</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.name = name;</div><div class="line">  <span class="keyword">this</span>.sex = sex;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person.call(&#123;&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Uncaught TypeError: Person.call is not a constructor</span></div></pre></td></tr></table></figure>
+<p><code>这里报错了，原因是我们去 new 了 Person.call 函数 ，这里的函数不是一个构造函数；</code></p>
+<p>当然解决方式也是有的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.name = name;</div><div class="line">  <span class="keyword">this</span>.sex = sex;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> (Person.bind(&#123;&#125;))(<span class="string">'qianlong'</span>, <span class="string">'sex'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Person &#123;name: "qianlong", sex: "sex"&#125;</span></div></pre></td></tr></table></figure>
+<ol>
+<li>为箭头函数指定this</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var show = (str) =&gt; &#123;</div><div class="line">  console.log(str);</div><div class="line">  console.log(this);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">show(&apos;qianlong&apos;);</div><div class="line">// qianlong</div><div class="line">// window</div><div class="line"></div><div class="line">show.call(&#123;name: &apos;qianlong&apos;&#125;, &apos;qianlong&apos;);</div><div class="line">// qianlong</div><div class="line">// window</div></pre></td></tr></table></figure>
+<p>可以看到使用call来手动改变箭头函数中的this的时候，无法成功。 箭头函数中的 this 在定义它的时候已经决定了（执行定义它的作用域中的 this），与如何调用以及在哪里调用它无关，包括 (call, apply, bind) 等操作都无法改变它的 this。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><blockquote>
+<p>文章可能有些疏漏与错误之处，欢迎各位指正。</p>
+</blockquote>
 
       
     </div>
@@ -606,7 +637,7 @@ apply、call调用
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#他是个啥"><span class="nav-number">2.</span> <span class="nav-text">他是个啥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用"><span class="nav-number">3.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apply、call调用"><span class="nav-number">4.</span> <span class="nav-text">apply、call调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用"><span class="nav-number">5.</span> <span class="nav-text">方法调用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#他是个啥"><span class="nav-number">2.</span> <span class="nav-text">他是个啥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#纯粹的函数调用"><span class="nav-number">3.</span> <span class="nav-text">纯粹的函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的方法调用"><span class="nav-number">4.</span> <span class="nav-text">对象的方法调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数调用"><span class="nav-number">5.</span> <span class="nav-text">构造函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apply、call调用"><span class="nav-number">6.</span> <span class="nav-text">apply、call调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#箭头函数"><span class="nav-number">7.</span> <span class="nav-text">箭头函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">8.</span> <span class="nav-text">结语</span></a></li></ol></div>
             
           </div>
         </section>
