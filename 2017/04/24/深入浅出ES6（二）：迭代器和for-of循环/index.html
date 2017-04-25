@@ -84,19 +84,22 @@
 
 
 
-<meta name="description" content="前言
+<meta name="description" content="前言原文线上地址
+
 最近经常去听门户的小伙伴的分享，非常的实用，内容属干货一类，都是实际工作中总结出来的东西，很值得学习。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入浅出ES6（二）：迭代器和for-of循环">
 <meta property="og:url" content="https://qianlongo.github.io/2017/04/24/深入浅出ES6（二）：迭代器和for-of循环/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="前言
+<meta property="og:description" content="前言原文线上地址
+
 最近经常去听门户的小伙伴的分享，非常的实用，内容属干货一类，都是实际工作中总结出来的东西，很值得学习。">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/timg.jpeg">
-<meta property="og:updated_time" content="2017-04-25T16:51:42.000Z">
+<meta property="og:updated_time" content="2017-04-25T17:08:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出ES6（二）：迭代器和for-of循环">
-<meta name="twitter:description" content="前言
+<meta name="twitter:description" content="前言原文线上地址
+
 最近经常去听门户的小伙伴的分享，非常的实用，内容属干货一类，都是实际工作中总结出来的东西，很值得学习。">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/timg.jpeg">
 
@@ -343,10 +346,36 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="http://www.infoq.com/cn/es6-in-depth/" target="_blank" rel="external">原文线上地址</a></p>
+<blockquote>
 <p>最近经常去听门户的小伙伴的分享，非常的实用，内容属干货一类，都是实际工作中总结出来的东西，很值得学习。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/timg.jpeg" alt="es6"></p>
+<a id="more"></a>
+<h2 id="从迭代和循环说起"><a href="#从迭代和循环说起" class="headerlink" title="从迭代和循环说起"></a>从迭代和循环说起</h2><blockquote>
+<p>很久很久以前，我们经常用如下的代码来访问数组中的元素</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">0</span>; index &lt; myArray.length; index++) &#123;</div><div class="line">  <span class="built_in">console</span>.log(myArray[index]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>有一天es5、es6来临后，我们可以这样</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">myArray.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(value);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>有木有觉得这种写法简洁了许多，爽了许多，再也不用写该死的循环了</p>
+<p><strong>但是你不能使用break语句中断循环，也不能使用return语句返回到外层函数。</strong></p>
+<p><strong>但是你不能使用break语句中断循环，也不能使用return语句返回到外层函数。</strong></p>
+<p><strong>但是你不能使用break语句中断循环，也不能使用return语句返回到外层函数。</strong></p>
+<p>重要的话说三遍</p>
+<h2 id="不要用for-in去遍历数组"><a href="#不要用for-in去遍历数组" class="headerlink" title="不要用for in去遍历数组"></a>不要用<code>for in</code>去遍历数组</h2><ol>
+<li><p>在这段代码中，赋给index的值不是实际的数字，而是字符串“0”、“1”、“2”，此时很可能在无意之间进行字符串算数计算，例如：“2” + 1 == “21”，这给编码过程带来极大的不便。</p>
+</li>
+<li><p>作用于数组的for-in循环体除了遍历数组元素外，还会遍历自定义属性。举个例子，如果你的数组中有一个可枚举属性myArray.name，循环将额外执行一次，遍历到名为“name”的索引。就连数组原型链上的属性都能被访问到。</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line">	 arr.sex = <span class="string">'boy'</span></div><div class="line">	 </div><div class="line">	 <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> arr) &#123;</div><div class="line">	   <span class="built_in">console</span>.log(arr[key]) <span class="comment">// 1, 2, 3, 4, boy</span></div><div class="line">	 &#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>最让人震惊的是，在某些情况下，这段代码可能按照随机顺序遍历数组元素。</li>
+<li>简而言之，for-in是为普通对象设计的，你可以遍历得到字符串类型的键，因此不适用于数组遍历。</li>
+</ol>
 
       
     </div>
@@ -545,7 +574,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从迭代和循环说起"><span class="nav-number">2.</span> <span class="nav-text">从迭代和循环说起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不要用for-in去遍历数组"><span class="nav-number">3.</span> <span class="nav-text">不要用for in去遍历数组</span></a></li></ol></div>
             
           </div>
         </section>
