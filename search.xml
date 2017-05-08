@@ -4,6 +4,65 @@
   
     
     <entry>
+      <title><![CDATA[(void 0)与undefined之间的小九九]]></title>
+      <url>https://qianlongo.github.io/2017/05/08/%E4%B8%8Eundefined%E4%B9%8B%E9%97%B4%E7%9A%84%E5%B0%8F%E4%B9%9D%E4%B9%9D/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>这是underscore.js源码分析的第一篇文章，为什么选择写这篇文章呢？其实主要有两点 </p>
+</blockquote>
+<ol>
+<li>下划线源码中通篇可见这样的判断<code>obj === void 0</code>,初次看这样的写法完全不知道什么意思，所以想整明白它。</li>
+<li>决定写一个系列把下划线分析完整，希望由浅入深，柿子捡软的捏，先从简单的开始入手(😀)</li>
+</ol>
+<p>写完这篇文章希望达到什么样的效果呢？</p>
+<ol>
+<li><p><strong>说明白为什么用(void 0)代替undefined</strong></p>
+</li>
+<li><p><strong>(void 0)的一些简单应用</strong></p>
+</li>
+</ol>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/aa36597c9b81cb72.jpg" alt="http://odssgnnpf.bkt.clouddn.com/aa36597c9b81cb72.jpg"></p>
+<h2 id="void-0是个啥"><a href="#void-0是个啥" class="headerlink" title="void 0是个啥"></a>void 0是个啥</h2><blockquote>
+<p>void 0是个啥，为毛它可以直接代替undefined关键字来做判断呢？我们可以看下<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank" rel="external">mdn</a>上的解释</p>
+</blockquote>
+<p>The void operator evaluates the given expression and then returns undefined.</p>
+<p><code>void 运算符 对给定的表达式进行求值，然后返回 undefined</code></p>
+<p>啥？去执行了一段表达式，最后却得到undefined，那要是表达式执行的结果是2、3、8、毛主席万岁，也是返回undefined吗？答案是：对的。他就是这么个东西，不管你表达式里写的是个啥，我最后就是给你个undefined。</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/timg2.jpeg" alt="黑人问号"></p>
+<h2 id="undefined又是啥"><a href="#undefined又是啥" class="headerlink" title="undefined又是啥"></a>undefined又是啥</h2><blockquote>
+<p>undefined是js原始类型值之一，也是全局对象window的属性，在部分低级别的浏览器中可以被修改，在局部作用域中也可以被修改。</p>
+</blockquote>
+<p><strong>首先我们来看这一段断码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="literal">undefined</span> = <span class="string">'qianlongo'</span></div><div class="line">alert(<span class="literal">undefined</span>)</div></pre></td></tr></table></figure>
+<p>最后console出来的是啥呢？<code>undefined</code> : <code>qianlongo</code>,<br>没图你说个js，接下来截取部分浏览器运行后的截图</p>
+<p>ie7<br>ie8<br>ie9<br>ie10<br>chrome</p>
+<p>你看ie老版本中就是那么任性，在全局作用域中可以直接改写undefined，也就是说当你想知道一个变量是不是等于undefined的时候直接这样判断已经不安全了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (obj === <span class="literal">undefined</span>) &#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>接下来我们再看一段js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> testUndefined = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> obj = &#123;&#125;</div><div class="line">  <span class="keyword">var</span> <span class="literal">undefined</span> = <span class="string">'underscore'</span></div><div class="line">  <span class="keyword">var</span> <span class="built_in">window</span> = &#123;</div><div class="line">    <span class="string">'undefined'</span>: <span class="string">'qianlongo'</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">window</span>) <span class="comment">// &#123;'undefined': 'qianlongo'&#125;</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="literal">undefined</span>) <span class="comment">// underscore</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">window</span>.undefined) <span class="comment">// qianlongo</span></div><div class="line">  <span class="built_in">console</span>.log(obj.name === <span class="literal">undefined</span>) <span class="comment">// false</span></div><div class="line">  <span class="built_in">console</span>.log(obj.name === <span class="built_in">window</span>.undefined) <span class="comment">// false</span></div><div class="line">  <span class="built_in">console</span>.log(obj.name === (<span class="keyword">void</span> <span class="number">0</span>)) <span class="comment">// true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">testUndefined()</div></pre></td></tr></table></figure>
+<p><strong>可以得出，window，undefined本身在局部作用域中是可以被重写掉的</strong>，同样的道理，如果你在局部作用域中同样用以下代码来判断obj是不是undefined，是有风险的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if (obj === undefined) &#123;</div><div class="line">  // xxx</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="为啥要用void-0来代替undefined"><a href="#为啥要用void-0来代替undefined" class="headerlink" title="为啥要用void 0来代替undefined"></a>为啥要用void 0来代替undefined</h2><blockquote>
+<p>为啥要用void 0来代替undefined，基于以上介绍，原因就在这里了，void 0无论何时何地，后面跟了什么，结果都得到undefined，这正好是我们需要的。所以将上面的判断改写一下</p>
+</blockquote>
+<p>当然了还要另一个原因void 0 比undefined短</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if (obj === void 0) &#123;</div><div class="line">  // xxx</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="void-0的一些其他应用"><a href="#void-0的一些其他应用" class="headerlink" title="void 0的一些其他应用"></a>void 0的一些其他应用</h2><ol>
+<li>填充a标签的href</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div style="height: 10000px;"&gt;&lt;/div&gt;</div><div class="line">&lt;a href="#"&gt;xxxx&lt;/a&gt;</div><div class="line">&lt;script&gt;</div><div class="line">  console.log('xxxx')</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>上面这段代码使用一个#号来填充a标签的href属性，这其实是有一些弊端的，比如用户点击的时候，页面会回到顶部(<strong>网上有人说会刷新页面，但是自己试了好像不会</strong>)，试想我好不容易滚啊滚啊滚到xxxx这几个文字的地方，一不留神手贱点了一下，瞬间页面又回到顶部了，是不是要哭死😭。</p>
+<p>所以常见的解决方法是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div style="height: 10000px;"&gt;&lt;/div&gt;</div><div class="line">&lt;a href="javascript:void(0)"&gt;xxxx&lt;/a&gt;</div><div class="line">&lt;script&gt;</div><div class="line">  console.log('xxxx')</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li><a href="http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src" target="_blank" rel="external">What’s the valid way to include an image with no src?</a>,在这个问题中提到用void 0去替代image标签的空src属性会减少页面请求(是否属实有待考证)</li>
+</ol>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>第一篇暂时写完了，欢迎大家吐槽和提意见。</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[用原生js写一个多动症的简历]]></title>
       <url>https://qianlongo.github.io/2017/05/03/%E7%94%A8%E5%8E%9F%E7%94%9Fjs%E5%86%99%E4%B8%80%E4%B8%AA%E5%A4%9A%E5%8A%A8%E7%97%87%E7%9A%84%E7%AE%80%E5%8E%86/</url>
       <content type="html"><![CDATA[<h2 id="用原生js写一个”多动症”的简历"><a href="#用原生js写一个”多动症”的简历" class="headerlink" title="用原生js写一个”多动症”的简历"></a>用原生js写一个”多动症”的简历</h2><p><a href="https://qianlongo.github.io/resume-native/dist/">预览地址</a><br><a href="https://github.com/qianlongo/resume-native" target="_blank" rel="external">源码地址</a></p>
