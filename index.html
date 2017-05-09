@@ -343,83 +343,17 @@
 
       
         
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/underscore-analysis/issues/5">原文链接</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis">源码地址</a></p>
+<blockquote>
 <p>今天想写一篇关于下划线这个库中一些小工具函数的故事，我们都听过一句话，一个成功的男人背后一定有一个了不起的女人(😀，其实也不一定，也许还有男人呢)，那么一个经久不衰，为程序猿们所称道的库，框架的背后自然也有不少看起来不起眼，甚至你都懒得正眼瞧他的”小工具”存在。正是这些背后的无名英雄为类库和框架的形成，贡献了不可磨灭的力量。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/tool.jpeg" alt="工具图片"></p>
-<p><strong>第一篇文章说了undefined，那我们也从undefined开始。</strong></p>
-<h2 id="isUndefined-obj"><a href="#isUndefined-obj" class="headerlink" title="_.isUndefined(obj)"></a>_.isUndefined(obj)</h2><blockquote>
-<p>判断obj等于undefined与否，是就返回true，反之false。</p>
-</blockquote>
-<p><strong>示例</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="literal">null</span></div><div class="line"><span class="keyword">let</span> b = <span class="built_in">window</span>.b</div><div class="line"><span class="keyword">let</span> c = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</div><div class="line"><span class="keyword">let</span> d = <span class="literal">undefined</span></div><div class="line"><span class="keyword">let</span> e = <span class="keyword">void</span> <span class="number">0</span></div><div class="line"><span class="keyword">let</span> f = <span class="string">'qianlongo'</span></div><div class="line"><span class="keyword">let</span> g</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(a)) <span class="comment">// false</span></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(b)) <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(c())) <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(d)) <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(e)) <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(f)) <span class="comment">// false</span></div><div class="line"><span class="built_in">console</span>.log(_.isUndefined(g)) <span class="comment">// true</span></div></pre></td></tr></table></figure>
-<p><strong>对于一个对象上不存在的属性</strong></p>
-<p><strong>对于一个没有返回值的函数</strong></p>
-<p><strong>对于声明和却没有赋值的标量</strong></p>
-<p><strong>对于直接赋值为undefined(非ie8以下)或者void 0</strong></p>
-<p>_.isUndefined都会返回true，其他情况全都是返回false</p>
-<p>需要特别注意的是，有时候我们会这样判断一个变量是都存在，<code>a = null</code><br><code>a = undefined</code>都可以通难过判断。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (a == <span class="literal">null</span>) &#123; </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>但是_.isUndefined用的是三等强制判断，所以null是通过不了的</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_.isUndefined = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj === <span class="keyword">void</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="isNull-obj"><a href="#isNull-obj" class="headerlink" title="_.isNull(obj)"></a>_.isNull(obj)</h2><blockquote>
-<p>判断obj等于null与否，是就返回true，反之false。</p>
-</blockquote>
-<p>这个没啥说的，只有obj输入<code>null</code>,结果输出才为true，因为内部判断也是用的三等判断，不仅值要相等，类型也要相同。</p>
-<h2 id="noConflict"><a href="#noConflict" class="headerlink" title="_.noConflict()"></a>_.noConflict()</h2><blockquote>
-<p>防止全局变量冲突的一种常见解决方案，将<em>的使用权交换给上一个占用</em>坑位的人。</p>
-</blockquote>
-<p><strong>示例</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;script src=<span class="string">"lodash.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line">&lt;script src=<span class="string">"underscore.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(_)</div></pre></td></tr></table></figure>
-<p>遇见重名的事不新鲜对吧，全国有多少个小明啊，我们从小到大课本里到处都是小明和小红。</p>
-<p>这里后面引入的underscore.js把lodash.js给覆盖了，因为两个库都想占用全局的_,结果后来者居上。</p>
-<p>如果不想lodash被覆盖怎么办，总的有个先来后到啊。只需要调用noConflict方法便将占着的<em>坑位重新归还给了lodash，而之后我们用my</em>即可访问所有underscore.js的方法。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> my_ = _.noConflict()</div></pre></td></tr></table></figure>
-<p><strong>接下来我们看下源码怎么实现的</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> previousUnderscore = _ <span class="comment">// 在源码的顶部，保存了前一个占着_坑位的人</span></div><div class="line"> _.noConflict = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    root._ = previousUnderscore; <span class="comment">// 将_重新赋值给前一个占着_坑位的人</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>; <span class="comment">// 并将_返回以供后续使用</span></div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
-<h2 id="identity-value"><a href="#identity-value" class="headerlink" title="_.identity(value)"></a>_.identity(value)</h2><blockquote>
-<p>返回与传入的参数value一样的值</p>
-</blockquote>
-<p><strong>这个函数看起来没有什么软用，但是在后面能够起非常大的作用，也正体现了，工具虽小，能量却大</strong></p>
-<p>我们先来简单地看下它的应用，在后续的源码分析中遇到再仔细讲解。</p>
-<ol>
-<li>过滤一个数组中为”真”的值</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="literal">null</span>, <span class="string">'false'</span>, <span class="number">0</span>, <span class="string">'c'</span>, <span class="string">''</span>, <span class="literal">false</span>, &#123;&#125;]</div><div class="line"><span class="keyword">let</span> arr2 = arr.filter(_.identity) <span class="comment">// ["a", "b", "false", "c", &#123;&#125;]</span></div></pre></td></tr></table></figure>
-<ol>
-<li>复制数组</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="literal">null</span>, <span class="string">'false'</span>, <span class="number">0</span>, <span class="string">'c'</span>, <span class="string">''</span>, <span class="literal">false</span>, &#123;&#125;]</div><div class="line"><span class="keyword">let</span> arr2 = arr.map(_.identity) <span class="comment">// ["a", "b", null, "false", 0, "c", "", false, &#123;&#125;]</span></div></pre></td></tr></table></figure>
-<h2 id="constant-value"><a href="#constant-value" class="headerlink" title="_.constant(value)"></a>_.constant(value)</h2><blockquote>
-<p>返回一个函数fn，fn执行之后再返回当初传进来的value</p>
-</blockquote>
-<p>我们来看一段github上关于下划线的一个<a href="https://github.com/jashkenas/underscore/issues/402" target="_blank" rel="external">issue</a>，挺有意思的。也许我们比较难列举出这个函数的应用，但是至少下面这个例子是比较好的。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> age = <span class="number">18</span></div><div class="line"><span class="keyword">let</span> cacheAge = _.constant(age)</div><div class="line"></div><div class="line">age += <span class="number">10</span></div><div class="line"><span class="built_in">console</span>.log(cacheAge()) <span class="comment">// 18</span></div></pre></td></tr></table></figure>
-<p>为什么可以缓存住18，我们看下源码大概就知道了，源码创建了常见的闭包，闭包常见的作用之一就是让外面通过函数调用的形式去访问内部的变量，以及在一定的生命周期内，缓存住变量。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">_.constant = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">     <span class="keyword">return</span> value;</div><div class="line">   &#125;;</div><div class="line"> &#125;;</div></pre></td></tr></table></figure>
-<h2 id="noop"><a href="#noop" class="headerlink" title="_.noop()"></a>_.noop()</h2><blockquote>
-<p>一个空函数，啥也不干，调用了就返回undefined给你，可以作为默认的回调参数</p>
-</blockquote>
-<p>又是一个看起来啥用都没有的函数，然而事实真的是这样吗？请移步以下几个链接</p>
-<ol>
-<li><a href="http://stackoverflow.com/questions/21572738/what-is-the-use-of-jquery-noop-function" target="_blank" rel="external">What is the use of jQuery.noop() function?</a></li>
-<li><a href="http://stackoverflow.com/questions/21634886/what-is-the-javascript-convention-for-no-operation" target="_blank" rel="external">What is the JavaScript convention for no operation?</a></li>
-</ol>
-<p>例子不用多，总结一下</p>
-<p><strong>1. 给一个变量赋值为一个空函数，在后续的调用中你不需要去检测他是不是undefined</strong></p>
-<p><strong>2. 为什么不给需要的变量重新设置一个空函数？ _.noop已经创建了一个函数空间，让其他变量也指向这个函数，可以减少js中不必要的花销</strong></p>
-<h2 id="times-n-iteratee-context"><a href="#times-n-iteratee-context" class="headerlink" title="_.times(n, iteratee, context)"></a>_.times(n, iteratee, context)</h2><blockquote>
-<p>调用给定的iteratee迭代函数n次，iteratee每次都接收一个索引值index，最后返回一个数组，数组中存着这几次iteratee的回调结果</p>
-</blockquote>
-<p><strong>示例</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> count = <span class="number">0</span></div><div class="line"><span class="keyword">let</span> result = _.times(<span class="number">6</span>, (i) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(++count)</div><div class="line">  <span class="keyword">return</span> <span class="string">`hello:<span class="subst">$&#123;i&#125;</span>`</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(result) <span class="comment">// ["hello:0", "hello:1", "hello:2", "hello:3", "hello:4", "hello:5"]</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(count) <span class="comment">// 6</span></div></pre></td></tr></table></figure>
-<p>可以看到传进去的函数执行执行了6次，并将对应的每次执行的结果存在了数组中返回。</p>
-<p><strong>悄悄地说一个这个函数的应用</strong></p>
-<p>有时候写代码我们会要初始化一段配置，如果初始化过了，会打上一个初始化过了的标志，当然开头还会去判断一下是否已经初始化过。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> app = &#123;</div><div class="line">  init () &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.initialized) &#123;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">this</span>.name = <span class="string">'qianlongo'</span></div><div class="line">    <span class="keyword">this</span>.sex = <span class="string">'boy'</span></div><div class="line">    <span class="keyword">this</span>.initialized = <span class="literal">true</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/09/那些不起眼的小工具？/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
