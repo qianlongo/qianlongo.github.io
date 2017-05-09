@@ -99,7 +99,7 @@
 
 第一篇文章说了undefined，那我们也从undefine">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/tool.jpeg">
-<meta property="og:updated_time" content="2017-05-09T15:33:15.000Z">
+<meta property="og:updated_time" content="2017-05-09T15:43:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些不起眼的小工具？">
 <meta name="twitter:description" content="前言
@@ -385,7 +385,20 @@
 <p>如果不想lodash被覆盖怎么办，总的有个先来后到啊。只需要调用noConflict方法便将占着的<em>坑位重新归还给了lodash，而之后我们用my</em>即可访问所有underscore.js的方法。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> my_ = _.noConflict()</div></pre></td></tr></table></figure>
 <p><strong>接下来我们看下源码怎么实现的</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var previousUnderscore = _ // 在源码的顶部，保存了前一个占着_坑位的人</div><div class="line"> _.noConflict = function() &#123;</div><div class="line">    root._ = previousUnderscore; // 将_重新赋值给前一个占着_坑位的人</div><div class="line">    return this; // 并将_返回以供后续使用</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> previousUnderscore = _ <span class="comment">// 在源码的顶部，保存了前一个占着_坑位的人</span></div><div class="line"> _.noConflict = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    root._ = previousUnderscore; <span class="comment">// 将_重新赋值给前一个占着_坑位的人</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>; <span class="comment">// 并将_返回以供后续使用</span></div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<h2 id="identity-value"><a href="#identity-value" class="headerlink" title="_.identity(value)"></a>_.identity(value)</h2><blockquote>
+<p>返回与传入的参数value一样的值</p>
+</blockquote>
+<p><strong>这个函数看起来没有什么软用，但是在后面能够起非常大的作用，也正体现了，工具虽小，能量却大</strong></p>
+<p>我们先来简单地看下它的应用，在后续的源码分析中遇到再仔细讲解。</p>
+<ol>
+<li>过滤一个数组中为”真”的值</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="literal">null</span>, <span class="string">'false'</span>, <span class="number">0</span>, <span class="string">'c'</span>, <span class="string">''</span>, <span class="literal">false</span>, &#123;&#125;]</div><div class="line"><span class="keyword">let</span> arr2 = arr.filter(_.identity) <span class="comment">// ["a", "b", "false", "c", &#123;&#125;]</span></div></pre></td></tr></table></figure>
+<ol>
+<li>复制数组</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="literal">null</span>, <span class="string">'false'</span>, <span class="number">0</span>, <span class="string">'c'</span>, <span class="string">''</span>, <span class="literal">false</span>, &#123;&#125;]</div><div class="line"><span class="keyword">let</span> arr2 = arr.map(_.identity) <span class="comment">// ["a", "b", null, "false", 0, "c", "", false, &#123;&#125;]</span></div></pre></td></tr></table></figure>
 <p>## </p>
 
       
@@ -583,7 +596,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isUndefined-obj"><span class="nav-number">2.</span> <span class="nav-text">_.isUndefined(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isNull-obj"><span class="nav-number">3.</span> <span class="nav-text">_.isNull(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#noConflict"><span class="nav-number">4.</span> <span class="nav-text">_.noConflict()</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isUndefined-obj"><span class="nav-number">2.</span> <span class="nav-text">_.isUndefined(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isNull-obj"><span class="nav-number">3.</span> <span class="nav-text">_.isNull(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#noConflict"><span class="nav-number">4.</span> <span class="nav-text">_.noConflict()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#identity-value"><span class="nav-number">5.</span> <span class="nav-text">_.identity(value)</span></a></li></ol></div>
             
           </div>
         </section>
