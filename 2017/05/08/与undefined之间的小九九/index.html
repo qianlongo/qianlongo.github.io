@@ -84,7 +84,9 @@
 
 
 
-<meta name="description" content="前言
+<meta name="description" content="前言原文链接
+源码地址
+
 这是underscore.js源码分析的第一篇文章，为什么选择写这篇文章呢？其实主要有两点 
 
 
@@ -93,12 +95,14 @@
 
 写完这篇文章希望达到什么样的效果呢？
 
-说明白为什么用(void 0)代替undefined">
+说明白为什么用(void 0)代">
 <meta property="og:type" content="article">
 <meta property="og:title" content="(void 0)与undefined之间的小九九">
 <meta property="og:url" content="https://qianlongo.github.io/2017/05/08/与undefined之间的小九九/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="前言
+<meta property="og:description" content="前言原文链接
+源码地址
+
 这是underscore.js源码分析的第一篇文章，为什么选择写这篇文章呢？其实主要有两点 
 
 
@@ -107,13 +111,18 @@
 
 写完这篇文章希望达到什么样的效果呢？
 
-说明白为什么用(void 0)代替undefined">
+说明白为什么用(void 0)代">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/aa36597c9b81cb72.jpg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/timg2.jpeg">
-<meta property="og:updated_time" content="2017-05-08T16:32:04.000Z">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170509-130124.png">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170509-130142.png">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170509-130504.png">
+<meta property="og:updated_time" content="2017-05-09T05:44:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(void 0)与undefined之间的小九九">
-<meta name="twitter:description" content="前言
+<meta name="twitter:description" content="前言原文链接
+源码地址
+
 这是underscore.js源码分析的第一篇文章，为什么选择写这篇文章呢？其实主要有两点 
 
 
@@ -122,7 +131,7 @@
 
 写完这篇文章希望达到什么样的效果呢？
 
-说明白为什么用(void 0)代替undefined">
+说明白为什么用(void 0)代">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/aa36597c9b81cb72.jpg">
 
 
@@ -368,7 +377,9 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/underscore-analysis/issues/4" target="_blank" rel="external">原文链接</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis" target="_blank" rel="external">源码地址</a></p>
+<blockquote>
 <p>这是underscore.js源码分析的第一篇文章，为什么选择写这篇文章呢？其实主要有两点 </p>
 </blockquote>
 <ol>
@@ -383,6 +394,7 @@
 </li>
 </ol>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/aa36597c9b81cb72.jpg" alt="http://odssgnnpf.bkt.clouddn.com/aa36597c9b81cb72.jpg"></p>
+<a id="more"></a>
 <h2 id="void-0是个啥"><a href="#void-0是个啥" class="headerlink" title="void 0是个啥"></a>void 0是个啥</h2><blockquote>
 <p>void 0是个啥，为毛它可以直接代替undefined关键字来做判断呢？我们可以看下<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank" rel="external">mdn</a>上的解释</p>
 </blockquote>
@@ -396,7 +408,20 @@
 <p><strong>首先我们来看这一段断码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="literal">undefined</span> = <span class="string">'qianlongo'</span></div><div class="line">alert(<span class="literal">undefined</span>)</div></pre></td></tr></table></figure>
 <p>最后console出来的是啥呢？<code>undefined</code> : <code>qianlongo</code>,<br>没图你说个js，接下来截取部分浏览器运行后的截图</p>
-<p>ie7<br>ie8<br>ie9<br>ie10<br>chrome</p>
+<p><strong>ie7</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170509-130124.png" alt="ie7"></p>
+<p><strong>ie8</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170509-130142.png" alt="ie8"></p>
+<p><strong>ie9</strong></p>
+<p>测试结果为undefined</p>
+<p><strong>ie10</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170509-130504.png" alt="ie10"></p>
+<p><strong>chrome</strong></p>
+<p>在最新的版本58.0.3029.81测试结果为undefined</p>
+<p><strong>firefox</strong></p>
+<p>在最新的版本52.0.2测试结果为undefined</p>
+<p><strong>欧朋浏览器</strong></p>
+<p>在最新的版本39.0.2256.48测试结果为undefined</p>
 <p>你看ie老版本中就是那么任性，在全局作用域中可以直接改写undefined，也就是说当你想知道一个变量是不是等于undefined的时候直接这样判断已经不安全了。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (obj === <span class="literal">undefined</span>) &#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>接下来我们再看一段js</strong></p>
@@ -421,6 +446,10 @@
 <h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
 <p>第一篇暂时写完了，欢迎大家吐槽和提意见。</p>
 </blockquote>
+<p>参考文章链接：</p>
+<p><a href="http://stackoverflow.com/questions/7452341/what-does-void-0-mean" target="_blank" rel="external">What does “javascript:void(0)” mean?</a></p>
+<p><a href="http://stackoverflow.com/questions/4806286/difference-between-void-0-and-undefined" target="_blank" rel="external">difference between “void 0 ” and “undefined”</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank" rel="external">void operator</a></p>
 
       
     </div>
