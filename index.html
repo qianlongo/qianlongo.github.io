@@ -284,6 +284,134 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/09/那些不起眼的小工具？/" itemprop="url">
+                  那些不起眼的小工具？
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-09T22:14:12+08:00" content="2017-05-09">
+              2017-05-09
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/09/那些不起眼的小工具？/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/09/那些不起眼的小工具？/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/09/那些不起眼的小工具？/" class="leancloud_visitors" data-flag-title="那些不起眼的小工具？">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>今天想写一篇关于下划线这个库中一些小工具函数的故事，我们都听过一句话，一个成功的男人背后一定有一个了不起的女人(😀，其实也不一定，也许还有男人呢)，那么一个经久不衰，为程序猿们所称道的库，框架的背后自然也有不少看起来不起眼，甚至你都懒得正眼瞧他的”小工具”存在。正是这些背后的无名英雄为类库和框架的形成，贡献了不可磨灭的力量。</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/tool.jpeg" alt="工具图片"></p>
+<p><strong>第一篇文章说了undefined，那我们也从undefined开始。</strong></p>
+<h2 id="isUndefined-obj"><a href="#isUndefined-obj" class="headerlink" title="_.isUndefined(obj)"></a>_.isUndefined(obj)</h2><blockquote>
+<p>判断obj等于undefined与否，是就返回true，反之false。</p>
+</blockquote>
+<p><strong>示例</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">let a = null</div><div class="line">let b = window.b</div><div class="line">let c = () =&gt; &#123;&#125;</div><div class="line">let d = undefined</div><div class="line">let e = void 0</div><div class="line">let f = &apos;qianlongo&apos;</div><div class="line">let g</div><div class="line"></div><div class="line">console.log(_.isUndefined(a)) // false</div><div class="line">console.log(_.isUndefined(b)) // true</div><div class="line">console.log(_.isUndefined(c())) // true</div><div class="line">console.log(_.isUndefined(d)) // true</div><div class="line">console.log(_.isUndefined(e)) // true</div><div class="line">console.log(_.isUndefined(f)) // false</div><div class="line">console.log(_.isUndefined(g)) // true</div></pre></td></tr></table></figure>
+<p><strong>对于一个对象上不存在的属性</strong></p>
+<p><strong>对于一个没有返回值的函数</strong></p>
+<p><strong>对于声明和却没有赋值的标量</strong></p>
+<p><strong>对于直接赋值为undefined(非ie8以下)或者void 0</strong></p>
+<p>_.isUndefined都会返回true，其他情况全都是返回false</p>
+<p>需要特别注意的是，有时候我们会这样判断一个变量是都存在，<code>a = null</code><br><code>a = undefined</code>都可以通难过判断。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if (a == null) &#123; </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是_.isUndefined用的是三等强制判断，所以null是通过不了的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_.isUndefined = function(obj) &#123;</div><div class="line">  return obj === void 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/08/与undefined之间的小九九/" itemprop="url">
                   (void 0)与undefined之间的小九九
                 </a>
@@ -738,121 +866,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/31/this-想说爱你不容易/" itemprop="url">
-                  this-想说爱你不容易
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-31T22:05:25+08:00" content="2016-12-31">
-              2016-12-31
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/12/31/this-想说爱你不容易/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/31/this-想说爱你不容易/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/31/this-想说爱你不容易/" class="leancloud_visitors" data-flag-title="this-想说爱你不容易">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>javascript中的this是啥东西？为啥我们经常被他搞得晕头转向不知所以？他是恶魔？是天使 ？是怪胎？让我们一起来揭开它那神秘的面纱。</p>
-</blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD111.jpeg" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/31/this-想说爱你不容易/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -898,7 +911,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
