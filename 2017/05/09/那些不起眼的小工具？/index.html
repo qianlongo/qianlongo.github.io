@@ -99,7 +99,7 @@
 
 第一篇文章说了undefined，那我们也从undefine">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/tool.jpeg">
-<meta property="og:updated_time" content="2017-05-09T15:15:30.000Z">
+<meta property="og:updated_time" content="2017-05-09T15:33:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些不起眼的小工具？">
 <meta name="twitter:description" content="前言
@@ -375,6 +375,18 @@
 <p>判断obj等于null与否，是就返回true，反之false。</p>
 </blockquote>
 <p>这个没啥说的，只有obj输入<code>null</code>,结果输出才为true，因为内部判断也是用的三等判断，不仅值要相等，类型也要相同。</p>
+<h2 id="noConflict"><a href="#noConflict" class="headerlink" title="_.noConflict()"></a>_.noConflict()</h2><blockquote>
+<p>防止全局变量冲突的一种常见解决方案，将<em>的使用权交换给上一个占用</em>坑位的人。</p>
+</blockquote>
+<p><strong>示例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;script src=<span class="string">"lodash.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line">&lt;script src=<span class="string">"underscore.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(_)</div></pre></td></tr></table></figure>
+<p>遇见重名的事不新鲜对吧，全国有多少个小明啊，我们从小到大课本里到处都是小明和小红。</p>
+<p>这里后面引入的underscore.js把lodash.js给覆盖了，因为两个库都想占用全局的_,结果后来者居上。</p>
+<p>如果不想lodash被覆盖怎么办，总的有个先来后到啊。只需要调用noConflict方法便将占着的<em>坑位重新归还给了lodash，而之后我们用my</em>即可访问所有underscore.js的方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> my_ = _.noConflict()</div></pre></td></tr></table></figure>
+<p><strong>接下来我们看下源码怎么实现的</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var previousUnderscore = _ // 在源码的顶部，保存了前一个占着_坑位的人</div><div class="line"> _.noConflict = function() &#123;</div><div class="line">    root._ = previousUnderscore; // 将_重新赋值给前一个占着_坑位的人</div><div class="line">    return this; // 并将_返回以供后续使用</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<p>## </p>
 
       
     </div>
@@ -571,7 +583,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isUndefined-obj"><span class="nav-number">2.</span> <span class="nav-text">_.isUndefined(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isNull-obj"><span class="nav-number">3.</span> <span class="nav-text">_.isNull(obj)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isUndefined-obj"><span class="nav-number">2.</span> <span class="nav-text">_.isUndefined(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isNull-obj"><span class="nav-number">3.</span> <span class="nav-text">_.isNull(obj)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#noConflict"><span class="nav-number">4.</span> <span class="nav-text">_.noConflict()</span></a></li></ol></div>
             
           </div>
         </section>
