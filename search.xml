@@ -4,6 +4,40 @@
   
     
     <entry>
+      <title><![CDATA[教你认清这8大杀手锏]]></title>
+      <url>https://qianlongo.github.io/2017/05/10/%E6%95%99%E4%BD%A0%E8%AE%A4%E6%B8%85%E8%BF%998%E5%A4%A7%E6%9D%80%E6%89%8B%E9%94%8F/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>哎！！！😔看了很多篇技术文章，却依然写不好前端。</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/145902-7a9b95469a275d2c.jpeg" alt=""></p>
+<p>从步入程序猿这个大坑开始到现在，已经看过数不清的技术文章和书籍，有的是零散的知识，有的是系列权威的教程，但为毛还写不好挚爱的前端，听说过一句话，<strong>这个世界又不是只有你一个人深爱而不得</strong>。但纵使如此，我也要技术这条路上一路走到黑。直到天涯迷了路，海角翻了船。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><blockquote>
+<p>今天想说几个类似我们平常的工作中经常用到的几个<strong>宝贝</strong>,姑且把他叫做杀手锏好了，因为实在是特别好用呀，他们分别是…</p>
+</blockquote>
+<ol>
+<li>each</li>
+<li>map</li>
+<li>reduce</li>
+<li>reduceRight</li>
+<li>find</li>
+<li>filter</li>
+<li>every</li>
+<li>some</li>
+</ol>
+<p>接下来我们从下划线underscore.js的视角，一步步看他们的内部运行的原理是什么….</p>
+<h2 id="each-list-iteratee-context"><a href="#each-list-iteratee-context" class="headerlink" title="_.each(list, iteratee, [context])"></a>_.each(list, iteratee, [context])</h2><blockquote>
+<p>遍历list中的所有元素，按顺序用遍历输出每个元素，如果传递了context，则将iteratee函数中的this绑定到context上。</p>
+</blockquote>
+<p><strong>先来看一下怎么使用</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> arr = [<span class="string">'name'</span>, <span class="string">'sex'</span>]</div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 不传入context</span></div><div class="line"><span class="comment">// 遍历数组</span></div><div class="line">_.each(arr, <span class="built_in">console</span>.log) </div><div class="line"><span class="comment">// name 0 (2) ["name", "sex"]</span></div><div class="line"><span class="comment">// sex 1 (2) ["name", "sex"]</span></div><div class="line"></div><div class="line"><span class="comment">// 遍历对象</span></div><div class="line">_.each(obj, <span class="built_in">console</span>.log)</div><div class="line"><span class="comment">// qianlongo name &#123;name: "qianlongo", sex: "boy"&#125;</span></div><div class="line"><span class="comment">// boy sex  &#123;name: "qianlongo", sex: "boy"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 传入context</span></div><div class="line">_.each(arr, <span class="function"><span class="keyword">function</span> (<span class="params">val, key, arr</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>[val])</div><div class="line">&#125;, obj)</div><div class="line"><span class="comment">// qianlongo</span></div><div class="line"><span class="comment">// boy</span></div></pre></td></tr></table></figure>
+<p><strong>可以看出下划线的each和原生的数组forEach有些类似也有不同的地方</strong></p>
+<p>原生的forEach只可以遍历数组，而下划线的each还可以遍历对象。接下来你想不想一起看下下划线是怎么实现的。come on！！！</p>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">_.each = _.forEach = <span class="function"><span class="keyword">function</span>(<span class="params">obj, iteratee, context</span>) </span>&#123;</div><div class="line">  <span class="comment">// 优化遍历函数iteratee，将iteratee中的this动态设置为context</span></div><div class="line">  iteratee = optimizeCb(iteratee, context); </div><div class="line">  <span class="keyword">var</span> i, length;</div><div class="line">  <span class="keyword">if</span> (isArrayLike(obj)) &#123; <span class="comment">// 如果是类数组类型的obj</span></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>, length = obj.length; i &lt; length; i++) &#123;</div><div class="line">      <span class="comment">// iteratee接收的三个参数分别是 数组的值，数组的索引，以及数组本身</span></div><div class="line">      iteratee(obj[i], i, obj); </div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// 支持对象类型的数据迭代</span></div><div class="line">    <span class="keyword">var</span> keys = _.keys(obj); <span class="comment">// 拿到obj自身的所有keys</span></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</div><div class="line">      <span class="comment">// iteratee接收的三个参数分别是 obj的属性值，obj的属性，obj本身</span></div><div class="line">      iteratee(obj[keys[i]], keys[i], obj);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> obj; <span class="comment">// 最后将obj返回</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[那些不起眼的小工具？]]></title>
       <url>https://qianlongo.github.io/2017/05/09/%E9%82%A3%E4%BA%9B%E4%B8%8D%E8%B5%B7%E7%9C%BC%E7%9A%84%E5%B0%8F%E5%B7%A5%E5%85%B7%EF%BC%9F/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/underscore-analysis/issues/5" target="_blank" rel="external">原文链接</a></p>

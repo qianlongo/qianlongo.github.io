@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="［工具, vscode］," />
+  <meta name="keywords" content="underscore源码分析系列," />
 
 
 
@@ -85,21 +85,35 @@
 
 
 <meta name="description" content="前言
-工欲善其事，必先利其器。作为程序员的俺们，有一款适合自己的编辑器当然是非常好的一件事啦！！！前端开发经常使用的编辑器有sublime,webstorm,atom等等等。看的我都眼花缭乱了，这些编辑器各自有自己的优点与缺点，怎么选择还得看自己的实际需求。">
+哎！！！😔看了很多篇技术文章，却依然写不好前端。
+
+
+从步入程序猿这个大坑开始到现在，已经看过数不清的技术文章和书籍，有的是零散的知识，有的是系列权威的教程，但为毛还写不好挚爱的前端，听说过一句话，这个世界又不是只有你一个人深爱而不得。但纵使如此，我也要技术这条路上一路走到黑。直到天涯迷了路，海角翻了船。
+开始
+今天想说几个类似我们平常的工作中经常用到的几个宝贝,姑且把他叫做杀手锏好了，因">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vscode使用不完全记录">
-<meta property="og:url" content="https://qianlongo.github.io/2016/11/13/vscode使用不完全指南/index.html">
+<meta property="og:title" content="教你认清这8大杀手锏">
+<meta property="og:url" content="https://qianlongo.github.io/2017/05/10/教你认清这8大杀手锏/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-工欲善其事，必先利其器。作为程序员的俺们，有一款适合自己的编辑器当然是非常好的一件事啦！！！前端开发经常使用的编辑器有sublime,webstorm,atom等等等。看的我都眼花缭乱了，这些编辑器各自有自己的优点与缺点，怎么选择还得看自己的实际需求。">
-<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/source-code-583537_960_720.jpg">
-<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/48280C7F-167E-4C54-A17E-66FF6AB12818.png">
-<meta property="og:updated_time" content="2016-11-13T08:24:51.000Z">
+哎！！！😔看了很多篇技术文章，却依然写不好前端。
+
+
+从步入程序猿这个大坑开始到现在，已经看过数不清的技术文章和书籍，有的是零散的知识，有的是系列权威的教程，但为毛还写不好挚爱的前端，听说过一句话，这个世界又不是只有你一个人深爱而不得。但纵使如此，我也要技术这条路上一路走到黑。直到天涯迷了路，海角翻了船。
+开始
+今天想说几个类似我们平常的工作中经常用到的几个宝贝,姑且把他叫做杀手锏好了，因">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/145902-7a9b95469a275d2c.jpeg">
+<meta property="og:updated_time" content="2017-05-10T14:41:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vscode使用不完全记录">
+<meta name="twitter:title" content="教你认清这8大杀手锏">
 <meta name="twitter:description" content="前言
-工欲善其事，必先利其器。作为程序员的俺们，有一款适合自己的编辑器当然是非常好的一件事啦！！！前端开发经常使用的编辑器有sublime,webstorm,atom等等等。看的我都眼花缭乱了，这些编辑器各自有自己的优点与缺点，怎么选择还得看自己的实际需求。">
-<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/source-code-583537_960_720.jpg">
+哎！！！😔看了很多篇技术文章，却依然写不好前端。
+
+
+从步入程序猿这个大坑开始到现在，已经看过数不清的技术文章和书籍，有的是零散的知识，有的是系列权威的教程，但为毛还写不好挚爱的前端，听说过一句话，这个世界又不是只有你一个人深爱而不得。但纵使如此，我也要技术这条路上一路走到黑。直到天涯迷了路，海角翻了船。
+开始
+今天想说几个类似我们平常的工作中经常用到的几个宝贝,姑且把他叫做杀手锏好了，因">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/145902-7a9b95469a275d2c.jpeg">
 
 
 
@@ -120,9 +134,9 @@
 
 
 
-  <link rel="canonical" href="https://qianlongo.github.io/2016/11/13/vscode使用不完全指南/"/>
+  <link rel="canonical" href="https://qianlongo.github.io/2017/05/10/教你认清这8大杀手锏/"/>
 
-  <title> vscode使用不完全记录 | 谦龙的小天地 </title>
+  <title> 教你认清这8大杀手锏 | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -288,7 +302,7 @@
             
             
               
-                vscode使用不完全记录
+                教你认清这8大杀手锏
               
             
           </h1>
@@ -300,8 +314,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-13T14:28:20+08:00" content="2016-11-13">
-              2016-11-13
+            <time itemprop="dateCreated" datetime="2017-05-10T21:47:14+08:00" content="2017-05-10">
+              2017-05-10
             </time>
           </span>
 
@@ -311,8 +325,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/13/vscode使用不完全指南/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/13/vscode使用不完全指南/" itemprop="commentsCount"></span>
+                <a href="/2017/05/10/教你认清这8大杀手锏/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/10/教你认清这8大杀手锏/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -322,7 +336,7 @@
 
           
           
-             <span id="/2016/11/13/vscode使用不完全指南/" class="leancloud_visitors" data-flag-title="vscode使用不完全记录">
+             <span id="/2017/05/10/教你认清这8大杀手锏/" class="leancloud_visitors" data-flag-title="教你认清这8大杀手锏">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -345,76 +359,33 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>工欲善其事，必先利其器。作为程序员的俺们，有一款适合自己的编辑器当然是非常好的一件事啦！！！前端开发经常使用的编辑器有<code>sublime</code>,<code>webstorm</code>,<code>atom</code>等等等。看的我都眼花缭乱了，这些编辑器各自有自己的优点与缺点，怎么选择还得看自己的实际需求。</p>
+<p>哎！！！😔看了很多篇技术文章，却依然写不好前端。</p>
 </blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/source-code-583537_960_720.jpg" alt="vscode"></p>
-<a id="more"></a>
-<h2 id="软件下载安装，编辑器对比。"><a href="#软件下载安装，编辑器对比。" class="headerlink" title="软件下载安装，编辑器对比。"></a>软件下载安装，编辑器对比。</h2><p><a href="https://code.visualstudio.com/download" target="_blank" rel="external">下载地址</a></p>
-<p><a href="https://www.zhihu.com/question/41857899" target="_blank" rel="external">编辑器对比</a></p>
-<h2 id="颜值-主题"><a href="#颜值-主题" class="headerlink" title="颜值(主题)"></a>颜值(主题)</h2><blockquote>
-<p>写代码的时候有一个好看的主题，就像家里有一个漂亮的女盆友，撸代码的时候自然会有好心情。 😄，所以好看的主题自然不能少.</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/145902-7a9b95469a275d2c.jpeg" alt=""></p>
+<p>从步入程序猿这个大坑开始到现在，已经看过数不清的技术文章和书籍，有的是零散的知识，有的是系列权威的教程，但为毛还写不好挚爱的前端，听说过一句话，<strong>这个世界又不是只有你一个人深爱而不得</strong>。但纵使如此，我也要技术这条路上一路走到黑。直到天涯迷了路，海角翻了船。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><blockquote>
+<p>今天想说几个类似我们平常的工作中经常用到的几个<strong>宝贝</strong>,姑且把他叫做杀手锏好了，因为实在是特别好用呀，他们分别是…</p>
 </blockquote>
 <ol>
-<li>如果你使用过atom，一定很熟悉这种配色. <img src="http://odssgnnpf.bkt.clouddn.com/48280C7F-167E-4C54-A17E-66FF6AB12818.png" alt=""><br>那么你可以使用<code>One Dark Theme</code></li>
+<li>each</li>
+<li>map</li>
+<li>reduce</li>
+<li>reduceRight</li>
+<li>find</li>
+<li>filter</li>
+<li>every</li>
+<li>some</li>
 </ol>
-<p>其它主题可以参看<a href="https://code.visualstudio.com/Docs/customization/themes" target="_blank" rel="external">vscode主题</a></p>
-<h2 id="实用插件"><a href="#实用插件" class="headerlink" title="实用插件"></a>实用插件</h2><blockquote>
-<p>有了好看的主题，接下来该安心coding啦，于是我们需要一些比较实用的插件来帮助我们更好的开发。</p>
+<p>接下来我们从下划线underscore.js的视角，一步步看他们的内部运行的原理是什么….</p>
+<h2 id="each-list-iteratee-context"><a href="#each-list-iteratee-context" class="headerlink" title="_.each(list, iteratee, [context])"></a>_.each(list, iteratee, [context])</h2><blockquote>
+<p>遍历list中的所有元素，按顺序用遍历输出每个元素，如果传递了context，则将iteratee函数中的this绑定到context上。</p>
 </blockquote>
-<ol>
-<li>Path Intellisense (自动补全路径)</li>
-<li>auto rename tag (自动修改html标签)</li>
-<li>beautify(代码格式化插件)</li>
-<li>git history (git 插件)</li>
-<li>eslint (强大的代码检查插件)</li>
-<li>jQuery Code Snippets (jQuery提示插件)</li>
-</ol>
-<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><blockquote>
-<p>明显使用快捷键丢弃鼠标可以让我们的工作更加高效和快速，所以记住一些常用的快捷键是必要的。</p>
-</blockquote>
-<p>单行编辑</p>
-<ol>
-<li>⇧⌘K - 单行操作，删除光标所在行</li>
-<li>⇧⌥↓ - 复制光标所在行到下一行</li>
-<li>⌥↓ - 将光标所在行移至下一行</li>
-</ol>
-<p>多行编辑</p>
-<ol>
-<li>⌥⌘↓ - 向下插入一个光标，或者使用 ⌥ + Click</li>
-<li>⇧⌥ + 鼠标拖动 - 多列区块选择，再配合 ⇧⌘→ 可选中至结尾处</li>
-<li>⇧⌘L - 选择相同文本</li>
-<li>⌘F2 - 选择相同单词，或者使用 ⌘D 依次加入选中</li>
-</ol>
-<p>代码定位</p>
-<ol>
-<li>⇧⌘\ - 跳转至对应匹配括号处</li>
-<li>⇧⌘O - 跳转至对象、属性、方法</li>
-<li>⌃G - 跳转至指定行</li>
-<li>⌘↓ - 跳转至文件结尾</li>
-<li>⇧⌘M - 显示当前文件的错误与警告信息</li>
-<li>F12 - 跳转至定义行</li>
-<li>⌥F12 - 浮窗打开定义行（可直接修改）</li>
-<li>⌥⌘ + Click - 新开侧边窗口跳转至定义行</li>
-<li>⇧⌘G - 选中上一次的查找结果</li>
-</ol>
-<p>代码展示</p>
-<ol>
-<li>⌥Z - 开启/关闭代码自动换行，还可通过 editor.wrappingColumn 配置单行最大字符数</li>
-<li>⇧⌘[ - 代码折叠，⇧⌥⌘[ 为全部折叠</li>
-<li>⇧⌘] - 代码展开，⇧⌥⌘] 为全部展开</li>
-<li>⇧⌥F - 代码格式化</li>
-</ol>
-<p>窗口操作</p>
-<ol>
-<li>⌘1 ⌘2 ⌘3 - 切换至对应的子窗口</li>
-<li>⌃Tab - 切换当前子窗口的标签页</li>
-<li>⌃` - 打开内置 Terminal 窗口</li>
-<li>⌘⇧U - 打开/关闭 Output 窗口，可查看 Extensions/Git/Task 输出</li>
-</ol>
-<h2 id="推荐几篇比较好的文章"><a href="#推荐几篇比较好的文章" class="headerlink" title="推荐几篇比较好的文章"></a>推荐几篇比较好的文章</h2><ol>
-<li><a href="https://segmentfault.com/a/1190000006697219" target="_blank" rel="external"><br>vscode 插件精选 - 献给所有前端工程师</a></li>
-<li></li>
-</ol>
+<p><strong>先来看一下怎么使用</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> arr = [<span class="string">'name'</span>, <span class="string">'sex'</span>]</div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 不传入context</span></div><div class="line"><span class="comment">// 遍历数组</span></div><div class="line">_.each(arr, <span class="built_in">console</span>.log) </div><div class="line"><span class="comment">// name 0 (2) ["name", "sex"]</span></div><div class="line"><span class="comment">// sex 1 (2) ["name", "sex"]</span></div><div class="line"></div><div class="line"><span class="comment">// 遍历对象</span></div><div class="line">_.each(obj, <span class="built_in">console</span>.log)</div><div class="line"><span class="comment">// qianlongo name &#123;name: "qianlongo", sex: "boy"&#125;</span></div><div class="line"><span class="comment">// boy sex  &#123;name: "qianlongo", sex: "boy"&#125;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 传入context</span></div><div class="line">_.each(arr, <span class="function"><span class="keyword">function</span> (<span class="params">val, key, arr</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>[val])</div><div class="line">&#125;, obj)</div><div class="line"><span class="comment">// qianlongo</span></div><div class="line"><span class="comment">// boy</span></div></pre></td></tr></table></figure>
+<p><strong>可以看出下划线的each和原生的数组forEach有些类似也有不同的地方</strong></p>
+<p>原生的forEach只可以遍历数组，而下划线的each还可以遍历对象。接下来你想不想一起看下下划线是怎么实现的。come on！！！</p>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">_.each = _.forEach = <span class="function"><span class="keyword">function</span>(<span class="params">obj, iteratee, context</span>) </span>&#123;</div><div class="line">  <span class="comment">// 优化遍历函数iteratee，将iteratee中的this动态设置为context</span></div><div class="line">  iteratee = optimizeCb(iteratee, context); </div><div class="line">  <span class="keyword">var</span> i, length;</div><div class="line">  <span class="keyword">if</span> (isArrayLike(obj)) &#123; <span class="comment">// 如果是类数组类型的obj</span></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>, length = obj.length; i &lt; length; i++) &#123;</div><div class="line">      <span class="comment">// iteratee接收的三个参数分别是 数组的值，数组的索引，以及数组本身</span></div><div class="line">      iteratee(obj[i], i, obj); </div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> &#123; <span class="comment">// 支持对象类型的数据迭代</span></div><div class="line">    <span class="keyword">var</span> keys = _.keys(obj); <span class="comment">// 拿到obj自身的所有keys</span></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</div><div class="line">      <span class="comment">// iteratee接收的三个参数分别是 obj的属性值，obj的属性，obj本身</span></div><div class="line">      iteratee(obj[keys[i]], keys[i], obj);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> obj; <span class="comment">// 最后将obj返回</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -437,7 +408,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/［工具-vscode］/" rel="tag">#［工具, vscode］</a>
+            <a href="/tags/underscore源码分析系列/" rel="tag">#underscore源码分析系列</a>
           
         </div>
       
@@ -446,17 +417,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/10/22/一起来实现es5中新增的数组方法/" rel="next" title="一起来实现es5中新增的数组方法">
-                <i class="fa fa-chevron-left"></i> 一起来实现es5中新增的数组方法
+              <a href="/2017/05/09/那些不起眼的小工具？/" rel="next" title="那些不起眼的小工具？">
+                <i class="fa fa-chevron-left"></i> 那些不起眼的小工具？
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/20/大学回忆-初入校门的那些囧事/" rel="prev" title="大学回忆-初入校门的那些囧事">
-                大学回忆-初入校门的那些囧事 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -471,10 +438,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/11/13/vscode使用不完全指南/"
-     data-title="vscode使用不完全记录"
+        <div class="ds-share flat" data-thread-key="2017/05/10/教你认清这8大杀手锏/"
+     data-title="教你认清这8大杀手锏"
      data-content=""
-     data-url="https://qianlongo.github.io/2016/11/13/vscode使用不完全指南/">
+     data-url="https://qianlongo.github.io/2017/05/10/教你认清这8大杀手锏/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -501,8 +468,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/11/13/vscode使用不完全指南/"
-           data-title="vscode使用不完全记录" data-url="https://qianlongo.github.io/2016/11/13/vscode使用不完全指南/">
+      <div class="ds-thread" data-thread-key="2017/05/10/教你认清这8大杀手锏/"
+           data-title="教你认清这8大杀手锏" data-url="https://qianlongo.github.io/2017/05/10/教你认清这8大杀手锏/">
       </div>
     
   </div>
@@ -615,7 +582,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件下载安装，编辑器对比。"><span class="nav-number">2.</span> <span class="nav-text">软件下载安装，编辑器对比。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#颜值-主题"><span class="nav-number">3.</span> <span class="nav-text">颜值(主题)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实用插件"><span class="nav-number">4.</span> <span class="nav-text">实用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键"><span class="nav-number">5.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐几篇比较好的文章"><span class="nav-number">6.</span> <span class="nav-text">推荐几篇比较好的文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始"><span class="nav-number">2.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#each-list-iteratee-context"><span class="nav-number">3.</span> <span class="nav-text">_.each(list, iteratee, [context])</span></a></li></ol></div>
             
           </div>
         </section>
