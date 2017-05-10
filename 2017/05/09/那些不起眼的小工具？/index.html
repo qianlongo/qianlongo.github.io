@@ -97,7 +97,7 @@
 
 今天想写一篇关于下划线这个库中一些小工具函数的故事，我们都听过一句话，一个成功的男人背后一定有一个了不起的女人(😀，其实也不一定，也许还有男人呢)，那么一个经久不衰，为程序猿们所称道的库，框架的背后自然也有不少看起来不起眼，甚至你都懒得正眼瞧他的”小工具”存在。正是这些背后的无名英雄为类库和框架的形成，贡献了不可磨灭的力量。">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/tool.jpeg">
-<meta property="og:updated_time" content="2017-05-09T17:34:31.000Z">
+<meta property="og:updated_time" content="2017-05-10T01:49:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些不起眼的小工具？">
 <meta name="twitter:description" content="前言原文链接
@@ -367,7 +367,7 @@
 <p><strong>对于声明和却没有赋值的标量</strong></p>
 <p><strong>对于直接赋值为undefined(非ie8以下)或者void 0</strong></p>
 <p>_.isUndefined都会返回true，其他情况全都是返回false</p>
-<p>需要特别注意的是，有时候我们会这样判断一个变量是都存在，<code>a = null</code><br><code>a = undefined</code>都可以通难过判断。</p>
+<p>需要特别注意的是，有时候我们会这样判断一个变量是都存在，<code>a == null</code><br><code>a == undefined</code>都可以通难过判断。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (a == <span class="literal">null</span>) &#123; </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>但是_.isUndefined用的是三等强制判断，所以null是通过不了的</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_.isUndefined = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj === <span class="keyword">void</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
