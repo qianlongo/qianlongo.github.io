@@ -84,41 +84,35 @@
 
 
 
-<meta name="description" content="前言
-逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。
+<meta name="description" content="前言underscore.js源码分析第四篇,前三篇地址分别是，如果你对这个系列感兴趣，欢迎点击watch，随时关注动态。
+教你认清这8大杀手锏
+那些不起眼的小工具？
+(void 0)与undefined之间的小九九
+原文地址源码地址
 
-
-客观别急，今天真的是要说一个bug，也许你早已知晓，也许你时常躺枪于他手，悄悄地，我们慢慢开始。
-for in 遍历对象属性时存在bug
-for in 遍历对象属性时存在bug
-for in 遍历对象属性时存在bug
-使用for in去遍历一个对象俺们再熟悉不过了，经常干这种事，那他到底可以遍历一个">
+逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="悄悄地说一个bug">
 <meta property="og:url" content="https://qianlongo.github.io/2017/05/11/悄悄地说一个bug/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="前言
-逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。
+<meta property="og:description" content="前言underscore.js源码分析第四篇,前三篇地址分别是，如果你对这个系列感兴趣，欢迎点击watch，随时关注动态。
+教你认清这8大杀手锏
+那些不起眼的小工具？
+(void 0)与undefined之间的小九九
+原文地址源码地址
 
-
-客观别急，今天真的是要说一个bug，也许你早已知晓，也许你时常躺枪于他手，悄悄地，我们慢慢开始。
-for in 遍历对象属性时存在bug
-for in 遍历对象属性时存在bug
-for in 遍历对象属性时存在bug
-使用for in去遍历一个对象俺们再熟悉不过了，经常干这种事，那他到底可以遍历一个">
+逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/ubiaoqing58b8358e002c33469.jpg">
-<meta property="og:updated_time" content="2017-05-11T16:18:48.000Z">
+<meta property="og:updated_time" content="2017-05-11T16:39:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="悄悄地说一个bug">
-<meta name="twitter:description" content="前言
-逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。
+<meta name="twitter:description" content="前言underscore.js源码分析第四篇,前三篇地址分别是，如果你对这个系列感兴趣，欢迎点击watch，随时关注动态。
+教你认清这8大杀手锏
+那些不起眼的小工具？
+(void 0)与undefined之间的小九九
+原文地址源码地址
 
-
-客观别急，今天真的是要说一个bug，也许你早已知晓，也许你时常躺枪于他手，悄悄地，我们慢慢开始。
-for in 遍历对象属性时存在bug
-for in 遍历对象属性时存在bug
-for in 遍历对象属性时存在bug
-使用for in去遍历一个对象俺们再熟悉不过了，经常干这种事，那他到底可以遍历一个">
+逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/ubiaoqing58b8358e002c33469.jpg">
 
 
@@ -364,10 +358,16 @@ for in 遍历对象属性时存在bug
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>underscore.js源码分析第四篇,前三篇地址分别是，如果你对这个系列感兴趣，欢迎点击watch，随时关注动态。</p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/issues/6" target="_blank" rel="external">教你认清这8大杀手锏</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/issues/5" target="_blank" rel="external">那些不起眼的小工具？</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/issues/4" target="_blank" rel="external">(void 0)与undefined之间的小九九</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/issues/7" target="_blank" rel="external">原文地址</a><br><a href="https://github.com/qianlongo/underscore-analysis" target="_blank" rel="external">源码地址</a></p>
+<blockquote>
 <p>逗我呢？哥！你要说什么bug，什么bug，什么bug，我最讨厌bug。去他妹的bug。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/ubiaoqing58b8358e002c33469.jpg" alt=""></p>
+<a id="more"></a>
 <p><strong>客观别急，今天真的是要说一个bug，也许你早已知晓，也许你时常躺枪于他手，悄悄地，我们慢慢开始。</strong></p>
 <p><code>for in 遍历对象属性时存在bug</code></p>
 <p><code>for in 遍历对象属性时存在bug</code></p>
@@ -407,8 +407,9 @@ for in 遍历对象属性时存在bug
 <p><strong>源码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">_.keys = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果obj不是object类型直接返回空数组</span></div><div class="line">  <span class="keyword">if</span> (!_.isObject(obj)) <span class="keyword">return</span> [];</div><div class="line">  <span class="comment">// 如果浏览器支持原生的keys方法，则使用原生的keys</span></div><div class="line">  <span class="keyword">if</span> (nativeKeys) <span class="keyword">return</span> nativeKeys(obj);</div><div class="line">  <span class="keyword">var</span> keys = [];</div><div class="line">  <span class="comment">// 注意这里1、for in会遍历原型上的键，所以用_.has来确保读取的只是对象本身的属性</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) <span class="keyword">if</span> (_.has(obj, key)) keys.push(key);</div><div class="line">  <span class="comment">// Ahem, IE &lt; 9.</span></div><div class="line">  <span class="comment">// 这里主要处理ie9以下的浏览器的bug，会将对象上一些本该枚举的属性认为不可枚举，详细可以看collectNonEnumProps分析</span></div><div class="line">  <span class="keyword">if</span> (hasEnumBug) collectNonEnumProps(obj, keys); </div><div class="line">  <span class="keyword">return</span> keys;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <h2 id="collectNonEnumProps函数分析"><a href="#collectNonEnumProps函数分析" class="headerlink" title="collectNonEnumProps函数分析"></a>collectNonEnumProps函数分析</h2><blockquote>
-<p>该函数为下划线中的内部函数一枚，专门处理ie9以下的枚举bug问题</p>
+<p>该函数为下划线中的内部函数一枚，专门处理ie9以下的枚举bug问题,<code>for  in</code>到底有啥bug，终于可以说出来了。</p>
 </blockquote>
+<p><strong>简单地说就是如果对象将其原型上的类似<code>toString</code>的方法覆盖了的话，那么我们认为<code>toString</code>就是可枚举的了，但是在ie9以下的浏览器中还是认为是不可以枚举的，又是万恶的ie</strong></p>
 <p><strong>源码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断浏览器是否存在枚举bug，如果有，在取反操作前会返回false</span></div><div class="line"><span class="keyword">var</span> hasEnumBug = !&#123;<span class="attr">toString</span>: <span class="literal">null</span>&#125;.propertyIsEnumerable(<span class="string">'toString'</span>); </div><div class="line"><span class="comment">// 所有需要处理的可能存在枚举问题的属性</span></div><div class="line"><span class="keyword">var</span> nonEnumerableProps = [<span class="string">'valueOf'</span>, <span class="string">'isPrototypeOf'</span>, <span class="string">'toString'</span>,</div><div class="line">                    <span class="string">'propertyIsEnumerable'</span>, <span class="string">'hasOwnProperty'</span>, <span class="string">'toLocaleString'</span>]; </div><div class="line"></div><div class="line"><span class="comment">// 处理ie9以下的一个枚举bug                      </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">collectNonEnumProps</span>(<span class="params">obj, keys</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> nonEnumIdx = nonEnumerableProps.length;</div><div class="line">  <span class="keyword">var</span> <span class="keyword">constructor</span> = obj.<span class="keyword">constructor</span>;</div><div class="line">  // 读取obj的原型</div><div class="line">  var proto = (_.isFunction(<span class="keyword">constructor</span>) &amp;&amp; <span class="keyword">constructor</span>.prototype) || ObjProto;  </div><div class="line"></div><div class="line">  // 这里我有个疑问，对于<span class="keyword">constructor</span>属性为什么要单独处理？</div><div class="line">  // Constructor is a special case.</div><div class="line">  var prop = '<span class="keyword">constructor</span>'; </div><div class="line">  if (_.has(obj, prop) &amp;&amp; !_.contains(keys, prop)) keys.push(prop);</div><div class="line"></div><div class="line">  while (nonEnumIdx--) &#123;</div><div class="line">    prop = nonEnumerableProps[nonEnumIdx];</div><div class="line">    <span class="comment">// nonEnumerableProps中的属性出现在obj中，并且和原型中的同名方法不等，再者keys中不存在该属性，就添加进去</span></div><div class="line">    <span class="keyword">if</span> (prop <span class="keyword">in</span> obj &amp;&amp; obj[prop] !== proto[prop] &amp;&amp; !_.contains(keys, prop)) &#123;</div><div class="line">      keys.push(prop);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>代码看起来并不复杂，但是有一个小疑问，对于constructor属性为什么要单独处理呢？各个看官，如果知晓，请教我啊</strong></p>
@@ -421,7 +422,29 @@ for in 遍历对象属性时存在bug
 <p><strong>源码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 获取对象obj的所有的键</span></div><div class="line"><span class="comment">// 与keys不同，这里包括继承来的key</span></div><div class="line"></div><div class="line"><span class="comment">// Retrieve all the property names of an object.</span></div><div class="line">_.allKeys = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!_.isObject(obj)) <span class="keyword">return</span> [];</div><div class="line">  <span class="keyword">var</span> keys = [];</div><div class="line">  <span class="comment">// 直接读遍历取到的key，包括原型上的</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) keys.push(key); </div><div class="line">  <span class="comment">// Ahem, IE &lt; 9.</span></div><div class="line">  <span class="keyword">if</span> (hasEnumBug) collectNonEnumProps(obj, keys); <span class="comment">// 同样处理一下有枚举问题的浏览器</span></div><div class="line">  <span class="keyword">return</span> keys;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>可以看到和_.keys的唯一的不同就在于遍历obj的时候有没有用<code>hasOwnProperty</code>去判断</p>
-<p>## </p>
+<h2 id="values"><a href="#values" class="headerlink" title="_.values()"></a>_.values()</h2><blockquote>
+<p>返回object对象所有的属性值。</p>
+</blockquote>
+<p><strong>使用案例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">_.values(obj)</div><div class="line"><span class="comment">// ["qianlongo", "boy"]</span></div></pre></td></tr></table></figure>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// Retrieve the values of an object's properties.</span></div><div class="line">_.values = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 用到了前面已经写好的keys函数，所以values认为获取的属性值，不包括原型</span></div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj);</div><div class="line">  <span class="keyword">var</span> length = keys.length;</div><div class="line">  <span class="keyword">var</span> values = <span class="built_in">Array</span>(length);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">    values[i] = obj[keys[i]];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> values;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="invert-object"><a href="#invert-object" class="headerlink" title="_.invert(object)"></a>_.invert(object)</h2><blockquote>
+<p>返回一个object副本，使其键（keys）和值（values）对换。</p>
+</blockquote>
+<p><strong>使用案例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">secName</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">age</span>: <span class="number">100</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">_.invert(obj)</div><div class="line"></div><div class="line"><span class="comment">// &#123;100: "age", qianlongo: "secName"&#125;</span></div></pre></td></tr></table></figure>
+<p><strong>注意哟，如果对象中有些属性值是相等的，那么翻转过来的对象其key取最后一个</strong></p>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">_.invert = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> result = &#123;&#125;;</div><div class="line">  <span class="comment">// 所以也只是取对象本身的属性</span></div><div class="line">  <span class="keyword">var</span> keys = _.keys(obj); </div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</div><div class="line">    <span class="comment">// 值为key，key为值，如果有值相等，后面的覆盖前面的</span></div><div class="line">    result[obj[keys[i]]] = keys[i]; </div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="functions-object"><a href="#functions-object" class="headerlink" title="_.functions(object)"></a>_.functions(object)</h2><blockquote>
+<p>返回一个对象里所有的方法名, 而且是已经排序的(注意这里包括原型上的属性)</p>
+</blockquote>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">_.functions = _.methods = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> names = [];</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</div><div class="line">    <span class="comment">// 是函数，就装载进去</span></div><div class="line">    <span class="keyword">if</span> (_.isFunction(obj[key])) names.push(key);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> names.sort(); <span class="comment">// 最后返回经过排序的数组</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>夜深人静，悄悄地说一个bug这个鬼故事讲完了，各位good night。</p>
+</blockquote>
 
       
     </div>
@@ -612,7 +635,7 @@ for in 遍历对象属性时存在bug
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何判断一个对象的属性是可枚举的"><span class="nav-number">2.</span> <span class="nav-text">如何判断一个对象的属性是可枚举的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#has-object-key"><span class="nav-number">3.</span> <span class="nav-text">_.has(object, key)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keys-object"><span class="nav-number">4.</span> <span class="nav-text">_.keys(object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#collectNonEnumProps函数分析"><span class="nav-number">5.</span> <span class="nav-text">collectNonEnumProps函数分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#allKeys-object"><span class="nav-number">6.</span> <span class="nav-text">_.allKeys(object)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何判断一个对象的属性是可枚举的"><span class="nav-number">2.</span> <span class="nav-text">如何判断一个对象的属性是可枚举的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#has-object-key"><span class="nav-number">3.</span> <span class="nav-text">_.has(object, key)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keys-object"><span class="nav-number">4.</span> <span class="nav-text">_.keys(object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#collectNonEnumProps函数分析"><span class="nav-number">5.</span> <span class="nav-text">collectNonEnumProps函数分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#allKeys-object"><span class="nav-number">6.</span> <span class="nav-text">_.allKeys(object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#values"><span class="nav-number">7.</span> <span class="nav-text">_.values()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#invert-object"><span class="nav-number">8.</span> <span class="nav-text">_.invert(object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#functions-object"><span class="nav-number">9.</span> <span class="nav-text">_.functions(object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">10.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
