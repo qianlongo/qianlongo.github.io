@@ -1,0 +1,1030 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言原文地址
+源码地址
+
+了解co的前提是已经知晓generator是什么，可以看软大神的Generator 函数的语法,co是TJ大神写的能够使generator自动执行的函数库，而我们熟知的koa也用到了它管理异步流程控制，将异步任务书写同步化，爽的飞起，也摆脱了一直以来的回调地狱问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="走一步再走一步，揭开co的神秘面纱">
+<meta property="og:url" content="https://qianlongo.github.io/2017/05/17/走一步再走一步，揭开co的神秘面纱/index.html">
+<meta property="og:site_name" content="谦龙的小天地">
+<meta property="og:description" content="前言原文地址
+源码地址
+
+了解co的前提是已经知晓generator是什么，可以看软大神的Generator 函数的语法,co是TJ大神写的能够使generator自动执行的函数库，而我们熟知的koa也用到了它管理异步流程控制，将异步任务书写同步化，爽的飞起，也摆脱了一直以来的回调地狱问题。">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/ad51ce297e8dd51850842ff012bdc3cb.jpg">
+<meta property="og:updated_time" content="2017-05-17T01:34:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="走一步再走一步，揭开co的神秘面纱">
+<meta name="twitter:description" content="前言原文地址
+源码地址
+
+了解co的前提是已经知晓generator是什么，可以看软大神的Generator 函数的语法,co是TJ大神写的能够使generator自动执行的函数库，而我们熟知的koa也用到了它管理异步流程控制，将异步任务书写同步化，爽的飞起，也摆脱了一直以来的回调地狱问题。">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/ad51ce297e8dd51850842ff012bdc3cb.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://qianlongo.github.io/2017/05/17/走一步再走一步，揭开co的神秘面纱/"/>
+
+  <title> 走一步再走一步，揭开co的神秘面纱 | 谦龙的小天地 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?06bde654070024b7b126d3d6286e6a8a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <!-- 设置背景canvas -->
+  <div id="particles"></div>
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">谦龙的小天地</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">因上努力 果上随缘</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input" placeholder="输入关键字搜索您希望看的文章内容">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                走一步再走一步，揭开co的神秘面纱
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-17T09:34:03+08:00" content="2017-05-17">
+              2017-05-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/17/走一步再走一步，揭开co的神秘面纱/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/17/走一步再走一步，揭开co的神秘面纱/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/17/走一步再走一步，揭开co的神秘面纱/" class="leancloud_visitors" data-flag-title="走一步再走一步，揭开co的神秘面纱">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/resume-native/blob/master/co-analysis.md" target="_blank" rel="external">原文地址</a></p>
+<p><a href="https://github.com/qianlongo/resume-native/" target="_blank" rel="external">源码地址</a></p>
+<blockquote>
+<p>了解<code>co</code>的前提是已经知晓<code>generator</code>是什么，可以看软大神的<a href="http://es6.ruanyifeng.com/#docs/generator" target="_blank" rel="external">Generator 函数的语法</a>,<br>co是TJ大神写的能够使generator自动执行的函数库，而我们熟知的koa也用到了它管理异步流程控制，将异步任务书写同步化，爽的飞起，也摆脱了一直以来的回调地狱问题。</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/ad51ce297e8dd51850842ff012bdc3cb.jpg" alt=""></p>
+<a id="more"></a>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><blockquote>
+<p>首先我们根据<a href="https://github.com/tj/co" target="_blank" rel="external">co</a>的官方文档来稍做改变看下，到底如何使用co，再一步步进行源码分析工作(这篇文章分析的co版本是<code>4.6.0</code>)。</p>
+</blockquote>
+<p><strong>yield 后面常见的可以跟的类型</strong></p>
+<ol>
+<li>promises</li>
+<li>array (parallel execution)</li>
+<li>objects (parallel execution)</li>
+<li>generator functions (delegation)</li>
+</ol>
+<p><strong>promises</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</div><div class="line"><span class="keyword">let</span> genTimeoutFun = <span class="function">(<span class="params">delay</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        resolve(<span class="string">`delayTime: <span class="subst">$&#123;delay&#125;</span>`</span>)</div><div class="line">      &#125;, delay)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> timeout1 = genTimeoutFun(<span class="number">1000</span>)</div><div class="line"><span class="keyword">let</span> timeout2 = genTimeoutFun(<span class="number">200</span>)</div><div class="line"></div><div class="line">co(<span class="function"><span class="keyword">function</span> * (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> a = <span class="keyword">yield</span> timeout1()</div><div class="line">  <span class="built_in">console</span>.log(a) <span class="comment">// delayTime: 1000</span></div><div class="line">  <span class="keyword">let</span> b = <span class="keyword">yield</span> timeout2()</div><div class="line">  <span class="built_in">console</span>.log(b) <span class="comment">// delayTime: 200</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="string">'end'</span></div><div class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(res)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>array</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</div><div class="line"><span class="keyword">let</span> genTimeoutFun = <span class="function">(<span class="params">delay</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        resolve(<span class="string">`delayTime: <span class="subst">$&#123;delay&#125;</span>`</span>)</div><div class="line">      &#125;, delay)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> timeout1 = genTimeoutFun(<span class="number">1000</span>)</div><div class="line"><span class="keyword">let</span> timeout2 = genTimeoutFun(<span class="number">200</span>)</div><div class="line"></div><div class="line">co(<span class="function"><span class="keyword">function</span> * (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> a = <span class="keyword">yield</span> [timeout1(), timeout2()]</div><div class="line">  <span class="built_in">console</span>.log(a) <span class="comment">// [ 'delayTime: 1000', 'delayTime: 200' ]</span></div><div class="line">  <span class="keyword">return</span> <span class="string">'end'</span></div><div class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(res) <span class="comment">// end</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>objects</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</div><div class="line"><span class="keyword">let</span> genTimeoutFun = <span class="function">(<span class="params">delay</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        resolve(<span class="string">`delayTime: <span class="subst">$&#123;delay&#125;</span>`</span>)</div><div class="line">      &#125;, delay)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> timeout1 = genTimeoutFun(<span class="number">1000</span>)</div><div class="line"><span class="keyword">let</span> timeout2 = genTimeoutFun(<span class="number">200</span>)</div><div class="line"></div><div class="line">co(<span class="function"><span class="keyword">function</span> * (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> a = <span class="keyword">yield</span> &#123;</div><div class="line">    <span class="attr">timeout1</span>: timeout1(),</div><div class="line">    <span class="attr">timeout2</span>: timeout2()</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(a) <span class="comment">// &#123; timeout1: 'delayTime: 1000',timeout2: 'delayTime: 200' &#125;</span></div><div class="line">  <span class="keyword">return</span> <span class="string">'end'</span></div><div class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(res) <span class="comment">// end</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>generator functions</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</div><div class="line"><span class="keyword">let</span> genTimeoutFun = <span class="function">(<span class="params">delay</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">        resolve(<span class="string">`delayTime: <span class="subst">$&#123;delay&#125;</span>`</span>)</div><div class="line">      &#125;, delay)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> timeout1 = genTimeoutFun(<span class="number">1000</span>)</div><div class="line"><span class="keyword">let</span> timeout2 = genTimeoutFun(<span class="number">200</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> * <span class="title">gen</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> a = <span class="keyword">yield</span> timeout1()</div><div class="line">  <span class="built_in">console</span>.log(a) <span class="comment">// delayTime: 1000</span></div><div class="line">  <span class="keyword">let</span> b = <span class="keyword">yield</span> timeout2()</div><div class="line">  <span class="built_in">console</span>.log(b) <span class="comment">// delayTime: 200</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">co(<span class="function"><span class="keyword">function</span> * (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">yield</span> gen()</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="string">'end'</span></div><div class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(res) <span class="comment">// end</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>最后说一下，关于执行传入的generator函数接收参数的问题</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</div><div class="line"></div><div class="line">co(<span class="function"><span class="keyword">function</span> * (<span class="params">name</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(name) <span class="comment">// qianlongo</span></div><div class="line">&#125;, <span class="string">'qianlongo'</span>)</div></pre></td></tr></table></figure>
+<p>从co函数的第二个参数开始，便是传入的generator函数可以接收的实参</p>
+<h2 id="开始分析源码"><a href="#开始分析源码" class="headerlink" title="开始分析源码"></a>开始分析源码</h2><blockquote>
+<p>你可以把以上代码拷贝至本地测试一番看看效果，接下来我们一步步开始分析co的源码</p>
+</blockquote>
+<p><strong>首先经过上面的例子可以发现，co函数本身接收一个generator函数，并且co执行后返回的是Promise</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">co</span>(<span class="params">gen</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ctx = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">var</span> args = slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>)</div><div class="line"></div><div class="line">  <span class="comment">// we wrap everything in a promise to avoid promise chaining,</span></div><div class="line">  <span class="comment">// which leads to memory leak errors.</span></div><div class="line">  <span class="comment">// see https://github.com/tj/co/issues/180</span></div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> gen === <span class="string">'function'</span>) gen = gen.apply(ctx, args);</div><div class="line">    <span class="keyword">if</span> (!gen || <span class="keyword">typeof</span> gen.next !== <span class="string">'function'</span>) <span class="keyword">return</span> resolve(gen);</div><div class="line"></div><div class="line">    <span class="comment">// xxx</span></div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在Promise的内部，先执行了外部传入的<code>gen</code>,执行的结果如果不具备next属性(且要是一个函数)，就直接返回，并将执行成功回调<code>resolve(gen)</code>,否则得到的是一个指针对象。</p>
+<p><strong>接下来继续看…</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">onFulfilled();</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">  * @param &#123;Mixed&#125; res</div><div class="line">  * @return &#123;Promise&#125;</div><div class="line">  * @api private</div><div class="line">  */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onFulfilled</span>(<span class="params">res</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ret;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    ret = gen.next(res); <span class="comment">// 用上面执行gen之后的generator生成器将指针指向下一个位置</span></div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    <span class="keyword">return</span> reject(e);</div><div class="line">  &#125;</div><div class="line">  next(ret); <span class="comment">// 紧接着执行next，正是它实现了反复调用自己，自动流程控制，注意ret(即上一次gen.next执行后返回的对象&#123;value: xxx, done: true or false&#125;)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">  * @param &#123;Error&#125; err</div><div class="line">  * @return &#123;Promise&#125;</div><div class="line">  * @api private</div><div class="line">  */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onRejected</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ret;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    ret = gen.throw(err);</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    <span class="keyword">return</span> reject(e);</div><div class="line">  &#125;</div><div class="line">  next(ret);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我觉得可以把 <code>onFulfilled</code> 和 <code>onRejected</code> 看成是返回的Promise的<code>resolve</code>和<code>reject</code>。</p>
+<p>而<code>onFulfilled</code>也是将原生的generator生成器的next方法包装了一遍，大概是为了抓取错误吧(看到内部的try catch了吗)</p>
+<p><strong>好，我们看到了co内部将指针移动到了第一个位置之后，接着执行了内部的next方法，接下来聚焦在该函数上</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params">ret</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果整个generator函数的内部状态已经表示走完，便将Promise的状态设置为成功状态，并执行resolve</span></div><div class="line">  <span class="keyword">if</span> (ret.done) <span class="keyword">return</span> resolve(ret.value);</div><div class="line">  <span class="comment">// 这一步是将ret的value转换为Promise形式</span></div><div class="line">  <span class="keyword">var</span> value = toPromise.call(ctx, ret.value);</div><div class="line">  <span class="comment">// 这里非常关键，是co实现自己调用自己，实现流程自动化的关键</span></div><div class="line">  <span class="comment">// 注意这里使用value.then，即为返回值添加成功和失败的回调，在成功的回调里面再去执行onFulfilled，紧接着就是调用内部的next函数</span></div><div class="line">  <span class="comment">// 那不是就保证了流程完全按照你写的顺序来了？</span></div><div class="line">  <span class="keyword">if</span> (value &amp;&amp; isPromise(value)) <span class="keyword">return</span> value.then(onFulfilled, onRejected);</div><div class="line">  <span class="comment">// 抛出错误，yield后只能跟着指定的下列这几种类型</span></div><div class="line">  <span class="keyword">return</span> onRejected(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'You may only yield a function, promise, generator, array, or object, '</span></div><div class="line">    + <span class="string">'but the following object was passed: "'</span> + <span class="built_in">String</span>(ret.value) + <span class="string">'"'</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>聪明的你，是不是已经明白了co是怎么将异步流程自动管理起来了</strong></p>
+<p>但是我对next函数中的toPromise函数还有疑问，他到底做了什么事？使得co(generatorFun)中yield可以支持数组、对象、generator函数等形式。</p>
+<p><strong>一步步来看</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">toPromise</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// obj不存在，直接返回</span></div><div class="line">  <span class="keyword">if</span> (!obj) <span class="keyword">return</span> obj;</div><div class="line">  <span class="comment">// 如果obj已经是Promise，则也是直接返回</span></div><div class="line">  <span class="keyword">if</span> (isPromise(obj)) <span class="keyword">return</span> obj;</div><div class="line">  <span class="comment">// 如果是个generator函数或者generator生成器，那就像你自己调用co函数一样，手动传到co里面去执行</span></div><div class="line">  <span class="keyword">if</span> (isGeneratorFunction(obj) || isGenerator(obj)) <span class="keyword">return</span> co.call(<span class="keyword">this</span>, obj);</div><div class="line">  <span class="comment">// 如果obj既不是Promise，也不是isGeneratorFunction和isGenerator，要是一个普通的函数（需要符合thunk函数规范），就将该函数包装成Promise的形式</span></div><div class="line">  <span class="keyword">if</span> (<span class="string">'function'</span> == <span class="keyword">typeof</span> obj) <span class="keyword">return</span> thunkToPromise.call(<span class="keyword">this</span>, obj);</div><div class="line">  <span class="comment">// 如果是一个数组的形式，就去arrayToPromise包装一番</span></div><div class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(obj)) <span class="keyword">return</span> arrayToPromise.call(<span class="keyword">this</span>, obj);</div><div class="line">  <span class="keyword">if</span> (isObject(obj)) <span class="keyword">return</span> objectToPromise.call(<span class="keyword">this</span>, obj);</div><div class="line">  <span class="keyword">return</span> obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先如果obj不存在，就直接返回，你想啊，co本来就是依赖上一次指针返回的value是Promise或者其他，这个时候如果返回</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">value</span>: <span class="literal">false</span>,</div><div class="line">  <span class="attr">done</span>: <span class="literal">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那就没有必要再给一个false值转成Promise形式了吧。</p>
+<p>接着，如果obj本身就是个Promise也是直接返回，用了内部的isPromise函数进行判断，我们看下他怎么实现的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPromise</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'function'</span> == <span class="keyword">typeof</span> obj.then;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实就是判断了obj的then属性是不是个函数</p>
+<p><strong>再接着，如果是个generator函数或者generator生成器，那就像你自己调用co函数一样，手动传到co里面去执行。</strong></p>
+<p><strong>isGeneratorFunction</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isGeneratorFunction</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> <span class="keyword">constructor</span> = obj.<span class="keyword">constructor</span>;</div><div class="line">  if (!<span class="keyword">constructor</span>) return false;</div><div class="line">  if ('GeneratorFunction' === <span class="keyword">constructor</span>.name || 'GeneratorFunction' === <span class="keyword">constructor</span>.displayName) return true;</div><div class="line">  return isGenerator(<span class="keyword">constructor</span>.prototype);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过obj的constructor属性去判断其是否属于<code>GeneratorFunction</code>,最后如果constructor属性没判断出来，再去用isGenerator，判断obj的原型是不是generator生成器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isGenerator</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'function'</span> == <span class="keyword">typeof</span> obj.next &amp;&amp; <span class="string">'function'</span> == <span class="keyword">typeof</span> obj.throw;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>判断的条件也比较直接，需要符合两个条件，一个是obj.next要是一个函数，一个是obj.throw要是一个函数</strong></p>
+<p><strong>接下来继续看</strong></p>
+<p>如果obj既不是Promise，也不是isGeneratorFunction和isGenerator，要是一个普通的函数，就将该函数包装成Promise的形式，这里我们主要需要看<code>thunkToPromise</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">thunkToPromise</span>(<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ctx = <span class="keyword">this</span>;</div><div class="line">  <span class="comment">// 将thunk函数包装成Promise</span></div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</div><div class="line">      <span class="comment">// 执行这个thunk函数</span></div><div class="line">    fn.call(ctx, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>) </span>&#123; </div><div class="line">      <span class="comment">// 注意thunk函数内部接收的回调函数中传入的第一个参数是err，出现了err，当然需要走reject了</span></div><div class="line">      <span class="keyword">if</span> (err) <span class="keyword">return</span> reject(err); </div><div class="line">      <span class="comment">// 参数是两个以上的情况下，将参数整成一个数组</span></div><div class="line">      <span class="keyword">if</span> (<span class="built_in">arguments</span>.length &gt; <span class="number">2</span>) res = slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</div><div class="line">      <span class="comment">// 最后执行成功的回调</span></div><div class="line">      resolve(res);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>接下来是重头戏了，co中如果处理yield后面跟一个数组呢？主要是arrayToPromise函数的作用</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrayToPromise</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// 使用到了Promise.all，将obj中多个promise实例(当然你也可以在数组中填thunk函数，generator函数等)重新包装成一个。最后返回一个新的Promise</span></div><div class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.all(obj.map(toPromise, <span class="keyword">this</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>还有最后一个判断，如果obj是个对象怎么办？</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">objectToPromise</span>(<span class="params">obj</span>)</span>&#123;</div><div class="line">  <span class="comment">// 构造一个和传入对象有相同构造器的对象, results也是</span></div><div class="line">  <span class="keyword">var</span> results = <span class="keyword">new</span> obj.constructor();</div><div class="line">  <span class="comment">// 获取obj的keys</span></div><div class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(obj);</div><div class="line">  <span class="comment">// 存储obj中是Promise的属性</span></div><div class="line">  <span class="keyword">var</span> promises = [];</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; keys.length; i++) &#123;</div><div class="line">    <span class="keyword">var</span> key = keys[i];</div><div class="line">    <span class="keyword">var</span> promise = toPromise.call(<span class="keyword">this</span>, obj[key]);</div><div class="line">    <span class="comment">// 如果是结果是Promise，则用defer函数对results进行修改</span></div><div class="line">    <span class="keyword">if</span> (promise &amp;&amp; isPromise(promise)) defer(promise, key);</div><div class="line">    <span class="comment">// 如果是非Promise就按原样返回</span></div><div class="line">    <span class="keyword">else</span> results[key] = obj[key];</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 最后 使用到了Promise.all，将obj中多个promise实例</span></div><div class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.all(promises).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> results;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">defer</span>(<span class="params">promise, key</span>) </span>&#123;</div><div class="line">    <span class="comment">// predefine the key in the result</span></div><div class="line">    results[key] = <span class="literal">undefined</span>;</div><div class="line">    promises.push(promise.then(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">      <span class="comment">// 运行成功之后再讲结果赋值给results</span></div><div class="line">      results[key] = res;</div><div class="line">    &#125;));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>到这里，co源码分析就告一段落了。总感觉有些没有说到位，欢迎大家拍砖，晚安。</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/11/悄悄地说一个bug/" rel="next" title="悄悄地说一个bug">
+                <i class="fa fa-chevron-left"></i> 悄悄地说一个bug
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/05/17/走一步再走一步，揭开co的神秘面纱/"
+     data-title="走一步再走一步，揭开co的神秘面纱"
+     data-content=""
+     data-url="https://qianlongo.github.io/2017/05/17/走一步再走一步，揭开co的神秘面纱/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/17/走一步再走一步，揭开co的神秘面纱/"
+           data-title="走一步再走一步，揭开co的神秘面纱" data-url="https://qianlongo.github.io/2017/05/17/走一步再走一步，揭开co的神秘面纱/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://sfault-avatar.b0.upaiyun.com/893/290/893290401-5621cb66a2ed6_huge256"
+               alt="谦龙" />
+          <p class="site-author-name" itemprop="name">谦龙</p>
+          <p class="site-description motion-element" itemprop="description">热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qianlongo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5607962277/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qian-long-16-72" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">2.</span> <span class="nav-text">如何使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始分析源码"><span class="nav-number">3.</span> <span class="nav-text">开始分析源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">4.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谦龙</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"qianlongo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+
+    $(document).click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("nnrLyBcuNRbOdTn45bzlEBC5-gzGzoHsz", "ru8RIcugE0RouivkbirObO9j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
