@@ -1,0 +1,1052 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="koa,源码分析," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言
+最近几天花了比较长的时间在koa(1)的源码分析上面，初次看的时候，被中间件执行那段整的晕乎乎的，完全不知道所以，再次看，好像明白了些什么，再反复看，我去，简直神了，简直泪流满面，简直丧心病狂啊！！！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你知道koa中的中间件执行原理吗？">
+<meta property="og:url" content="https://qianlongo.github.io/2017/05/17/koa源码分析之中间件执行/index.html">
+<meta property="og:site_name" content="谦龙的小天地">
+<meta property="og:description" content="前言
+最近几天花了比较长的时间在koa(1)的源码分析上面，初次看的时候，被中间件执行那段整的晕乎乎的，完全不知道所以，再次看，好像明白了些什么，再反复看，我去，简直神了，简直泪流满面，简直丧心病狂啊！！！">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f363339363931332f6b6f612f6c6f676f2e706e67.png">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/timg2.jpeg">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/%E4%B8%AD%E9%97%B4%E4%BB%B6.png">
+<meta property="og:updated_time" content="2017-05-17T17:33:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你知道koa中的中间件执行原理吗？">
+<meta name="twitter:description" content="前言
+最近几天花了比较长的时间在koa(1)的源码分析上面，初次看的时候，被中间件执行那段整的晕乎乎的，完全不知道所以，再次看，好像明白了些什么，再反复看，我去，简直神了，简直泪流满面，简直丧心病狂啊！！！">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f363339363931332f6b6f612f6c6f676f2e706e67.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://qianlongo.github.io/2017/05/17/koa源码分析之中间件执行/"/>
+
+  <title> 你知道koa中的中间件执行原理吗？ | 谦龙的小天地 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?06bde654070024b7b126d3d6286e6a8a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <!-- 设置背景canvas -->
+  <div id="particles"></div>
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">谦龙的小天地</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">因上努力 果上随缘</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input" placeholder="输入关键字搜索您希望看的文章内容">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                你知道koa中的中间件执行原理吗？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-17T23:12:07+08:00" content="2017-05-17">
+              2017-05-17
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/17/koa源码分析之中间件执行/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/17/koa源码分析之中间件执行/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/17/koa源码分析之中间件执行/" class="leancloud_visitors" data-flag-title="你知道koa中的中间件执行原理吗？">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>最近几天花了比较长的时间在koa(1)的源码分析上面，初次看的时候，被中间件执行那段整的晕乎乎的，完全不知道所以，再次看，好像明白了些什么，再反复看，我去，简直神了，简直泪流满面，简直丧心病狂啊！！！</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f363339363931332f6b6f612f6c6f676f2e706e67.png" alt="koa"></p>
+<a id="more"></a>
+<h2 id="用在前面"><a href="#用在前面" class="headerlink" title="用在前面"></a>用在前面</h2><blockquote>
+<p>下面的例子会在控制台中打印出一些信息(具体打印出什么？可以猜猜😀)，然后返回<code>hello world</code>。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> koa = <span class="built_in">require</span>(<span class="string">'koa'</span>)</div><div class="line"><span class="keyword">let</span> app = koa()</div><div class="line"></div><div class="line">app.use(<span class="function"><span class="keyword">function</span> * (<span class="params">next</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'generate1----start'</span>)</div><div class="line">  <span class="keyword">yield</span> next</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'generate1----end'</span>)</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.use(<span class="function"><span class="keyword">function</span> * (<span class="params">next</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'generate2----start'</span>)</div><div class="line">  <span class="keyword">yield</span> next</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'generate2----end'</span>)</div><div class="line">  <span class="keyword">this</span>.body = <span class="string">'hello world'</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(<span class="number">3000</span>)</div></pre></td></tr></table></figure>
+<p>用过koa的同学都知道添加中间件的方式是使用koa实例的<code>use</code>方法，并传入一个generator函数，这个generator函数可以接受一个<code>next</code>(这个next到底是啥？这里先不阐明，在后面会仔细说明)。</p>
+<p><strong>执行use干了嘛</strong></p>
+<p>这是koa的构造函数，为了没有其他信息的干扰，我去除了一些暂时用不到的代码，这里我们把目光聚焦在<code>middleware</code>这个数组即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Application</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">  <span class="keyword">this</span>.middleware = []; <span class="comment">// 这个数组就是用来装一个个中间件的</span></div><div class="line">  <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>接下来我们要看use方法了</strong></p>
+<p>同样去除了一些暂时不用的代码，可以看到每次执行use方法，就把外面传进来的generator函数push到middleware数组中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">app.use = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>)</span>&#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">  <span class="keyword">this</span>.middleware.push(fn);</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p><strong>好啦！你已经知道koa中是预先通过use方法，将请求可能会经过的中间件装在了一个数组中。</strong></p>
+<p><code>接下来我们要开始本文的重点了，当一个请求到来的时候，是怎样经过中间件，怎么跑起来的</code></p>
+<p>首先我们只要知道下面这段<code>callback</code>函数就是请求到来的时候执行的回调即可（同样尽量去除了我们不用的代码）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">app.callback = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> fn = <span class="keyword">this</span>.experimental</div><div class="line">    ? compose_es7(<span class="keyword">this</span>.middleware)</div><div class="line">    : co.wrap(compose(<span class="keyword">this</span>.middleware));</div><div class="line"></div><div class="line">  <span class="comment">// xxx</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</div><div class="line">    <span class="comment">// xxx</span></div><div class="line"></div><div class="line">    fn.call(ctx).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      respond.call(ctx);</div><div class="line">    &#125;).catch(ctx.onerror);</div><div class="line"></div><div class="line">    <span class="comment">// xxx</span></div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>这段代码可以分成两个部分</p>
+<ol>
+<li>请求前的中间件初始化处理部分</li>
+<li>请求到来时的中间件运行部分</li>
+</ol>
+<p>我们分部分来说一下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> fn = <span class="keyword">this</span>.experimental</div><div class="line">    ? compose_es7(<span class="keyword">this</span>.middleware)</div><div class="line">    : co.wrap(compose(<span class="keyword">this</span>.middleware));</div></pre></td></tr></table></figure>
+<p>这段代码对<code>experimental</code>做了下判断，如果设置为了<code>true</code>那么koa中将可以支持传入async函数，否则就执行<code>co.wrap(compose(this.middleware))</code>。</p>
+<p>只有一行初始化中间件就做完啦？</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/timg2.jpeg" alt=""></p>
+<p><strong>我知道koa很屌，但也别这么屌好不好，所以说评价一个好的程序员不是由代码量决定的</strong></p>
+<p>我们来看下这段代码到底有什么神奇的地方</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compose(<span class="keyword">this</span>.middleware)</div></pre></td></tr></table></figure>
+<p>把装着中间件<code>middleware</code>的数组作为参数传进了<code>compose</code>这个方法，那么compose做了什么事呢？其实就是把原本毫无关系的一个个中间件给首尾串起来了，于是他们之间就有了千丝万缕的联系。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">middleware</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> *(<span class="params">next</span>)</span>&#123;</div><div class="line">    <span class="comment">// 第一次得到next是由于*noop生成的generator对象</span></div><div class="line">    <span class="keyword">if</span> (!next) next = noop(); </div><div class="line"></div><div class="line">    <span class="keyword">var</span> i = middleware.length;</div><div class="line">    <span class="comment">// 从后往前开始执行middleware中的generator函数</span></div><div class="line">    <span class="keyword">while</span> (i--) &#123;</div><div class="line">      <span class="comment">// 把后一个中间件得到的generator对象传给前一个作为第一个参数存在</span></div><div class="line">      next = middleware[i].call(<span class="keyword">this</span>, next);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> <span class="keyword">yield</span> *next;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">noop</span>(<span class="params"></span>)</span>&#123;&#125;</div></pre></td></tr></table></figure>
+<p>文字解释一下就是，compose将中间件从最后一个开始处理，并一直往前直到第一个中间件。其中非常关键的就是将后一个中间件得到generator对象作为参数(<code>这个参数就是文章开头说到的next啦，也就是说next其实是一个generator对象</code>)传给前一个中间件。当然最后一个中间件的参数<code>next</code>是一个空的generator函数生成的对象。</p>
+<p>我们自己来写一个简单的例子说明compose是如何将多个generator函数串联起来的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> * <span class="title">gen1</span> (<span class="params">next</span>) </span>&#123;</div><div class="line">  <span class="keyword">yield</span> <span class="string">'gen1'</span></div><div class="line">  <span class="keyword">yield</span> * next <span class="comment">// 开始执行下一个中间件</span></div><div class="line">  <span class="keyword">yield</span> <span class="string">'gen1-end'</span> <span class="comment">// 下一个中间件执行完成再继续执行gen1中间件的逻辑</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> * <span class="title">gen2</span> (<span class="params">next</span>) </span>&#123;</div><div class="line">  <span class="keyword">yield</span> <span class="string">'gen2'</span></div><div class="line">  <span class="keyword">yield</span> * next <span class="comment">// 开始执行下一个中间件</span></div><div class="line">  <span class="keyword">yield</span> <span class="string">'gen2-end'</span> <span class="comment">// 下一个中间件执行完成再继续执行gen2中间件的逻辑</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> * <span class="title">gen3</span> (<span class="params">next</span>) </span>&#123;</div><div class="line">  <span class="keyword">yield</span> <span class="string">'gen3'</span></div><div class="line">  <span class="keyword">yield</span> * next <span class="comment">// 开始执行下一个中间件</span></div><div class="line">  <span class="keyword">yield</span> <span class="string">'gen3-end'</span> <span class="comment">// 下一个中间件执行完成再继续执行gen3中间件的逻辑</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> * <span class="title">noop</span> (<span class="params"></span>) </span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> middleware = [gen1, gen2, gen3]</div><div class="line"><span class="keyword">var</span> len = middleware.length</div><div class="line"><span class="keyword">var</span> next = noop() <span class="comment">// 提供给最后一个中间件的参数</span></div><div class="line"></div><div class="line"><span class="keyword">while</span>(len--) &#123;</div><div class="line">  next = middleware[len].call(<span class="literal">null</span>, next)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> * <span class="title">letGo</span> (<span class="params">next</span>) </span>&#123;</div><div class="line">  <span class="keyword">yield</span> * next</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> g = letGo(next)</div><div class="line"></div><div class="line">g.next() <span class="comment">// &#123;value: "gen1", done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: "gen2", done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: "gen3", done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: "gen3-end", done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: "gen2-end", done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: "gen1-end", done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: undefined, done: true&#125;</span></div></pre></td></tr></table></figure>
+<p>看到了吗？中间件被串起来之后执行的顺序是</p>
+<p>gen1 -&gt; gen2 -&gt; gen3 -&gt; noop -&gt; gen3 -&gt; gen2 -&gt; gen1</p>
+<p>从而首尾相连，进而发生了关系😈。</p>
+<h2 id="co-wrap"><a href="#co-wrap" class="headerlink" title="co.wrap"></a>co.wrap</h2><blockquote>
+<p>通过compose处理后返回了一个generator函数。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">co.wrap(compose(<span class="keyword">this</span>.middleware))</div></pre></td></tr></table></figure>
+<p>所有上述代码可以理解为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">co.wrap(<span class="function"><span class="keyword">function</span> * <span class="title">gen</span> (<span class="params"></span>))</span></div></pre></td></tr></table></figure>
+<p>好，我们再看看<code>co.wrap</code>做了什么,慢慢地一步步靠近了哦</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">co.wrap = <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</div><div class="line">  createPromise.__generatorFunction__ = fn;</div><div class="line">  <span class="keyword">return</span> createPromise;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">createPromise</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> co.call(<span class="keyword">this</span>, fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到<code>co.wrap</code>返回了一个普通函数<code>createPromise</code>,这个函数就是文章开头的<code>fn</code>啦。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fn = <span class="keyword">this</span>.experimental</div><div class="line">    ? compose_es7(<span class="keyword">this</span>.middleware)</div><div class="line">    : co.wrap(compose(<span class="keyword">this</span>.middleware));</div></pre></td></tr></table></figure>
+<h2 id="中间件开始跑起来啦"><a href="#中间件开始跑起来啦" class="headerlink" title="中间件开始跑起来啦"></a>中间件开始跑起来啦</h2><blockquote>
+<p>前面已经说完了，中间件是如何初始化的，即如果由不相干到关系密切了，接下来开始说请求到来时，初始化好的中间件是怎么跑的。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">fn.call(ctx).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  respond.call(ctx);</div><div class="line">&#125;).catch(ctx.onerror);</div></pre></td></tr></table></figure>
+<p>这一段便是请求到来手即将要经过的中间件执行部分，fn执行之后返回的是一个Promise，koa通过注册成功和失败的回调函数来分别处理请求。</p>
+<p>让我们回到</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">co.wrap = <span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">createPromise</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> co.call(<span class="keyword">this</span>, fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>createPromise</code>里面的fn就是经过compose处理中间件后返回的一个generator函数，那么执行之后拿到的就是一个generator对象了，并把这个对象传经经典的co里面啦。如果你需要对co的源码了解欢迎查看昨天写的<a href="https://juejin.im/post/591b3389a0bb9f005f0bf270" target="_blank" rel="external">走一步再走一步，揭开co的神秘面纱</a>，好了，接下来就是看co里面如何处理这个被compose处理过的generator对象了</p>
+<p><strong>再回顾一下co</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">co</span>(<span class="params">gen</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ctx = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">var</span> args = slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>)</div><div class="line"></div><div class="line">  <span class="comment">// we wrap everything in a promise to avoid promise chaining,</span></div><div class="line">  <span class="comment">// which leads to memory leak errors.</span></div><div class="line">  <span class="comment">// see https://github.com/tj/co/issues/180</span></div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> gen === <span class="string">'function'</span>) gen = gen.apply(ctx, args);</div><div class="line">    <span class="keyword">if</span> (!gen || <span class="keyword">typeof</span> gen.next !== <span class="string">'function'</span>) <span class="keyword">return</span> resolve(gen);</div><div class="line"></div><div class="line">    onFulfilled();</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * @param &#123;Mixed&#125; res</div><div class="line">     * @return &#123;Promise&#125;</div><div class="line">     * @api private</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onFulfilled</span>(<span class="params">res</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> ret;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        ret = gen.next(res);</div><div class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">        <span class="keyword">return</span> reject(e);</div><div class="line">      &#125;</div><div class="line">      next(ret);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * @param &#123;Error&#125; err</div><div class="line">     * @return &#123;Promise&#125;</div><div class="line">     * @api private</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onRejected</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> ret;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        ret = gen.throw(err);</div><div class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">        <span class="keyword">return</span> reject(e);</div><div class="line">      &#125;</div><div class="line">      next(ret);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Get the next value in the generator,</div><div class="line">     * return a promise.</div><div class="line">     *</div><div class="line">     * @param &#123;Object&#125; ret</div><div class="line">     * @return &#123;Promise&#125;</div><div class="line">     * @api private</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params">ret</span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (ret.done) <span class="keyword">return</span> resolve(ret.value);</div><div class="line">      <span class="keyword">var</span> value = toPromise.call(ctx, ret.value);</div><div class="line">      <span class="keyword">if</span> (value &amp;&amp; isPromise(value)) <span class="keyword">return</span> value.then(onFulfilled, onRejected);</div><div class="line">      <span class="keyword">return</span> onRejected(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'You may only yield a function, promise, generator, array, or object, '</span></div><div class="line">        + <span class="string">'but the following object was passed: "'</span> + <span class="built_in">String</span>(ret.value) + <span class="string">'"'</span>));</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们直接看一下<code>onFulfilled</code>,这个时候第一次进co的时候因为已经是generator对象所以会直接执行<code>onFulfilled()</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onFulfilled</span>(<span class="params">res</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ret;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    ret = gen.next(res);</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    <span class="keyword">return</span> reject(e);</div><div class="line">  &#125;</div><div class="line">  next(ret);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而<code>gen.next</code>正是用于去执行中间件的业务逻辑，当遇到yield语句的时候，将紧随其后的结果返回赋值给<code>ret</code>,通常这里的ret，就是我们文中说道的<code>next</code>,也就是当前中间件的下一个中间件。</p>
+<p>拿到下一个中间件后把他交给<code>next</code>去处理</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params">ret</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (ret.done) <span class="keyword">return</span> resolve(ret.value);</div><div class="line">  <span class="keyword">var</span> value = toPromise.call(ctx, ret.value);</div><div class="line">  <span class="keyword">if</span> (value &amp;&amp; isPromise(value)) <span class="keyword">return</span> value.then(onFulfilled, onRejected);</div><div class="line">  <span class="keyword">return</span> onRejected(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'You may only yield a function, promise, generator, array, or object, '</span></div><div class="line">    + <span class="string">'but the following object was passed: "'</span> + <span class="built_in">String</span>(ret.value) + <span class="string">'"'</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当中间件执行结束了，就把Promise的状态设置为成功。否则就将<code>ret</code>(也就是下一个中间件)再用co包一次。主要看<code>toPromise</code>的这几行代码即可</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">toPromise</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">  <span class="keyword">if</span> (isGeneratorFunction(obj) || isGenerator(obj)) <span class="keyword">return</span> co.call(<span class="keyword">this</span>, obj);</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意噢<code>toPromise</code>这个时候的返回值是一个Promise，这个非常关键，是下一个中间件执行完成之后回溯到上一个中间件中断执行处继续执行的关键</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params">ret</span>) </span>&#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">  <span class="keyword">var</span> value = toPromise.call(ctx, ret.value);</div><div class="line">  <span class="comment">// 即通过前面toPromise返回的Promise实现，当后一个中间件执行结束，回退到上一个中间件中断处继续执行</span></div><div class="line">  <span class="keyword">if</span> (value &amp;&amp; isPromise(value)) <span class="keyword">return</span> value.then(onFulfilled, onRejected); </div><div class="line">  <span class="comment">// xxx </span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>看到这里，我们可以总结出，几乎koa的中间件都会被co给包装一次，而每一个中间件又可以通过Promise的then去监测其后一个中间件是否结束，后一个中间件结束后会执行前一个中间件用then监听的操作，这个操作便是执行该中间件yield next后面的那些代码</strong></p>
+<p>打个比方：</p>
+<p>当koa中接收到一个请求的时候，请求将经过两个中间件，分别是<code>中间件1</code>和<code>中间件2</code>，</p>
+<p><strong>中间件1</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 中间件1在yield 中间件2之前的代码</span></div><div class="line"></div><div class="line"><span class="keyword">yield</span> 中间件<span class="number">2</span></div><div class="line"></div><div class="line"><span class="comment">// 中间件2执行完成之后继续执行中间件1的代码</span></div></pre></td></tr></table></figure>
+<p><strong>中间件2</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 中间件2在yield noop中间件之前的代码</span></div><div class="line"></div><div class="line"><span class="keyword">yield</span> noop中间件</div><div class="line"></div><div class="line"><span class="comment">// noop中间件执行完成之后继续执行中间件2的代码</span></div></pre></td></tr></table></figure>
+<p><strong>那么处理的过程就是co会立即调用onFulfilled来执行中间件1前半部分代码，遇到<code>yield 中间件2</code>的时候得到中间件2generator对象，紧接着，又把这个对象放到co里面继续执行一遍，以此类推下去知道最后一个中间件（我们这里的指的是那个空的noop中间件）执行结束，继而马上调用promise的resolve方法表示结束，ok，这个时候中间件2监听到noop执行结束了，马上又去执行了onFulfilled来执行yield noop中间件后半部分代码，好啦这个时候中间件2也执行结束了，也会马上调用promise的resolve方法表示结束,ok，这个时候中间件1监听到中间件2执行结束了，马上又去执行了onFulfilled来执行yield 中间件2后半部分代码，最后中间件全部执行完了，就执行respond.call(ctx);</strong></p>
+<p>啊 啊 啊好绕，不过慢慢看，仔细想，还是可以想明白的。用代码表示这个过程有点类似</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">new Promise((resolve, reject) =&gt; &#123;</div><div class="line">  // 我是中间件1</div><div class="line">  yield new Promise((resolve, reject) =&gt; &#123;</div><div class="line">    // 我是中间件2</div><div class="line">    yield new Promise((resolve, reject) =&gt; &#123;</div><div class="line">      // 我是body</div><div class="line">    &#125;)</div><div class="line">    // 我是中间件2</div><div class="line">  &#125;)</div><div class="line">  // 我是中间件1</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/%E4%B8%AD%E9%97%B4%E4%BB%B6.png" alt="中间件执行顺序"></p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p> 罗里吧嗦说了一大堆，也不知道有没有把执行原理说明白。欢迎大家拍砖</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/koa/" rel="tag">#koa</a>
+          
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/17/走一步再走一步，揭开co的神秘面纱/" rel="next" title="走一步再走一步，揭开co的神秘面纱">
+                <i class="fa fa-chevron-left"></i> 走一步再走一步，揭开co的神秘面纱
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/05/17/koa源码分析之中间件执行/"
+     data-title="你知道koa中的中间件执行原理吗？"
+     data-content=""
+     data-url="https://qianlongo.github.io/2017/05/17/koa源码分析之中间件执行/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/17/koa源码分析之中间件执行/"
+           data-title="你知道koa中的中间件执行原理吗？" data-url="https://qianlongo.github.io/2017/05/17/koa源码分析之中间件执行/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://sfault-avatar.b0.upaiyun.com/893/290/893290401-5621cb66a2ed6_huge256"
+               alt="谦龙" />
+          <p class="site-author-name" itemprop="name">谦龙</p>
+          <p class="site-description motion-element" itemprop="description">热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qianlongo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5607962277/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qian-long-16-72" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用在前面"><span class="nav-number">2.</span> <span class="nav-text">用在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#co-wrap"><span class="nav-number">3.</span> <span class="nav-text">co.wrap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中间件开始跑起来啦"><span class="nav-number">4.</span> <span class="nav-text">中间件开始跑起来啦</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">5.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谦龙</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"qianlongo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+
+    $(document).click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("nnrLyBcuNRbOdTn45bzlEBC5-gzGzoHsz", "ru8RIcugE0RouivkbirObO9j");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
