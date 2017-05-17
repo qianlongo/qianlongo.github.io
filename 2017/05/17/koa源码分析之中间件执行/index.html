@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f363339363931332f6b6f612f6c6f676f2e706e67.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/timg2.jpeg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/%E4%B8%AD%E9%97%B4%E4%BB%B6.png">
-<meta property="og:updated_time" content="2017-05-17T17:38:16.000Z">
+<meta property="og:updated_time" content="2017-05-17T17:40:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你知道koa中间件执行原理吗？">
 <meta name="twitter:description" content="前言原文地址
@@ -431,9 +431,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">new Promise((resolve, reject) =&gt; &#123;</div><div class="line">  // 我是中间件1</div><div class="line">  yield new Promise((resolve, reject) =&gt; &#123;</div><div class="line">    // 我是中间件2</div><div class="line">    yield new Promise((resolve, reject) =&gt; &#123;</div><div class="line">      // 我是body</div><div class="line">    &#125;)</div><div class="line">    // 我是中间件2</div><div class="line">  &#125;)</div><div class="line">  // 我是中间件1</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/%E4%B8%AD%E9%97%B4%E4%BB%B6.png" alt="中间件执行顺序"></p>
 <h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
-<p> 罗里吧嗦说了一大堆，也不知道有没有把执行原理说明白。欢迎大家拍砖</p>
+<p> 罗里吧嗦说了一大堆，也不知道有没有把执行原理说明白。</p>
 </blockquote>
-<p><a href="https://github.com/qianlongo/resume-native/issues/1" target="_blank" rel="external">原文地址</a></p>
+<p>如果对你理解koa有些许帮助，不介意的话，点击源码地址点颗小星星吧</p>
+<p>如果对你理解koa有些许帮助，不介意的话，点击源码地址点颗小星星吧</p>
+<p>如果对你理解koa有些许帮助，不介意的话，点击源码地址点颗小星星吧</p>
+<p><a href="https://github.com/qianlongo/resume-native" target="_blank" rel="external">源码地址</a></p>
 
       
     </div>
