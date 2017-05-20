@@ -284,6 +284,128 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/20/如何写一个实用的bind？/" itemprop="url">
+                  如何写一个实用的bind？
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-20T23:25:53+08:00" content="2017-05-20">
+              2017-05-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/20/如何写一个实用的bind？/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/20/如何写一个实用的bind？/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/20/如何写一个实用的bind？/" class="leancloud_visitors" data-flag-title="如何写一个实用的bind？">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>事情要从js中的<code>this</code>开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，<code>this</code>简直如同回调地狱般，神乎其神，让人无法捉摸透。</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/cxt.jpeg" alt="ctx"></p>
+<h2 id="关于this"><a href="#关于this" class="headerlink" title="关于this"></a>关于this</h2><blockquote>
+<p>我们都知道<code>this</code>在js中不是在在函数定义时就确定的，他是由函数执行时所在的上下文确定。那么换句话说，这个函数不跑起来，你永远没法知道其<code>this</code>是个啥，很多时候也许我们就是要这个函数中运行时的this，和定义时一样那该怎么办。</p>
+</blockquote>
+<p>如果你有兴趣可以看一下之前写的这篇文章<a href="https://qianlongo.github.io/2016/12/31/this-%E6%83%B3%E8%AF%B4%E7%88%B1%E4%BD%A0%E4%B8%8D%E5%AE%B9%E6%98%93/">this-想说爱你不容易</a>，这里不会详细去说<code>this</code>。</p>
+<p><strong>bind</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  showName () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> showName = obj.showName </div><div class="line"></div><div class="line">showName() <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<p>上面的代码我们要让他输出<code>qianlongo</code>应该怎么做？原生js给我们提供了一个bind函数，试试看。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  showName () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> showName = obj.showName.bind(obj)</div><div class="line"></div><div class="line">showName() <span class="comment">// qianlongo</span></div></pre></td></tr></table></figure>
+<p>是的经过bind的处理，showName已经无论在合适调用其内部的this都会指向obj了。接下来</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/17/koa源码分析之中间件执行/" itemprop="url">
                   你知道koa中间件执行原理吗？
                 </a>
@@ -737,123 +859,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/09/那些不起眼的小工具？/" itemprop="url">
-                  那些不起眼的小工具？
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-09T22:14:12+08:00" content="2017-05-09">
-              2017-05-09
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/05/09/那些不起眼的小工具？/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/09/那些不起眼的小工具？/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/05/09/那些不起眼的小工具？/" class="leancloud_visitors" data-flag-title="那些不起眼的小工具？">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/underscore-analysis/issues/5">原文链接</a></p>
-<p><a href="https://github.com/qianlongo/underscore-analysis">源码地址</a></p>
-<blockquote>
-<p>今天想写一篇关于下划线这个库中一些小工具函数的故事，我们都听过一句话，一个成功的男人背后一定有一个了不起的女人(😀，其实也不一定，也许还有男人呢)，那么一个经久不衰，为程序猿们所称道的库，框架的背后自然也有不少看起来不起眼，甚至你都懒得正眼瞧他的”小工具”存在。正是这些背后的无名英雄为类库和框架的形成，贡献了不可磨灭的力量。</p>
-</blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/tool.jpeg" alt="工具图片"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/09/那些不起眼的小工具？/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -899,7 +904,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">42</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
