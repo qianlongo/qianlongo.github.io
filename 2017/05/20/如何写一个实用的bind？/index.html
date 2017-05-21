@@ -84,32 +84,26 @@
 
 
 
-<meta name="description" content="前言
-事情要从js中的this开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，this简直如同回调地狱般，神乎其神，让人无法捉摸透。
+<meta name="description" content="前言这是underscore.js源码分析的第五篇，如果你对这个系列感兴趣，欢迎点击
+underscore-analysis/ watch一下，随时可以看到动态更新。
 
-
-关于this
-我们都知道this在js中不是在在函数定义时就确定的，他是由函数执行时所在的上下文确定。那么换句话说，这个函数不跑起来，你永远没法知道其this是个啥，很多时候也许我们就是要这个函数中运行时的this，和定义时一样那该怎么办。">
+事情要从js中的this开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，this简直如同回调地狱般，神乎其神，让人无法捉摸透。但是通过原生js中的bind方法，我们可以显示绑定函数的this作用域，而无需担心运">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何写一个实用的bind？">
 <meta property="og:url" content="https://qianlongo.github.io/2017/05/20/如何写一个实用的bind？/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="前言
-事情要从js中的this开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，this简直如同回调地狱般，神乎其神，让人无法捉摸透。
+<meta property="og:description" content="前言这是underscore.js源码分析的第五篇，如果你对这个系列感兴趣，欢迎点击
+underscore-analysis/ watch一下，随时可以看到动态更新。
 
-
-关于this
-我们都知道this在js中不是在在函数定义时就确定的，他是由函数执行时所在的上下文确定。那么换句话说，这个函数不跑起来，你永远没法知道其this是个啥，很多时候也许我们就是要这个函数中运行时的this，和定义时一样那该怎么办。">
+事情要从js中的this开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，this简直如同回调地狱般，神乎其神，让人无法捉摸透。但是通过原生js中的bind方法，我们可以显示绑定函数的this作用域，而无需担心运">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/cxt.jpeg">
-<meta property="og:updated_time" content="2017-05-20T16:19:14.000Z">
+<meta property="og:updated_time" content="2017-05-21T13:13:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何写一个实用的bind？">
-<meta name="twitter:description" content="前言
-事情要从js中的this开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，this简直如同回调地狱般，神乎其神，让人无法捉摸透。
+<meta name="twitter:description" content="前言这是underscore.js源码分析的第五篇，如果你对这个系列感兴趣，欢迎点击
+underscore-analysis/ watch一下，随时可以看到动态更新。
 
-
-关于this
-我们都知道this在js中不是在在函数定义时就确定的，他是由函数执行时所在的上下文确定。那么换句话说，这个函数不跑起来，你永远没法知道其this是个啥，很多时候也许我们就是要这个函数中运行时的this，和定义时一样那该怎么办。">
+事情要从js中的this开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，this简直如同回调地狱般，神乎其神，让人无法捉摸透。但是通过原生js中的bind方法，我们可以显示绑定函数的this作用域，而无需担心运">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/cxt.jpeg">
 
 
@@ -355,26 +349,74 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>事情要从js中的<code>this</code>开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，<code>this</code>简直如同回调地狱般，神乎其神，让人无法捉摸透。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是underscore.js源码分析的第五篇，如果你对这个系列感兴趣，欢迎点击</p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/" target="_blank" rel="external">underscore-analysis/</a> watch一下，随时可以看到动态更新。</p>
+<blockquote>
+<p>事情要从js中的<code>this</code>开始说起，你是不是也经常有种无法掌控和知晓它的感觉，对于初学者来说，<code>this</code>简直如同回调地狱般，神乎其神，让人无法捉摸透。但是通过原生js中的bind方法，我们可以显示绑定函数的<code>this</code>作用域，而无需担心运行时是否会改变而不符合自己的预期。当然了下划线中的bind也是模仿它的功能同样可以达到类似的效果。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/cxt.jpeg" alt="ctx"></p>
-<h2 id="关于this"><a href="#关于this" class="headerlink" title="关于this"></a>关于this</h2><blockquote>
-<p>我们都知道<code>this</code>在js中不是在在函数定义时就确定的，他是由函数执行时所在的上下文确定。那么换句话说，这个函数不跑起来，你永远没法知道其<code>this</code>是个啥，很多时候也许我们就是要这个函数中运行时的this，和定义时一样那该怎么办。</p>
+<a id="more"></a>
+<h2 id="bind简单回顾"><a href="#bind简单回顾" class="headerlink" title="bind简单回顾"></a>bind简单回顾</h2><blockquote>
+<p>我们从mdn上的介绍来回顾一下<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind" target="_blank" rel="external">bind</a>的使用方法。</p>
 </blockquote>
-<p>如果你有兴趣可以看一下之前写的这篇文章<a href="https://qianlongo.github.io/2016/12/31/this-%E6%83%B3%E8%AF%B4%E7%88%B1%E4%BD%A0%E4%B8%8D%E5%AE%B9%E6%98%93/">this-想说爱你不容易</a>，这里不会详细去说<code>this</code>。</p>
-<p><strong>bind</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  showName () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> showName = obj.showName </div><div class="line"></div><div class="line">showName() <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
-<p>上面的代码我们要让他输出<code>qianlongo</code>应该怎么做？原生js给我们提供了一个bind函数，试试看。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  showName () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> showName = obj.showName.bind(obj)</div><div class="line"></div><div class="line">showName() <span class="comment">// qianlongo</span></div></pre></td></tr></table></figure>
-<p>是的经过bind的处理，showName在调用的时候其内部的this指向obj了。如果让我们自己实现一个bind，你会怎么做？</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> bind = <span class="function"><span class="keyword">function</span> (<span class="params">fn, ctx</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> fn.apply(ctx, <span class="built_in">arguments</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>好我们用自己实现的bind来给<code>showName</code>绑定this作用域</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> showName = bind(obj.showName, obj)</div><div class="line"></div><div class="line">showName() <span class="comment">// qianlongo</span></div></pre></td></tr></table></figure>
-<p>嘿嘿，好像和原生的bind有点像噢，但是还不够，原生的bind还可以这样用</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">num1</span>: <span class="number">1</span>,</div><div class="line">  sum (num2, num3) &#123;</div><div class="line">    <span class="keyword">let</span> sum = <span class="keyword">this</span>.num1 + num2 + num3</div><div class="line">    <span class="built_in">console</span>.log(sum)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">obj.sum(<span class="number">2</span>, <span class="number">3</span>) <span class="comment">// 6</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> sum = obj.sum.bind(obj, <span class="number">2</span>)</div><div class="line">sum(<span class="number">3</span>) <span class="comment">// 6</span></div></pre></td></tr></table></figure>
-<p>也就是说，在调用bind的时候还可以传入一些额外的参数，这些参数就是bind函数执行之后的函数的部分参数。继续，自己实现应该肿么办。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> bind = <span class="function"><span class="keyword">function</span> (<span class="params">fn, ctx</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> slice = [].slice</div><div class="line">  <span class="keyword">let</span> args = slice.call(<span class="built_in">arguments</span>, <span class="number">2</span>)</div><div class="line">  </div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> fn.apply(ctx, args.concat(slice.call(<span class="built_in">arguments</span>)))</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> sum = bind(obj.sum, obj, <span class="number">2</span>)</div><div class="line">sum(<span class="number">3</span>) <span class="comment">// 6</span></div></pre></td></tr></table></figure>
+<p><strong>bind方法创建一个新的函数, 当被调用时，它的this关键字被设置为提供的值。</strong></p>
+<p><strong>语法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fun.bind(thisArg[, arg1[, arg2[, ...]]])</div></pre></td></tr></table></figure>
+<p>简单地看一下这些参数的含义</p>
+<ol>
+<li><p>thisArg</p>
+<blockquote>
+<p>当绑定函数被调用时，该参数会作为原函数运行时的this指向,当使用new 操作符调用绑定函数时，该参数无效。</p>
+</blockquote>
+</li>
+<li><p>arg1, arg2, …</p>
+<blockquote>
+<p>当绑定函数被调用时，这些参数将置于实参之前传递给被绑定的方法。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>绑定this作用域示例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.name = <span class="string">'windowName'</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  showName () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">obj.showName() <span class="comment">// qianlongo</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> showName = obj.showName</div><div class="line">  showName() <span class="comment">// windowName</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> bindShowName = obj.showName.bind(obj)</div><div class="line">  bindShowName() <span class="comment">// qianlongo</span></div></pre></td></tr></table></figure>
+<p>通过以上简单示例，我们知道了第一个参数的作用就是绑定函数运行时候的<code>this</code>指向</p>
+<p><strong>第二个参数开始起使用示例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> sum = <span class="function">(<span class="params">num1, num2</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(num1 + num2)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> bindSum = sum.bind(<span class="literal">null</span>, <span class="number">1</span>)</div><div class="line">bindSum(<span class="number">2</span>) <span class="comment">// 3</span></div></pre></td></tr></table></figure>
+<p><strong>bind可以使一个函数拥有预设的初始参数。这些参数（如果有的话）作为bind的第二个参数跟在this（或其他对象）后面，之后它们会被插入到目标函数的参数列表的开始位置，传递给绑定函数的参数会跟在它们的后面。</strong></p>
+<p>参数的使用基本上明白了，我们再来看看使用new去调用bind之后的函数是怎么回事。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">// Person &#123;&#125;</span></div><div class="line">  <span class="keyword">this</span>.name = name</div><div class="line">  <span class="keyword">this</span>.sex = sex</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">age</span>: <span class="number">100</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> bindPerson = Person.bind(obj, <span class="string">'qianlongo'</span>)</div><div class="line"></div><div class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> bindPerson(<span class="string">'boy'</span>)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(p) <span class="comment">// Person &#123;name: "qianlongo", sex: "boy"&#125;</span></div></pre></td></tr></table></figure>
+<p>有没有发现bindPerson内部的this不再是bind的第一个参数obj，此时obj已经不再起效了。</p>
+<p>实际上bind的使用是有一定限制的，在一些低版本浏览器下不可用，你想不想看看下划线中是如何实现一个兼容性好的bind呢！！！come on</p>
+<h2 id="下划线中bind实现"><a href="#下划线中bind实现" class="headerlink" title="下划线中bind实现"></a>下划线中bind实现</h2><p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"> _.bind = <span class="function"><span class="keyword">function</span>(<span class="params">func, context</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果原生支持bind函数，就用原生的，并将对应的参数传进去</span></div><div class="line">  <span class="keyword">if</span> (nativeBind &amp;&amp; func.bind === nativeBind) <span class="keyword">return</span> nativeBind.apply(func, slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>));</div><div class="line">  <span class="comment">// 如果传入的func不是一个函数类型 就抛出异常</span></div><div class="line">  <span class="keyword">if</span> (!_.isFunction(func)) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Bind must be called on a function'</span>);</div><div class="line">  <span class="comment">// 把第三个参数以后的值存起来，接下来请看executeBound</span></div><div class="line">  <span class="keyword">var</span> args = slice.call(<span class="built_in">arguments</span>, <span class="number">2</span>);</div><div class="line">  <span class="keyword">var</span> bound = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> executeBound(func, bound, context, <span class="keyword">this</span>, args.concat(slice.call(<span class="built_in">arguments</span>)));</div><div class="line">  &#125;;</div><div class="line">  <span class="keyword">return</span> bound;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p><strong>executeBound实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> executeBound = <span class="function"><span class="keyword">function</span>(<span class="params">sourceFunc, boundFunc, context, callingContext, args</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果调用方式不是new func的形式就直接调用sourceFunc，并且给到对应的参数即可</span></div><div class="line">  <span class="keyword">if</span> (!(callingContext <span class="keyword">instanceof</span> boundFunc)) <span class="keyword">return</span> sourceFunc.apply(context, args); </div><div class="line">  <span class="comment">// 处理new调用的形式</span></div><div class="line">  <span class="keyword">var</span> self = baseCreate(sourceFunc.prototype);</div><div class="line">  <span class="keyword">var</span> result = sourceFunc.apply(self, args);</div><div class="line">  <span class="keyword">if</span> (_.isObject(result)) <span class="keyword">return</span> result;</div><div class="line">  <span class="keyword">return</span> self;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>上面的源码都做了相应的注释，我们着重来看一下<code>executeBound</code>的实现</p>
+<p>先看一下这些参数都代表什么含义</p>
+<ol>
+<li>sourceFunc：原函数，待绑定函数</li>
+<li>boundFunc： 绑定后函数</li>
+<li>context：绑定后函数<code>this</code>指向的上下文</li>
+<li>callingContext：绑定后函数的执行上下文，通常就是 this</li>
+<li>args：绑定后的函数执行所需参数</li>
+</ol>
+<p>ok，我们来看一下第一句</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!(callingContext <span class="keyword">instanceof</span> boundFunc)) <span class="keyword">return</span> sourceFunc.apply(context, args);</div></pre></td></tr></table></figure>
+<p>这句话是为了判断绑定后的函数是以new关键字被调用还是普通的函数调用的方式，举个例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> Person)) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">console</span>.log(<span class="string">'非new调用方式'</span>)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'new 调用方式'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person() <span class="comment">// 非new调用方式</span></div><div class="line"><span class="keyword">new</span> Person() <span class="comment">// new 调用方式</span></div></pre></td></tr></table></figure>
+<p>所以如果你希望自己写的构造函数无论是<code>new</code>还是没用<code>new</code>都起效的话可以用下面的代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> Person)) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Person(name, sex)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">this</span>.name = name</div><div class="line">  <span class="keyword">this</span>.sex = sex</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">new</span> Person(<span class="string">'qianlongo'</span>, <span class="string">'boy'</span>) <span class="comment">// Person &#123;name: "qianlongo", sex: "boy"&#125;</span></div><div class="line"></div><div class="line">Person(<span class="string">'qianlongo'</span>, <span class="string">'boy'</span>) <span class="comment">// Person &#123;name: "qianlongo", sex: "boy"&#125;</span></div></pre></td></tr></table></figure>
+<p>我们回到<code>executeBound</code>的解析</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!(callingContext <span class="keyword">instanceof</span> boundFunc)) <span class="keyword">return</span> sourceFunc.apply(context, args);</div></pre></td></tr></table></figure>
+<p><code>callingContext</code>是被绑定后的函数的<code>this</code>作用域，<code>boundFunc</code>就是那个被绑定后的函数，那么通过这个if判断，当为非<code>new</code>调用形式的时候，直接利用<code>apply</code>处理即可。</p>
+<p>但是如果是用<code>new</code>调用的呢？我们看下面这段代码,别看短短的四行代码里面知识点挺多的呢！</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 这里拿到的是一个空对象，且其继承于原函数的原型链prototype</span></div><div class="line"><span class="keyword">var</span> self = baseCreate(sourceFunc.prototype);</div><div class="line"><span class="comment">// 构造函数执行之后的返回值</span></div><div class="line"><span class="comment">// 一般情况下是没有返回值的，也就是undefined</span></div><div class="line"><span class="comment">// 但是有时候写构造函数的时候会显示地返回一个obj</span></div><div class="line"><span class="keyword">var</span> result = sourceFunc.apply(self, args);</div><div class="line"><span class="comment">// 所以去判断结果是不是object，如果是那么返回构造函数返回的object</span></div><div class="line"><span class="keyword">if</span> (_.isObject(result)) <span class="keyword">return</span> result;</div><div class="line"><span class="comment">// 如果没有显示返回object，就返回原函数执行结束后的实例</span></div><div class="line"><span class="keyword">return</span> self;</div></pre></td></tr></table></figure>
+<p>好，到这里，我有一个疑问，<code>baseCreate</code>是个什么鬼？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Ctor = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> baseCreate = <span class="function"><span class="keyword">function</span>(<span class="params">prototype</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果prototype不是object类型直接返回空对象</span></div><div class="line">  <span class="keyword">if</span> (!_.isObject(prototype)) <span class="keyword">return</span> &#123;&#125;;</div><div class="line">  <span class="comment">// 如果原生支持create则用原生的</span></div><div class="line">  <span class="keyword">if</span> (nativeCreate) <span class="keyword">return</span> nativeCreate(prototype); </div><div class="line">  <span class="comment">// 将prototype赋值为Ctor构造函数的原型</span></div><div class="line">  Ctor.prototype = prototype; </div><div class="line">  <span class="comment">// 创建一个Ctor实例对象</span></div><div class="line">  <span class="keyword">var</span> result = <span class="keyword">new</span> Ctor; </div><div class="line">  <span class="comment">// 为了下一次使用，将原型清空</span></div><div class="line">  Ctor.prototype = <span class="literal">null</span>; </div><div class="line">  <span class="comment">// 最后将实例返回</span></div><div class="line">  <span class="keyword">return</span> result; </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>是不是好简单，就是实现了原生的Object.create用来做一些继承的事情。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>文章很简短，知道怎么实现一个原生的bind就行。如果你对apply、call和this感兴趣，欢迎查看</p>
+</blockquote>
+<p><a href="https://qianlongo.github.io/2016/04/26/js%E4%B8%ADcall%E3%80%81apply%E3%80%81bind%E9%82%A3%E4%BA%9B%E4%BA%8B/">js中call、apply、bind那些事</a></p>
+<p><a href="https://qianlongo.github.io/2016/12/31/this-%E6%83%B3%E8%AF%B4%E7%88%B1%E4%BD%A0%E4%B8%8D%E5%AE%B9%E6%98%93/#more">this-想说爱你不容易</a></p>
 
       
     </div>
@@ -571,7 +613,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于this"><span class="nav-number">2.</span> <span class="nav-text">关于this</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bind简单回顾"><span class="nav-number">2.</span> <span class="nav-text">bind简单回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下划线中bind实现"><span class="nav-number">3.</span> <span class="nav-text">下划线中bind实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">4.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
