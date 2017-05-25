@@ -284,6 +284,149 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/25/这些有趣的函数方法你用过几个/" itemprop="url">
+                  这些有趣的函数方法你用过几个
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-25T21:34:32+08:00" content="2017-05-25">
+              2017-05-25
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/25/这些有趣的函数方法你用过几个/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/25/这些有趣的函数方法你用过几个/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/25/这些有趣的函数方法你用过几个/" class="leancloud_visitors" data-flag-title="这些有趣的函数方法你用过几个">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击</p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/" target="_blank" rel="external">underscore-analysis/</a> watch一下，随时可以看到动态更新。</p>
+<blockquote>
+<p>下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如<code>_.after</code>,<code>_.before</code>，<code>_.defer</code>…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg" alt="function"></p>
+<h2 id="指定调用次数-after-before"><a href="#指定调用次数-after-before" class="headerlink" title="指定调用次数(after, before)"></a>指定调用次数(<code>after</code>, <code>before</code>)</h2><blockquote>
+<p>把这两个方法放在前面也是因为他们俩能够解决我们工作中至少以下两个问题</p>
+</blockquote>
+<ol>
+<li><p>如果你要等多个异步请求完成之后才去执行某个操作<code>fn</code>,那么你可以用<code>_.after</code>，而不必写多层异步回调地狱去实现需求</p>
+</li>
+<li><p>有一些应用可能需要进行初始化操作而且仅需要一次初始化就可以，一般的做法是在入口处对某个变量进行判断，如果为真那么认为已经初始化过了直接<code>return</code>掉，如果为假那么进行参数的初始化工作，并在完成初始化之后设置该变量为真，那么下次进入的时候便不必重复初始化了。</p>
+</li>
+</ol>
+<p><strong>对于问题1</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> async1 = <span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'异步任务1结束了'</span>)</div><div class="line">    cb()</div><div class="line">  &#125;, <span class="number">1000</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> async2 = <span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'异步任务2结束了'</span>)</div><div class="line">    cb()</div><div class="line">  &#125;, <span class="number">2000</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> fn = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我是两个任务都结束了才进行的任务'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果要在任务1，和任务2都结束了才进行<code>fn</code>任务，我们一般的写法是啥？<br>可能会下面这样写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">async1(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  async2(fn)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>这样确实可以保证任务<code>fn</code>是在前面两个异步任务都结束之后才进行，但是相信你是不太喜欢回调的写法的，这里举的异步任务只有两个，如果多了起来，恐怕就要蛋疼了。别疼，用下划线的<code>after</code>函数可以解救你。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fn = _.after(<span class="number">2</span>, fn)</div><div class="line"></div><div class="line">async1(fn)</div><div class="line">async2(fn)</div></pre></td></tr></table></figure>
+<p><strong>运行截图</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170525-220029@2x.png" alt="after举例"></p>
+<p>有木有很爽，不用写成回调地狱的形式了。那么接下来我们看看源码是怎么实现的。</p>
+<p><strong>after源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">_.after = <span class="function"><span class="keyword">function</span>(<span class="params">times, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 只有返回的函数被调用times次之后才执行func操作</span></div><div class="line">    <span class="keyword">if</span> (--times &lt; <span class="number">1</span>) &#123;</div><div class="line">      <span class="keyword">return</span> func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>源码简单到要死啊，但是就是这么神奇，妥妥地解决了我们的问题1。</p>
+<p><strong>对于问题2</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> app = &#123;</div><div class="line">  init (name, sex) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.initialized) &#123;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 进行参数的初始化工作</span></div><div class="line">    <span class="keyword">this</span>.name = name</div><div class="line">    <span class="keyword">this</span>.sex = sex</div><div class="line">    <span class="comment">// 初始化完成，设置标志</span></div><div class="line">    <span class="keyword">this</span>.initialized = <span class="literal">true</span></div><div class="line">  &#125;,</div><div class="line">  showInfo () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, <span class="keyword">this</span>.sex)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 传参数进行应用的初始化</span></div><div class="line"></div><div class="line">app.init(<span class="string">'qianlonog'</span>, <span class="string">'boy'</span>)</div><div class="line">app.init(<span class="string">'xiaohuihui'</span>, <span class="string">'girl'</span>)</div><div class="line">app.showInfo() <span class="comment">// qianlonog boy 注意这里打印出来的是第一次传入的参数</span></div></pre></td></tr></table></figure>
+<p>一般需要且只进行一次参数初始化工作的时候,我们可能会像上面那样做。但是其实如果用下划线中的<code>before</code>方法我们还可以这样做。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> app = &#123;</div><div class="line">  <span class="attr">init</span>: _.before(<span class="number">2</span>, <span class="function"><span class="keyword">function</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">    <span class="comment">// 进行参数的初始化工作</span></div><div class="line">    <span class="keyword">this</span>.name = name</div><div class="line">    <span class="keyword">this</span>.sex = sex</div><div class="line">  &#125;) ,</div><div class="line">  showInfo () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, <span class="keyword">this</span>.sex)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 传参数进行应用的初始化</span></div><div class="line"></div><div class="line">app.init(<span class="string">'qianlonog'</span>, <span class="string">'boy'</span>)</div><div class="line">app.init(<span class="string">'xiaohuihui'</span>, <span class="string">'girl'</span>)</div><div class="line">app.showInfo() <span class="comment">// qianlonog boy 注意这里打印出来的是第一次传入的参数</span></div></pre></td></tr></table></figure>
+<p>好玩吧，让我们看看<code>_.before</code>是怎么实现的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 创建一个函数，这个函数调用次数不超过times次</span></div><div class="line"><span class="comment">// 如果次数 &gt;= times 则最后一次调用函数的返回值将被记住并一直返回该值</span></div><div class="line"></div><div class="line">_.before = <span class="function"><span class="keyword">function</span>(<span class="params">times, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> memo;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 返回的函数每次调用都times减1</span></div><div class="line">    <span class="keyword">if</span> (--times &gt; <span class="number">0</span>) &#123; </div><div class="line">      <span class="comment">// 调用func，并传入外面传进来的参数</span></div><div class="line">      <span class="comment">// 需要注意的是，后一次调用的返回值会覆盖前一次</span></div><div class="line">      memo = func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 当调用次数够了，就将func销毁设置为null</span></div><div class="line">    <span class="keyword">if</span> (times &lt;= <span class="number">1</span>) func = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">return</span> memo;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>## </p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/05/20/如何写一个实用的bind？/" itemprop="url">
                   如何写一个实用的bind？
                 </a>
@@ -733,127 +876,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/10/教你认清这8大杀手锏/" itemprop="url">
-                  教你认清这8大杀手锏
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-10T21:47:14+08:00" content="2017-05-10">
-              2017-05-10
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/05/10/教你认清这8大杀手锏/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/10/教你认清这8大杀手锏/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/05/10/教你认清这8大杀手锏/" class="leancloud_visitors" data-flag-title="教你认清这8大杀手锏">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>underscore.js源码分析第三篇,前两篇地址分别是</p>
-<p><a href="https://github.com/qianlongo/underscore-analysis/issues/5">那些不起眼的小工具？</a></p>
-<p><a href="https://github.com/qianlongo/underscore-analysis/issues/4">(void 0)与undefined之间的小九九</a></p>
-<p><a href="https://github.com/qianlongo/underscore-analysis/issues/6">本篇原文链接</a></p>
-<p><a href="https://github.com/qianlongo/underscore-analysis">源码地址</a></p>
-<blockquote>
-<p>😔看了很多篇技术文章，却依然写不好前端。</p>
-</blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/145902-7a9b95469a275d2c.jpeg" alt=""></p>
-<p>从步入程序猿这个大坑开始到现在，已经看过数不清的技术文章和书籍，有的是零散的知识，有的是系列权威的教程，但为毛还写不好挚爱的前端，听说过一句话，<strong>这个世界又不是只有你一个人深爱而不得</strong>。但纵使如此，我也要技术这条路上一路走到黑。直到天涯迷了路，海角翻了船。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/10/教你认清这8大杀手锏/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -899,7 +921,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

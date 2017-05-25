@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript," />
+  <meta name="keywords" content="underscore源码分析系列," />
 
 
 
@@ -84,36 +84,37 @@
 
 
 
-<meta name="description" content="前言
-js中实现继承的方式只支持实现继承，即继承实际的方法，而实现继承主要是依靠原型链来完成的。
+<meta name="description" content="前言这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击
+underscore-analysis/ watch一下，随时可以看到动态更新。
 
-原型链式继承
-该方式实现的本质是重写原型对象，代之以一个新类型的实例。
+下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。
 
-1234567891011121314151617function SuperType()&amp;#123;    this.property=true;&amp;#125;SuperType.prototype.getSuperValue">
+
+指定调用次数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js面向对象继承浅析">
-<meta property="og:url" content="https://qianlongo.github.io/2016/03/05/js面向对象浅析--继承那些事/index.html">
+<meta property="og:title" content="这些有趣的函数方法你用过几个">
+<meta property="og:url" content="https://qianlongo.github.io/2017/05/25/这些有趣的函数方法你用过几个/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="前言
-js中实现继承的方式只支持实现继承，即继承实际的方法，而实现继承主要是依靠原型链来完成的。
+<meta property="og:description" content="前言这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击
+underscore-analysis/ watch一下，随时可以看到动态更新。
 
-原型链式继承
-该方式实现的本质是重写原型对象，代之以一个新类型的实例。
+下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。
 
-1234567891011121314151617function SuperType()&amp;#123;    this.property=true;&amp;#125;SuperType.prototype.getSuperValue">
-<meta property="og:image" content="https://qianlongo.github.io/img/extend.png">
-<meta property="og:updated_time" content="2016-03-25T16:32:08.000Z">
+
+指定调用次数">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170525-220029@2x.png">
+<meta property="og:updated_time" content="2017-05-25T14:34:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js面向对象继承浅析">
-<meta name="twitter:description" content="前言
-js中实现继承的方式只支持实现继承，即继承实际的方法，而实现继承主要是依靠原型链来完成的。
+<meta name="twitter:title" content="这些有趣的函数方法你用过几个">
+<meta name="twitter:description" content="前言这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击
+underscore-analysis/ watch一下，随时可以看到动态更新。
 
-原型链式继承
-该方式实现的本质是重写原型对象，代之以一个新类型的实例。
+下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。
 
-1234567891011121314151617function SuperType()&amp;#123;    this.property=true;&amp;#125;SuperType.prototype.getSuperValue">
-<meta name="twitter:image" content="https://qianlongo.github.io/img/extend.png">
+
+指定调用次数">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg">
 
 
 
@@ -134,9 +135,9 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
 
 
 
-  <link rel="canonical" href="https://qianlongo.github.io/2016/03/05/js面向对象浅析--继承那些事/"/>
+  <link rel="canonical" href="https://qianlongo.github.io/2017/05/25/这些有趣的函数方法你用过几个/"/>
 
-  <title> js面向对象继承浅析 | 谦龙的小天地 </title>
+  <title> 这些有趣的函数方法你用过几个 | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -302,7 +303,7 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
             
             
               
-                js面向对象继承浅析
+                这些有趣的函数方法你用过几个
               
             
           </h1>
@@ -314,8 +315,8 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T15:29:51+08:00" content="2016-03-05">
-              2016-03-05
+            <time itemprop="dateCreated" datetime="2017-05-25T21:34:32+08:00" content="2017-05-25">
+              2017-05-25
             </time>
           </span>
 
@@ -325,8 +326,8 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/05/js面向对象浅析--继承那些事/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/05/js面向对象浅析--继承那些事/" itemprop="commentsCount"></span>
+                <a href="/2017/05/25/这些有趣的函数方法你用过几个/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/25/这些有趣的函数方法你用过几个/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -336,7 +337,7 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
 
           
           
-             <span id="/2016/03/05/js面向对象浅析--继承那些事/" class="leancloud_visitors" data-flag-title="js面向对象继承浅析">
+             <span id="/2017/05/25/这些有趣的函数方法你用过几个/" class="leancloud_visitors" data-flag-title="这些有趣的函数方法你用过几个">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -358,39 +359,40 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>js中实现继承的方式只支持<strong>实现继承</strong>，即继承实际的方法，而实现继承主要是依靠<strong>原型链</strong>来完成的。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击</p>
+<p><a href="https://github.com/qianlongo/underscore-analysis/" target="_blank" rel="external">underscore-analysis/</a> watch一下，随时可以看到动态更新。</p>
+<blockquote>
+<p>下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如<code>_.after</code>,<code>_.before</code>，<code>_.defer</code>…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。</p>
 </blockquote>
-<h2 id="原型链式继承"><a href="#原型链式继承" class="headerlink" title="原型链式继承"></a>原型链式继承</h2><blockquote>
-<p>该方式实现的本质是重写原型对象，代之以一个<strong>新类型的实例</strong>。</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg" alt="function"></p>
+<h2 id="指定调用次数-after-before"><a href="#指定调用次数-after-before" class="headerlink" title="指定调用次数(after, before)"></a>指定调用次数(<code>after</code>, <code>before</code>)</h2><blockquote>
+<p>把这两个方法放在前面也是因为他们俩能够解决我们工作中至少以下两个问题</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function SuperType()&#123;</div><div class="line">    this.property=true;</div><div class="line">&#125;</div><div class="line">SuperType.prototype.getSuperValue=function()&#123;</div><div class="line">    return this.property;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function SubType()&#123;</div><div class="line">    this.subproperty=false;</div><div class="line">&#125;</div><div class="line">SubType.prototype = new SuperType();//继承</div><div class="line">SubType.prototype.getSubValue=function()&#123;//额外添加方法</div><div class="line">    return this.subproperty;</div><div class="line">&#125;</div><div class="line">var s = new SubType();</div><div class="line">    console.log(s.getSubValue());//false</div><div class="line">    console.log(s.getSuperValue());//true</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p><strong>借用纯原型链的问题：</strong>如果原型中包含引用类型的值，则实例间对该值的修改会相互影响，这不是我们希望看到的。</p>
-<h2 id="借用构造函数"><a href="#借用构造函数" class="headerlink" title="借用构造函数"></a>借用构造函数</h2><blockquote>
-<p>该方式的基本思想是在<strong>子类型</strong>的构造函数的内部调用超类型构造函数(父函数)</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function SuperType()&#123;</div><div class="line">     this.color=[&apos;green&apos;,&apos;red&apos;,&apos;black&apos;];</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> function SubType()&#123;</div><div class="line">     SuperType.call(this)//改变执行环境 实现继承</div><div class="line"> &#125;</div><div class="line"> var  s = new SubType();</div><div class="line">     s.color.push(&apos;pink&apos;);</div><div class="line">     console.log(s.color);//[ &apos;green&apos;, &apos;red&apos;, &apos;black&apos;, &apos;pink&apos; ]</div><div class="line"> var s1 = new SubType();</div><div class="line">     console.log(s1.color);//[ &apos;green&apos;, &apos;red&apos;, &apos;black&apos; ]</div></pre></td></tr></table></figure>
-<p><strong>构造函数的问题：</strong>方法都在构造函数内部定义，则函数复用无从谈起。</p>
-<h2 id="组合继承"><a href="#组合继承" class="headerlink" title="组合继承"></a>组合继承</h2><blockquote>
-<p>基本思路是使用原型链来实现对原型属性和方法的继承，通过构造函数实现实例属性的继承<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">function SuperType(name)&#123;</div><div class="line">       this.name=name;</div><div class="line">       this.color=[&apos;green&apos;,&apos;red&apos;,&apos;black&apos;];</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   SuperType.prototype.show=function()&#123;</div><div class="line">       console.log(this.name,this.color);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   function SubType(name,age)&#123;</div><div class="line">       SuperType.call(this,name)//改变执行环境 实现实例属性继承</div><div class="line">       this.age=age;</div><div class="line">   &#125;</div><div class="line">   SubType.prototype = new SuperType();//原型属性和方法继承</div><div class="line"></div><div class="line">   var s = new SubType(&apos;谦龙&apos;,100);</div><div class="line">       s.show();//谦龙 [&quot;green&quot;, &quot;red&quot;, &quot;black&quot;]</div><div class="line">   var s = new SubType(&apos;雏田&apos;,14);</div><div class="line">   s.show();//雏田 [&quot;green&quot;, &quot;red&quot;, &quot;black&quot;]</div></pre></td></tr></table></figure></p>
-</blockquote>
-<h2 id="原型式继承"><a href="#原型式继承" class="headerlink" title="原型式继承"></a>原型式继承</h2><blockquote>
-<p>该方法的特点是借助原型可以基于一个已有的对象创建新的对象，同时还不比因此创建自定义类型</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">function object(obj)&#123;</div><div class="line">    function F()&#123;&#125;;</div><div class="line">    F.prototype=obj;</div><div class="line">    //F.prototype.constructor=F; 有需要还可以修改constructor指向</div><div class="line">    return new F();</div><div class="line">&#125;</div><div class="line"></div><div class="line">var person=&#123;</div><div class="line">    name:&apos;谦龙&apos;,</div><div class="line">    color:[&apos;red&apos;,&apos;green&apos;,&apos;black&apos;]</div><div class="line">&#125;</div><div class="line">var p1 = object(person);</div><div class="line">    p1.color.push(&apos;pink&apos;);</div><div class="line"></div><div class="line">var p2 = object(person);</div><div class="line">p2.color.push(&apos;grey&apos;);</div><div class="line"></div><div class="line">console.log(person.color);//[&quot;red&quot;, &quot;green&quot;, &quot;black&quot;, &quot;pink&quot;, &quot;grey&quot;]</div></pre></td></tr></table></figure>
-<p><strong>ES5中的Object.creat()与该方式的行为相同</strong></p>
-<h2 id="寄生式继承"><a href="#寄生式继承" class="headerlink" title="寄生式继承"></a>寄生式继承</h2><blockquote>
-<p>该方式的思路是创建一个仅用来封装继承过程的函数，该函数在内部以某种方式来增强对象，最后将该对象返回。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">function object(obj)&#123;</div><div class="line">       function F()&#123;&#125;;</div><div class="line">       F.prototype=obj;</div><div class="line">       //F.prototype.constructor=F; 有需要还可以修改constructor指向</div><div class="line">       return new F();</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   function CObject(obj)&#123;</div><div class="line">       var clone=object(obj);</div><div class="line">       clone.sayHi=function()&#123;</div><div class="line">           alert(&apos;HI&apos;);</div><div class="line">       &#125;</div><div class="line">       return clone;</div><div class="line">   &#125;</div><div class="line">   var person=&#123;</div><div class="line">       name:&apos;谦龙&apos;,</div><div class="line">       color:[&apos;red&apos;,&apos;green&apos;,&apos;black&apos;]</div><div class="line">   &#125;</div><div class="line">   var s = CObject(person);</div><div class="line">       s.sayHi();</div></pre></td></tr></table></figure>
-<h2 id="寄生组合式继承"><a href="#寄生组合式继承" class="headerlink" title="寄生组合式继承"></a>寄生组合式继承</h2><blockquote>
-<p>思路是通过借用构造函数来继承属性，通过原型链的混合形式来继承方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">function SuperType(name)&#123;</div><div class="line">    this.name=name;</div><div class="line">    this.color=[&apos;green&apos;,&apos;red&apos;,&apos;black&apos;];</div><div class="line">&#125;</div><div class="line">SuperType.prototype.show=function()&#123;</div><div class="line">    console.log(this.name,this.color);</div><div class="line">&#125;</div><div class="line">function SubType(name,age)&#123;</div><div class="line">    SuperType.call(this,name)//改变执行环境 实现继承</div><div class="line">    this.age=age;</div><div class="line">&#125;</div><div class="line">function object(obj)&#123;</div><div class="line">    function F()&#123;&#125;;</div><div class="line">    F.prototype=obj;</div><div class="line">    //F.prototype.constructor=F; 有需要还可以修改constructor指向</div><div class="line">    return new F();</div><div class="line">&#125;</div><div class="line"></div><div class="line">function inheritPrototype(subType,superType)&#123;</div><div class="line">    var prototype=object(superType.prototype);</div><div class="line">    prototype.constructor=subType;</div><div class="line">    subType.prototype=prototype;</div><div class="line">&#125;</div><div class="line">inheritPrototype(SubType,SuperType);</div><div class="line">var s = new SubType(&apos;谦龙&apos;,100);</div><div class="line">s.show();//谦龙 [&quot;green&quot;, &quot;red&quot;, &quot;black&quot;]</div></pre></td></tr></table></figure></p>
-</blockquote>
-<h2 id="拷贝继承"><a href="#拷贝继承" class="headerlink" title="拷贝继承"></a>拷贝继承</h2><blockquote>
-<p>该方法思路是将另外一个对象的属性和方法拷贝至另一个对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function deepCopy(obj)&#123;</div><div class="line">           if(typeof obj !=&apos;object&apos;)&#123;</div><div class="line">               console.trace();</div><div class="line">               return obj;</div><div class="line">           &#125;</div><div class="line">           var newObj=&#123;&#125;;</div><div class="line">               for(var attr in obj)&#123;</div><div class="line">                   newObj[attr]=typeof obj[attr]==&apos;object&apos;?deepCopy(obj[attr]):obj[attr];//使用递归</div><div class="line">               &#125;</div><div class="line">           return newObj;</div><div class="line">       &#125;</div><div class="line">       var obj=&#123;</div><div class="line">           name:&apos;min&apos;,</div><div class="line">           age:20,</div><div class="line">           sex:&apos;boy&apos;,</div><div class="line">           json:&#123;</div><div class="line">               name2:&apos;huihui&apos;,</div><div class="line">               json3:&#123;</div><div class="line">                   name3:&apos;yahui&apos;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       var newObj=deepCopy(obj);</div><div class="line">       console.log(newObj);</div></pre></td></tr></table></figure></p>
-</blockquote>
-<p><img src="/img/extend.png" alt="图片描述"></p>
+<ol>
+<li><p>如果你要等多个异步请求完成之后才去执行某个操作<code>fn</code>,那么你可以用<code>_.after</code>，而不必写多层异步回调地狱去实现需求</p>
+</li>
+<li><p>有一些应用可能需要进行初始化操作而且仅需要一次初始化就可以，一般的做法是在入口处对某个变量进行判断，如果为真那么认为已经初始化过了直接<code>return</code>掉，如果为假那么进行参数的初始化工作，并在完成初始化之后设置该变量为真，那么下次进入的时候便不必重复初始化了。</p>
+</li>
+</ol>
+<p><strong>对于问题1</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> async1 = <span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'异步任务1结束了'</span>)</div><div class="line">    cb()</div><div class="line">  &#125;, <span class="number">1000</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> async2 = <span class="function">(<span class="params">cb</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'异步任务2结束了'</span>)</div><div class="line">    cb()</div><div class="line">  &#125;, <span class="number">2000</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> fn = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我是两个任务都结束了才进行的任务'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果要在任务1，和任务2都结束了才进行<code>fn</code>任务，我们一般的写法是啥？<br>可能会下面这样写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">async1(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  async2(fn)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>这样确实可以保证任务<code>fn</code>是在前面两个异步任务都结束之后才进行，但是相信你是不太喜欢回调的写法的，这里举的异步任务只有两个，如果多了起来，恐怕就要蛋疼了。别疼，用下划线的<code>after</code>函数可以解救你。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fn = _.after(<span class="number">2</span>, fn)</div><div class="line"></div><div class="line">async1(fn)</div><div class="line">async2(fn)</div></pre></td></tr></table></figure>
+<p><strong>运行截图</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170525-220029@2x.png" alt="after举例"></p>
+<p>有木有很爽，不用写成回调地狱的形式了。那么接下来我们看看源码是怎么实现的。</p>
+<p><strong>after源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">_.after = <span class="function"><span class="keyword">function</span>(<span class="params">times, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 只有返回的函数被调用times次之后才执行func操作</span></div><div class="line">    <span class="keyword">if</span> (--times &lt; <span class="number">1</span>) &#123;</div><div class="line">      <span class="keyword">return</span> func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>源码简单到要死啊，但是就是这么神奇，妥妥地解决了我们的问题1。</p>
+<p><strong>对于问题2</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> app = &#123;</div><div class="line">  init (name, sex) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.initialized) &#123;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 进行参数的初始化工作</span></div><div class="line">    <span class="keyword">this</span>.name = name</div><div class="line">    <span class="keyword">this</span>.sex = sex</div><div class="line">    <span class="comment">// 初始化完成，设置标志</span></div><div class="line">    <span class="keyword">this</span>.initialized = <span class="literal">true</span></div><div class="line">  &#125;,</div><div class="line">  showInfo () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, <span class="keyword">this</span>.sex)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 传参数进行应用的初始化</span></div><div class="line"></div><div class="line">app.init(<span class="string">'qianlonog'</span>, <span class="string">'boy'</span>)</div><div class="line">app.init(<span class="string">'xiaohuihui'</span>, <span class="string">'girl'</span>)</div><div class="line">app.showInfo() <span class="comment">// qianlonog boy 注意这里打印出来的是第一次传入的参数</span></div></pre></td></tr></table></figure>
+<p>一般需要且只进行一次参数初始化工作的时候,我们可能会像上面那样做。但是其实如果用下划线中的<code>before</code>方法我们还可以这样做。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> app = &#123;</div><div class="line">  <span class="attr">init</span>: _.before(<span class="number">2</span>, <span class="function"><span class="keyword">function</span> (<span class="params">name, sex</span>) </span>&#123;</div><div class="line">    <span class="comment">// 进行参数的初始化工作</span></div><div class="line">    <span class="keyword">this</span>.name = name</div><div class="line">    <span class="keyword">this</span>.sex = sex</div><div class="line">  &#125;) ,</div><div class="line">  showInfo () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, <span class="keyword">this</span>.sex)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 传参数进行应用的初始化</span></div><div class="line"></div><div class="line">app.init(<span class="string">'qianlonog'</span>, <span class="string">'boy'</span>)</div><div class="line">app.init(<span class="string">'xiaohuihui'</span>, <span class="string">'girl'</span>)</div><div class="line">app.showInfo() <span class="comment">// qianlonog boy 注意这里打印出来的是第一次传入的参数</span></div></pre></td></tr></table></figure>
+<p>好玩吧，让我们看看<code>_.before</code>是怎么实现的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 创建一个函数，这个函数调用次数不超过times次</span></div><div class="line"><span class="comment">// 如果次数 &gt;= times 则最后一次调用函数的返回值将被记住并一直返回该值</span></div><div class="line"></div><div class="line">_.before = <span class="function"><span class="keyword">function</span>(<span class="params">times, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> memo;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 返回的函数每次调用都times减1</span></div><div class="line">    <span class="keyword">if</span> (--times &gt; <span class="number">0</span>) &#123; </div><div class="line">      <span class="comment">// 调用func，并传入外面传进来的参数</span></div><div class="line">      <span class="comment">// 需要注意的是，后一次调用的返回值会覆盖前一次</span></div><div class="line">      memo = func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 当调用次数够了，就将func销毁设置为null</span></div><div class="line">    <span class="keyword">if</span> (times &lt;= <span class="number">1</span>) func = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">return</span> memo;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>## </p>
 
       
     </div>
@@ -413,7 +415,7 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
       
         <div class="post-tags">
           
-            <a href="/tags/javascript/" rel="tag">#javascript</a>
+            <a href="/tags/underscore源码分析系列/" rel="tag">#underscore源码分析系列</a>
           
         </div>
       
@@ -422,17 +424,13 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/05/实习月总结/" rel="next" title="实习月总结">
-                <i class="fa fa-chevron-left"></i> 实习月总结
+              <a href="/2017/05/20/如何写一个实用的bind？/" rel="next" title="如何写一个实用的bind？">
+                <i class="fa fa-chevron-left"></i> 如何写一个实用的bind？
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/05/事件流详解/" rel="prev" title="事件流详解">
-                事件流详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -447,10 +445,10 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/03/05/js面向对象浅析--继承那些事/"
-     data-title="js面向对象继承浅析"
+        <div class="ds-share flat" data-thread-key="2017/05/25/这些有趣的函数方法你用过几个/"
+     data-title="这些有趣的函数方法你用过几个"
      data-content=""
-     data-url="https://qianlongo.github.io/2016/03/05/js面向对象浅析--继承那些事/">
+     data-url="https://qianlongo.github.io/2017/05/25/这些有趣的函数方法你用过几个/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -477,8 +475,8 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/05/js面向对象浅析--继承那些事/"
-           data-title="js面向对象继承浅析" data-url="https://qianlongo.github.io/2016/03/05/js面向对象浅析--继承那些事/">
+      <div class="ds-thread" data-thread-key="2017/05/25/这些有趣的函数方法你用过几个/"
+           data-title="这些有趣的函数方法你用过几个" data-url="https://qianlongo.github.io/2017/05/25/这些有趣的函数方法你用过几个/">
       </div>
     
   </div>
@@ -591,7 +589,7 @@ js中实现继承的方式只支持实现继承，即继承实际的方法，而
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型链式继承"><span class="nav-number">2.</span> <span class="nav-text">原型链式继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#借用构造函数"><span class="nav-number">3.</span> <span class="nav-text">借用构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合继承"><span class="nav-number">4.</span> <span class="nav-text">组合继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型式继承"><span class="nav-number">5.</span> <span class="nav-text">原型式继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寄生式继承"><span class="nav-number">6.</span> <span class="nav-text">寄生式继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寄生组合式继承"><span class="nav-number">7.</span> <span class="nav-text">寄生组合式继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝继承"><span class="nav-number">8.</span> <span class="nav-text">拷贝继承</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指定调用次数-after-before"><span class="nav-number">2.</span> <span class="nav-text">指定调用次数(after, before)</span></a></li></ol></div>
             
           </div>
         </section>
