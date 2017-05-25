@@ -87,10 +87,7 @@
 <meta name="description" content="前言这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击
 underscore-analysis/ watch一下，随时可以看到动态更新。
 
-下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。
-
-
-指定调用次数">
+下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="这些有趣的函数方法你用过几个">
 <meta property="og:url" content="https://qianlongo.github.io/2017/05/25/这些有趣的函数方法你用过几个/index.html">
@@ -98,23 +95,17 @@ underscore-analysis/ watch一下，随时可以看到动态更新。
 <meta property="og:description" content="前言这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击
 underscore-analysis/ watch一下，随时可以看到动态更新。
 
-下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。
-
-
-指定调用次数">
+下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170525-220029@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170526-001211@2x.png">
-<meta property="og:updated_time" content="2017-05-25T16:29:19.000Z">
+<meta property="og:updated_time" content="2017-05-25T16:53:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些有趣的函数方法你用过几个">
 <meta name="twitter:description" content="前言这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击
 underscore-analysis/ watch一下，随时可以看到动态更新。
 
-下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。
-
-
-指定调用次数">
+下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如_.after,_.before，_.defer…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg">
 
 
@@ -366,6 +357,7 @@ underscore-analysis/ watch一下，随时可以看到动态更新。
 <p>下划线中有非常多很有趣的方法，可以用比较巧妙的方式解决我们日常生活中遇到的问题，比如<code>_.after</code>,<code>_.before</code>，<code>_.defer</code>…等，也许你已经用过他们了，今天我们来深入源码，一探究竟，他们到底是怎么实现的。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/ppt-on-functions-3-728.jpg" alt="function"></p>
+<a id="more"></a>
 <h2 id="指定调用次数-after-before"><a href="#指定调用次数-after-before" class="headerlink" title="指定调用次数(after, before)"></a>指定调用次数(<code>after</code>, <code>before</code>)</h2><blockquote>
 <p>把这两个方法放在前面也是因为他们俩能够解决我们工作中至少以下两个问题</p>
 </blockquote>
@@ -452,7 +444,39 @@ underscore-analysis/ watch一下，随时可以看到动态更新。
 <p>将多个函数methodNames绑定上下文环境为<code>object</code></p>
 </blockquote>
 <p>😪 😪 😪，好困，写文章当真好要时间和精力，到这里已经快写了3个小时了，夜深，好像躺下睡觉啊！！！啊啊啊，再等等快说完了（希望不会误人子弟）。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> buttonView = &#123;</div><div class="line">  <span class="attr">label</span>  : <span class="string">'underscore'</span>,</div><div class="line">  <span class="attr">onClick</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; alert(<span class="string">'clicked: '</span> + <span class="keyword">this</span>.label); &#125;,</div><div class="line">  <span class="attr">onHover</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log(<span class="string">'hovering: '</span> + <span class="keyword">this</span>.label); &#125;</div><div class="line">&#125;;</div><div class="line">_.bindAll(buttonView, <span class="string">'onClick'</span>, <span class="string">'onHover'</span>);</div><div class="line"></div><div class="line">$(<span class="string">'#underscore_button'</span>).bind(<span class="string">'click'</span>, buttonView.onClick);</div></pre></td></tr></table></figure>
+<p>我们用官网给的例子说一下，默认的jQuery中<code>$(selector).on(eventName, callback)</code>callback中的<code>this</code>指的是当前的元素本身，当时经过上面的处理，会弹出<code>underscore</code>。</p>
+<p><strong>_.bindAll源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"> _.bindAll = <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> i, length = <span class="built_in">arguments</span>.length, key;</div><div class="line">  <span class="comment">// 必须要指定需要绑定到obj的函数参数</span></div><div class="line">  <span class="keyword">if</span> (length &lt;= <span class="number">1</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'bindAll must be passed function names'</span>);</div><div class="line">  <span class="comment">// 从第一个实参开始处理，这些便是需要绑定this作用域到obj的函数</span></div><div class="line">  <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; length; i++) &#123; </div><div class="line">    key = <span class="built_in">arguments</span>[i];</div><div class="line">    <span class="comment">// 调用内部的bind方法进行this绑定</span></div><div class="line">    obj[key] = _.bind(obj[key], obj); </div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> obj;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>内部使用了<code>_.bind</code>进行绑定，如果你对<code>_.bind</code>原生是如何实现的可以看这里<a href="https://github.com/qianlongo/underscore-analysis/issues/8" target="_blank" rel="external">如何写一个实用的bind？</a></p>
+<h2 id="拾遗"><a href="#拾遗" class="headerlink" title="拾遗"></a>拾遗</h2><blockquote>
+<p>最后关于underscore.js中function篇章还有两个函数说一下，另外节流函数<code>throttle</code>以及<code>debounce_</code>会另外单独写一篇文章介绍，欢迎前往<a href="https://github.com/qianlongo/underscore-analysis/" target="_blank" rel="external">underscore-analysis/</a> watch一下，随时可以看到动态更新。</p>
+</blockquote>
+<p><strong>_.wrap(function, wrapper)</strong></p>
+<p>将第一个函数 function 封装到函数 wrapper 里面, 并把函数 function 作为第一个参数传给 wrapper. 这样可以让 wrapper 在 function 运行之前和之后 执行代码, 调整参数然后附有条件地执行.</p>
+<p><strong>直接看源码实现吧</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_.wrap = <span class="function"><span class="keyword">function</span>(<span class="params">func, wrapper</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> _.partial(wrapper, func);</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<p>还记得前面说的<code>partial</code>吧，他会返回一个函数，内部会执行<code>wrapper</code>，并且<code>func</code>会作为<code>wrapper</code>的一个参数被传入。</p>
+<p><strong>_.negate(predicate)</strong></p>
+<blockquote>
+<p>将predicate函数执行的结果取反。</p>
+</blockquote>
+<p><strong>使用举例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> fn = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">_.negate(fn)() <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<p>看起来好像没什么软用，但是。。。。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</div><div class="line"></div><div class="line"><span class="keyword">let</span> findEven = <span class="function">(<span class="params">num</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> num % <span class="number">2</span> === <span class="number">0</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">arr.filter(findEven) <span class="comment">// [2, 4, 6]</span></div></pre></td></tr></table></figure>
+<p>如果要找到奇数呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</div><div class="line"></div><div class="line"><span class="keyword">let</span> findEven = <span class="function">(<span class="params">num</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> num % <span class="number">2</span> === <span class="number">0</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">arr.filter(_.negate(findEven)) <span class="comment">// [1, 3, 5]</span></div></pre></td></tr></table></figure>
+<p><strong>源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">_.negate = <span class="function"><span class="keyword">function</span>(<span class="params">predicate</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> !predicate.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">  &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>源码很简单，就是把你传进来的predicate函数执行的结果取反一下，但是应用还是蛮多的。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>这几个是underscore库中function相关的api，大部分已经说完了，如果对你有一点点帮助。</p>
+</blockquote>
+<p><a href="https://github.com/qianlongo/underscore-analysis" target="_blank" rel="external">点一个小星星吧😀😀😀</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis" target="_blank" rel="external">点一个小星星吧😀😀😀</a></p>
+<p><a href="https://github.com/qianlongo/underscore-analysis" target="_blank" rel="external">点一个小星星吧😀😀😀</a></p>
+<p>good night 🌙</p>
 
       
     </div>
@@ -649,7 +673,7 @@ underscore-analysis/ watch一下，随时可以看到动态更新。
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指定调用次数-after-before"><span class="nav-number">2.</span> <span class="nav-text">指定调用次数(after, before)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让函数具有记忆的功能"><span class="nav-number">3.</span> <span class="nav-text">让函数具有记忆的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#来一下延时-delay和-defer"><span class="nav-number">4.</span> <span class="nav-text">来一下延时(.delay和.defer)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以预指定参数的函数-partial"><span class="nav-number">5.</span> <span class="nav-text">可以预指定参数的函数_.partial</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管道式函数组合"><span class="nav-number">6.</span> <span class="nav-text">管道式函数组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给多个函数绑定同样的上下文-bindAll-object-methodNames"><span class="nav-number">7.</span> <span class="nav-text">给多个函数绑定同样的上下文(_.bindAll(object, *methodNames))</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指定调用次数-after-before"><span class="nav-number">2.</span> <span class="nav-text">指定调用次数(after, before)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让函数具有记忆的功能"><span class="nav-number">3.</span> <span class="nav-text">让函数具有记忆的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#来一下延时-delay和-defer"><span class="nav-number">4.</span> <span class="nav-text">来一下延时(.delay和.defer)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可以预指定参数的函数-partial"><span class="nav-number">5.</span> <span class="nav-text">可以预指定参数的函数_.partial</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管道式函数组合"><span class="nav-number">6.</span> <span class="nav-text">管道式函数组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给多个函数绑定同样的上下文-bindAll-object-methodNames"><span class="nav-number">7.</span> <span class="nav-text">给多个函数绑定同样的上下文(_.bindAll(object, *methodNames))</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拾遗"><span class="nav-number">8.</span> <span class="nav-text">拾遗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">9.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
