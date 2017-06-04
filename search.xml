@@ -4,6 +4,16 @@
   
     
     <entry>
+      <title><![CDATA[mouseenter与mouseover为何这般纠缠不清？]]></title>
+      <url>https://qianlongo.github.io/2017/06/05/mouseenter%E4%B8%8Emouseover%E4%B8%BA%E4%BD%95%E8%BF%99%E8%88%AC%E7%BA%A0%E7%BC%A0%E4%B8%8D%E6%B8%85%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>不知道大家在面试或者工作过程中有没有被<code>mouseover</code>和<code>mouseenter</code>(对应的是<code>mouseout</code>和<code>mouseleave</code>)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读<a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">zepto源码</a>，准备写一篇这方面的文章，如果有错误，请大家指正。😀😀😀</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/-98ezXklczmayCw28gIX.png" alt=""></p>
+<h2 id="mouseenter与mouseover的异同？"><a href="#mouseenter与mouseover的异同？" class="headerlink" title="mouseenter与mouseover的异同？"></a>mouseenter与mouseover的异同？</h2>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[你要看看这些有趣的函数方法吗？]]></title>
       <url>https://qianlongo.github.io/2017/05/25/%E8%BF%99%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E5%87%BD%E6%95%B0%E6%96%B9%E6%B3%95%E4%BD%A0%E7%94%A8%E8%BF%87%E5%87%A0%E4%B8%AA/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是underscore.js源码分析的第六篇，如果你对这个系列感兴趣，欢迎点击</p>
