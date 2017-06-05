@@ -345,10 +345,67 @@
         
           
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>不知道大家在面试或者工作过程中有没有被<code>mouseover</code>和<code>mouseenter</code>(对应的是<code>mouseout</code>和<code>mouseleave</code>)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读<a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">zepto源码</a>，准备写一篇这方面的文章，如果有错误，请大家指正。😀😀😀</p>
+<p>不知道大家在面试或者工作过程中有没有被<code>mouseover</code>和<code>mouseenter</code>(对应的是<code>mouseout</code>和<code>mouseleave</code>)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读<a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">zepto源码</a>，准备写一篇这方面的文章，如果有错误，请大家指正。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/-98ezXklczmayCw28gIX.png" alt=""></p>
-<h2 id="mouseenter与mouseover的异同？"><a href="#mouseenter与mouseover的异同？" class="headerlink" title="mouseenter与mouseover的异同？"></a>mouseenter与mouseover的异同？</h2>
+<h2 id="mouseenter与mouseover的异同？"><a href="#mouseenter与mouseover的异同？" class="headerlink" title="mouseenter与mouseover的异同？"></a>mouseenter与mouseover的异同？</h2><blockquote>
+<p>要说清楚mouseenter与mouseover有什么不同，也许可以从两方面去讲。</p>
+</blockquote>
+<ol>
+<li>是否支持冒泡</li>
+<li>事件的触发时机</li>
+</ol>
+<p>先来看一张图,对这两个事件有一个简单直观的感受。</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170605-204232@2x.png" alt=""></p>
+<p><strong>再看看官网对mouseenter的解释</strong></p>
+<p><a href="https://msdn.microsoft.com/en-us/library/ms536945(v=vs.85" target="_blank" rel="external">mouseenter | onmouseenter event</a>.aspx)</p>
+<blockquote>
+<p>The event fires only if the mouse pointer is outside the boundaries of the object and the user moves the mouse pointer inside the boundaries of the object. If the mouse pointer is currently inside the boundaries of the object, for the event to fire, the user must move the mouse pointer outside the boundaries of the object and then back inside the boundaries of the object.</p>
+</blockquote>
+<p>大概意思是说：当鼠标从元素的边界之外移入元素的边界之内时，事件被触发。而当鼠标本身在元素边界内时，要触发该事件，必须先将鼠标移出元素边界外，再次移入才能触发。(英语比较渣😶，凑合看哈)</p>
+<blockquote>
+<p>Unlike the onmouseover event, the onmouseenter event does not bubble. </p>
+</blockquote>
+<p>大概意思是：和mouseover不同的是，mouseenter不支持事件冒泡 (英语比较渣😶，凑合看哈)</p>
+<p><strong>由于mouseenter不支持事件冒泡，导致在一个元素的子元素上进入或离开的时候会触发其mouseover和mouseout事件，但是却不会触发mouseenter和mouseleave事件</strong></p>
+<p>我们用一张动图来看看他们的区别(<a href="https://qianlongo.github.io/zepto-analysis/example/event/mouseEnter-mouseOver.html">或者点击该链接体验</a>)。</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/undefeind.gif" alt=""></p>
+<p>我们给左右两边的ul分别添加了<code>mouseover</code>和<code>mouseenter</code>事件，当鼠标进入左右两边的ul时，<code>mouseover</code>和<code>mouseenter</code>事件都触发了，但是当移入各自的子元素li的时候，却触发了左边ul上的mouseover事件，然而右边ul的mouseenter事件没有被触发。</p>
+<p>造成以上现象本质上是<code>mouseenter</code>事件不支持冒泡所致。</p>
+<h2 id="如何模拟mouseenter事件。"><a href="#如何模拟mouseenter事件。" class="headerlink" title="如何模拟mouseenter事件。"></a>如何模拟mouseenter事件。</h2><blockquote>
+<p>可见mouseover事件因其具有冒泡的性质，在子元素内移动的时候，频繁被触发，如果我们不希望如此，可以使用mouseenter事件代替之，但是早期只有ie浏览器支持该事件，虽然现在大多数高级浏览器都支持了mouseenter事件，但是难免会有些兼容问题，所以如果可以自己手动模拟，那就太好了。</p>
+</blockquote>
+<p>关键因素: <strong>relatedTarget</strong> 要想手动模拟mouseenter事件，需要对mouseover事件触发时的事件对象event属性relatedTarget了解。</p>
+<ol>
+<li>relatedTarget事件属性返回与事件的目标节点相关的节点。</li>
+<li>对于mouseover事件来说，该属性是鼠标指针移到目标节点上时所离开的那个节点。</li>
+<li>对于mouseout事件来说，该属性是离开目标时，鼠标指针进入的节点。</li>
+<li>对于其他类型的事件来说，这个属性没有用。</li>
+</ol>
+<p>重新回顾一下文章最初的那张图，根据上面的解释，对于ul上添加的mouseover事件来说，relatedTarget只可能是</p>
+<ol>
+<li>ul的父元素wrap(移入ul时,此时也是触发mouseenter事件的时候, <strong>其实不一定，后面会说明</strong>)，</li>
+<li>或者ul元素本身(在其子元素上移出时)，</li>
+<li>又或者是子元素本身(直接从子元素A移动到子元素B)。</li>
+</ol>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/hahha2.png" alt="relatedTarget"></p>
+<p>根据上面的描述，我们可以对relatedTarget的值进行判断：如果值不是目标元素，也不是目标元素的子元素，就说明鼠标已移入目标元素而不是在元素内部移动。</p>
+<p>条件1： <strong>不是目标元素</strong>很好判断<code>e.relatedTarget !== target(目标元素)</code></p>
+<p>条件2：不是目标元素的子元素，这个应该怎么判断呢？</p>
+<h2 id="ele-contains"><a href="#ele-contains" class="headerlink" title="ele.contains"></a>ele.contains</h2><blockquote>
+<p> 这里需要介绍一个新的api <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Node/contains" target="_blank" rel="external">node.contains(otherNode) 
+</a>, 表示传入的节点是否为该节点的后代节点, 如果 otherNode 是 node 的后代节点或是 node 节点本身.则返回true , 否则返回 false</p>
+</blockquote>
+<p><strong>用法案例</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"list"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"test"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> $list = <span class="built_in">document</span>.querySelector(<span class="string">'.list'</span>)</div><div class="line"><span class="keyword">let</span> $item = <span class="built_in">document</span>.querySelector(<span class="string">'.item'</span>)</div><div class="line"><span class="keyword">let</span> $test = <span class="built_in">document</span>.querySelector(<span class="string">'.test'</span>)</div><div class="line"></div><div class="line">$list.contains($item) <span class="comment">// true</span></div><div class="line">$list.contains($test) <span class="comment">// false</span></div><div class="line">$list.contains($list) <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>那么利用contains这个api我们便可以很方便的验证条件2，接下来我们封装一个<code>contains(parent, node)</code>函数，专门用来判断<code>node</code>是不是<code>parent</code>的子节点</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> contains = <span class="function"><span class="keyword">function</span> (<span class="params">parent, node</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> parent !== node &amp;&amp; parent.contains(node)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用我们封装过后的<code>contains</code>函数再去试试上面的例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">contains($list, $item) <span class="comment">// true</span></div><div class="line">contains($list, $test) <span class="comment">// false</span></div><div class="line">contains($list, $list) <span class="comment">// false (主要区别在这里)</span></div></pre></td></tr></table></figure>
+<p>这个方法很方便地帮助我们解决了模拟mouseenter事件中的条件2，但是悲催的<code>ode.contains(otherNode)</code>,具有浏览器兼容性，在一些低级浏览器中是不支持的，为了做到兼容我们再来改写一下contains方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> contains = docEle.contains ? <span class="function"><span class="keyword">function</span> (<span class="params">parent, node</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> parent !== node &amp;&amp; parent.contains(node)</div><div class="line">&#125; : <span class="function"><span class="keyword">function</span> (<span class="params">parent, node</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> result = parent !== node</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!result) &#123; <span class="comment">// 排除parent与node传入相同的节点</span></div><div class="line">    <span class="keyword">return</span> result</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (result) &#123;</div><div class="line">    <span class="keyword">while</span> (node &amp;&amp; (node = node.parentNode)) &#123;</div><div class="line">      <span class="keyword">if</span> (parent === node) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
           
         
       
