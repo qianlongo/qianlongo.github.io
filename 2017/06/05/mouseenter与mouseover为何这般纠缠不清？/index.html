@@ -85,31 +85,22 @@
 
 
 <meta name="description" content="前言
-不知道大家在面试或者工作过程中有没有被mouseover和mouseenter(对应的是mouseout和mouseleave)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读zepto源码，准备写一篇这方面的文章，如果有错误，请大家指正。
-
-
-mouseenter与mo">
+不知道大家在面试或者工作过程中有没有被mouseover和mouseenter(对应的是mouseout和mouseleave)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读zepto源码，准备写一篇这方面的文章，如果有错误，请大家指正。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mouseenter与mouseover为何这般纠缠不清？">
 <meta property="og:url" content="https://qianlongo.github.io/2017/06/05/mouseenter与mouseover为何这般纠缠不清？/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-不知道大家在面试或者工作过程中有没有被mouseover和mouseenter(对应的是mouseout和mouseleave)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读zepto源码，准备写一篇这方面的文章，如果有错误，请大家指正。
-
-
-mouseenter与mo">
+不知道大家在面试或者工作过程中有没有被mouseover和mouseenter(对应的是mouseout和mouseleave)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读zepto源码，准备写一篇这方面的文章，如果有错误，请大家指正。">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/-98ezXklczmayCw28gIX.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170605-204232@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/undefeind.gif">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/hahha2.png">
-<meta property="og:updated_time" content="2017-06-05T14:22:20.000Z">
+<meta property="og:updated_time" content="2017-06-05T15:02:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mouseenter与mouseover为何这般纠缠不清？">
 <meta name="twitter:description" content="前言
-不知道大家在面试或者工作过程中有没有被mouseover和mouseenter(对应的是mouseout和mouseleave)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读zepto源码，准备写一篇这方面的文章，如果有错误，请大家指正。
-
-
-mouseenter与mo">
+不知道大家在面试或者工作过程中有没有被mouseover和mouseenter(对应的是mouseout和mouseleave)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读zepto源码，准备写一篇这方面的文章，如果有错误，请大家指正。">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/-98ezXklczmayCw28gIX.png">
 
 
@@ -359,6 +350,7 @@ mouseenter与mo">
 <p>不知道大家在面试或者工作过程中有没有被<code>mouseover</code>和<code>mouseenter</code>(对应的是<code>mouseout</code>和<code>mouseleave</code>)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读<a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">zepto源码</a>，准备写一篇这方面的文章，如果有错误，请大家指正。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/-98ezXklczmayCw28gIX.png" alt=""></p>
+<a id="more"></a>
 <h2 id="mouseenter与mouseover的异同？"><a href="#mouseenter与mouseover的异同？" class="headerlink" title="mouseenter与mouseover的异同？"></a>mouseenter与mouseover的异同？</h2><blockquote>
 <p>要说清楚mouseenter与mouseover有什么不同，也许可以从两方面去讲。</p>
 </blockquote>
@@ -381,7 +373,7 @@ mouseenter与mo">
 <p><strong>由于mouseenter不支持事件冒泡，导致在一个元素的子元素上进入或离开的时候会触发其mouseover和mouseout事件，但是却不会触发mouseenter和mouseleave事件</strong></p>
 <p>我们用一张动图来看看他们的区别(<a href="https://qianlongo.github.io/zepto-analysis/example/event/mouseEnter-mouseOver.html">或者点击该链接体验</a>)。</p>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/undefeind.gif" alt=""></p>
-<p>我们给左右两边的ul分别添加了<code>mouseover</code>和<code>mouseenter</code>事件，当鼠标进入左右两边的ul时，<code>mouseover</code>和<code>mouseenter</code>事件都触发了，但是当移入各自的子元素li的时候，却触发了左边ul上的mouseover事件，然而右边ul的mouseenter事件没有被触发。</p>
+<p>我们给左右两边的ul分别添加了<code>mouseover</code>和<code>mouseenter</code>事件，当鼠标进入左右两边的ul时，<code>mouseover</code>和<code>mouseenter</code>事件都触发了，但是当移入各自的子元素li的时候，触发了左边ul上的mouseover事件，然而右边ul的mouseenter事件没有被触发。</p>
 <p>造成以上现象本质上是<code>mouseenter</code>事件不支持冒泡所致。</p>
 <h2 id="如何模拟mouseenter事件。"><a href="#如何模拟mouseenter事件。" class="headerlink" title="如何模拟mouseenter事件。"></a>如何模拟mouseenter事件。</h2><blockquote>
 <p>可见mouseover事件因其具有冒泡的性质，在子元素内移动的时候，频繁被触发，如果我们不希望如此，可以使用mouseenter事件代替之，但是早期只有ie浏览器支持该事件，虽然现在大多数高级浏览器都支持了mouseenter事件，但是难免会有些兼容问题，所以如果可以自己手动模拟，那就太好了。</p>
@@ -416,6 +408,31 @@ mouseenter与mo">
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">contains($list, $item) <span class="comment">// true</span></div><div class="line">contains($list, $test) <span class="comment">// false</span></div><div class="line">contains($list, $list) <span class="comment">// false (主要区别在这里)</span></div></pre></td></tr></table></figure>
 <p>这个方法很方便地帮助我们解决了模拟mouseenter事件中的条件2，但是悲催的<code>ode.contains(otherNode)</code>,具有浏览器兼容性，在一些低级浏览器中是不支持的，为了做到兼容我们再来改写一下contains方法</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> contains = docEle.contains ? <span class="function"><span class="keyword">function</span> (<span class="params">parent, node</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> parent !== node &amp;&amp; parent.contains(node)</div><div class="line">&#125; : <span class="function"><span class="keyword">function</span> (<span class="params">parent, node</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> result = parent !== node</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!result) &#123; <span class="comment">// 排除parent与node传入相同的节点</span></div><div class="line">    <span class="keyword">return</span> result</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (result) &#123;</div><div class="line">    <span class="keyword">while</span> (node &amp;&amp; (node = node.parentNode)) &#123;</div><div class="line">      <span class="keyword">if</span> (parent === node) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>说了这么多，我们来看看用<code>mouseover</code>事件模拟<code>mouseenter</code>的最终代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// callback表示如果执行mouseenter事件时传入的回调函数</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> emulateEnterOrLeave = <span class="function"><span class="keyword">function</span> (<span class="params">callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> relatedTarget = e.relatedTarget</div><div class="line">    <span class="keyword">if</span> (relatedTarget !== <span class="keyword">this</span> &amp;&amp; !contains(<span class="keyword">this</span>, relatedTarget)) &#123;</div><div class="line">      callback.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/qianlongo/zepto-analysis/blob/master/example/event/mouseEnter-mouseOver.html" target="_blank" rel="external">详细代码点击</a></p>
+<p><a href="https://qianlongo.github.io/zepto-analysis/example/event/mouseEnter-mouseOver.html">代码示例点击</a></p>
+<p><strong>好了，我们已经通过mouseove事件完整的模拟了mouseenter事件，但是反过头来看看</strong></p>
+<p>对于ul上添加的mouseover事件来说，relatedTarget只可能是</p>
+<ol>
+<li>ul的父元素wrap(移入ul时,此时也是触发mouseenter事件的时候, <strong>其实不一定，后面会说明</strong>)，</li>
+<li>或者ul元素本身(在其子元素上移出时)，</li>
+<li>又或者是子元素本身(直接从子元素A移动到子元素B)。</li>
+</ol>
+<p>我们通过排查2和3，最后只留下1，也就是mouseenter与mouseover事件一起触发的时机。既然这样我们为什么不像这样判断呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">target.addEventListener(<span class="string">'mouseover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (e.relatedTarget === <span class="keyword">this</span>.parentNode) &#123;</div><div class="line">    <span class="comment">// 执行mouseenter的回调要做的事情  </span></div><div class="line">  &#125;</div><div class="line">&#125;, <span class="literal">false</span>)</div></pre></td></tr></table></figure>
+<p>这样不是更加简单吗？，何必要折腾通过排查2和3来做？</p>
+<p>原因是，target的父元素有一定的占位空间的时后，我们这样写是没有太大问题的，但是反之，这个时候<code>e.relatedTarget</code>就可能是target元素的父元素，又祖先元素中的某一个。我们无法准确判断e.relatedTarget到底是哪个元素。所以通过排除2和3应该是个更好的选择。</p>
+<h2 id="用mouseout模拟mouseleave事件"><a href="#用mouseout模拟mouseleave事件" class="headerlink" title="用mouseout模拟mouseleave事件"></a>用mouseout模拟mouseleave事件</h2><blockquote>
+<p>当mouseout被激活时，relatedTarget表示鼠标离开目标元素时，进入了哪个元素，我们同样可以对relatedTarget的值进行判断：如果值不是目标元素，也不是目标元素的子元素，就说明鼠标已移出目标元素</p>
+</blockquote>
+<p>我们同样可以用上面封装的函数完成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// callback表示如果执行mouseenter事件时传入的回调函数</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> emulateEnterOrLeave = <span class="function"><span class="keyword">function</span> (<span class="params">callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> relatedTarget = e.relatedTarget</div><div class="line">    <span class="keyword">if</span> (relatedTarget !== <span class="keyword">this</span> &amp;&amp; !contains(<span class="keyword">this</span>, relatedTarget)) &#123;</div><div class="line">      callback.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/qianlongo/zepto-analysis/blob/master/example/event/mouseEnter-mouseOver.html" target="_blank" rel="external">详细代码点击</a></p>
+<p><a href="https://qianlongo.github.io/zepto-analysis/example/event/mouseEnter-mouseOver.html">代码示例点击</a></p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>文中也许有些观点不够严谨，欢迎大家拍砖。</p>
+</blockquote>
 
       
     </div>
@@ -614,7 +631,7 @@ mouseenter与mo">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseenter与mouseover的异同？"><span class="nav-number">2.</span> <span class="nav-text">mouseenter与mouseover的异同？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何模拟mouseenter事件。"><span class="nav-number">3.</span> <span class="nav-text">如何模拟mouseenter事件。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ele-contains"><span class="nav-number">4.</span> <span class="nav-text">ele.contains</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseenter与mouseover的异同？"><span class="nav-number">2.</span> <span class="nav-text">mouseenter与mouseover的异同？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何模拟mouseenter事件。"><span class="nav-number">3.</span> <span class="nav-text">如何模拟mouseenter事件。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ele-contains"><span class="nav-number">4.</span> <span class="nav-text">ele.contains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用mouseout模拟mouseleave事件"><span class="nav-number">5.</span> <span class="nav-text">用mouseout模拟mouseleave事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">6.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
