@@ -89,7 +89,7 @@
 
 最近一直在看zepto的源码，希望通过学习它掌握一些框架设计的技巧，也将很久不再拾起的js基">
 <meta property="og:type" content="article">
-<meta property="og:title" content="你知道如何手动触发DOM事件吗？">
+<meta property="og:title" content="向zepto.js学习如何手动触发DOM事件">
 <meta property="og:url" content="https://qianlongo.github.io/2017/06/07/你知道如何手动触发DOM事件吗？/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
@@ -98,9 +98,9 @@
 最近一直在看zepto的源码，希望通过学习它掌握一些框架设计的技巧，也将很久不再拾起的js基">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/11111.jpg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/timg2.jpeg">
-<meta property="og:updated_time" content="2017-06-06T17:31:09.000Z">
+<meta property="og:updated_time" content="2017-06-06T18:11:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="你知道如何手动触发DOM事件吗？">
+<meta name="twitter:title" content="向zepto.js学习如何手动触发DOM事件">
 <meta name="twitter:description" content="前言
 前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。
 
@@ -128,7 +128,7 @@
 
   <link rel="canonical" href="https://qianlongo.github.io/2017/06/07/你知道如何手动触发DOM事件吗？/"/>
 
-  <title> 你知道如何手动触发DOM事件吗？ | 谦龙的小天地 </title>
+  <title> 向zepto.js学习如何手动触发DOM事件 | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -294,7 +294,7 @@
             
             
               
-                你知道如何手动触发DOM事件吗？
+                向zepto.js学习如何手动触发DOM事件
               
             
           </h1>
@@ -328,7 +328,7 @@
 
           
           
-             <span id="/2017/06/07/你知道如何手动触发DOM事件吗？/" class="leancloud_visitors" data-flag-title="你知道如何手动触发DOM事件吗？">
+             <span id="/2017/06/07/你知道如何手动触发DOM事件吗？/" class="leancloud_visitors" data-flag-title="向zepto.js学习如何手动触发DOM事件">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -387,7 +387,41 @@
 <p><code>isString</code> =&gt; 判断是不是字符串</p>
 <p><code>isPlainObject</code> =&gt; 判断是不是存粹的对象(必须是对象，window对象除外，该对象的原型必须和Object的原型一致)</p>
 <p><code>compatible</code> =&gt; 其实就是对事件对象<code>event</code>做一些扩展，比如添加一些方法，重写一些方法之类的。</p>
-<p>这几个方法暂时可以不需要太多关心，我们主要看看<code>$.Event</code>,这里面几乎含有如何手动触发一个dom事件的大部分步骤和内容。</p>
+<p>这几个方法暂时可以不需要太多关心.</p>
+<p>我们主要看看<code>$.Event</code>,这里面几乎含有如何手动触发一个dom事件的大部分步骤和内容。</p>
+<p>我们主要看看<code>$.Event</code>,这里面几乎含有如何手动触发一个dom事件的大部分步骤和内容。</p>
+<p>我们主要看看<code>$.Event</code>,这里面几乎含有如何手动触发一个dom事件的大部分步骤和内容。</p>
+<h2 id="Event是个啥"><a href="#Event是个啥" class="headerlink" title="$.Event是个啥"></a>$.Event是个啥</h2><blockquote>
+<p> 创建并初始化一个指定的dom事件对象, 如果给定了props，则将其扩展到事件对象上</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"> $.Event = <span class="function"><span class="keyword">function</span> (<span class="params">type, props</span>) </span>&#123;</div><div class="line">  <span class="comment">// 当type是个对象时,比如&#123;type: 'click', data: 'qianlongo'&#125;</span></div><div class="line">  <span class="keyword">if</span> (!isString(type)) props = type, type = props.type</div><div class="line">  <span class="comment">// click,mousedown,mouseup mousemove对应MouseEvent</span></div><div class="line">  <span class="comment">// 其他事件对应为Events</span></div><div class="line">  <span class="comment">// 并把bubbles设置为true，表示事件冒泡，为false则不冒泡</span></div><div class="line">  <span class="keyword">var</span> event = <span class="built_in">document</span>.createEvent(specialEvents[type] || <span class="string">'Events'</span>), bubbles = <span class="literal">true</span></div><div class="line">  <span class="comment">// 当props存在的时候，对props进行循环处理，将其属性扩展到event对象上</span></div><div class="line">  <span class="keyword">if</span> (props) <span class="keyword">for</span> (<span class="keyword">var</span> name <span class="keyword">in</span> props) (name == <span class="string">'bubbles'</span>) ? (bubbles = !!props[name]) : (event[name] = props[name])</div><div class="line">  <span class="comment">// 初始化事件对象，第一个为事件类型，第二个为冒泡与否，第三个为是否可以通过preventDefault来阻止浏览器默认行为</span></div><div class="line">  event.initEvent(type, bubbles, <span class="literal">true</span>)</div><div class="line">  <span class="comment">// 再对创造出来的时间对象处理一番并返回</span></div><div class="line">  <span class="keyword">return</span> compatible(event)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>注释已经写的很清楚了，这个函数就是返回一个经过初始化了的事件对象</strong></p>
+<p>到这里我们直接归纳一下要手动触发一个dom事件的基本步骤</p>
+<p>手动触发一个dom事件，需要3步，如果你对<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createEvent" target="_blank" rel="external">document.createEvent</a>,不是很熟悉，可以点击查看。</p>
+<ol>
+<li>创建一个事件对象 document.createEvent(event)</li>
+<li>初始化事件对象 event.initEvent(type, bubbles, true)</li>
+<li>分发事件  dom.dispatchEvent(event)</li>
+</ol>
+<p>到这里已经完成了前面两步，还剩最后一步了，在来看<code>trigger</code>剩下的代码</p>
+<h2 id="手动触发dom事件最后一步"><a href="#手动触发dom事件最后一步" class="headerlink" title="手动触发dom事件最后一步"></a>手动触发dom事件最后一步</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> $.fn.trigger = <span class="function"><span class="keyword">function</span> (<span class="params">event, args</span>) </span>&#123;</div><div class="line">  <span class="comment">// 对传入的event进行处理，如果是字符串或者纯对象，得到一个自己创建的事件对象</span></div><div class="line">  <span class="comment">// 如果传入的已经是个经过$.Event处理的对象，则放入compatible再次改造(其实就是添加了几个方法，和重写了几个方法)</span></div><div class="line">  event = (isString(event) || $.isPlainObject(event)) ? $.Event(event) : compatible(event)</div><div class="line">  <span class="comment">// args传递给事件处理程序的参数</span></div><div class="line">  event._args = args</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// handle focus(), blur() by calling them directly</span></div><div class="line">    <span class="keyword">if</span> (event.type <span class="keyword">in</span> focus &amp;&amp; <span class="keyword">typeof</span> <span class="keyword">this</span>[event.type] == <span class="string">"function"</span>) <span class="keyword">this</span>[event.type]()</div><div class="line">    <span class="comment">// items in the collection might not be DOM elements</span></div><div class="line">    <span class="comment">// 触发dom事件</span></div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">'dispatchEvent'</span> <span class="keyword">in</span> <span class="keyword">this</span>) <span class="keyword">this</span>.dispatchEvent(event)</div><div class="line">    <span class="comment">// 因为zepto对象内部的元素不一定是dom元素，此时直接触发回调函数</span></div><div class="line">    <span class="keyword">else</span> $(<span class="keyword">this</span>).triggerHandler(event, args)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后一步其实就是将当前选中的元素进行一次each遍历，然后判断要触发的事件是不是<code>focus</code>或者<code>blur</code>，如果是就直接执行。</p>
+<p>再进一步，如果<code>dispatchEvent</code>方法在当前的dom元素属性中存在，那么便将该事件触发。(为什么要这一步呢？因为我们知道$()函数的使用方式有很多，有些方式得到的zepto对象是没有选中dom节点的)</p>
+<p>最后还有一个else分支，这个分支处理走的不是手动触发事件，而是直接触发注册事件时添加的事件处理程序(因为这里涉及到zepto事件模块中如何管理元素与事件队列的映射关系，篇幅会比较长，会在接下来的文章中说，这里不展开说明)</p>
+<h2 id="手动diy一个"><a href="#手动diy一个" class="headerlink" title="手动diy一个"></a>手动diy一个</h2><blockquote>
+<p>根据上面的描述，手动触发DOM事件，原来并没有那么神奇，完成三步，即可达到目标。我们自己来手动写一个示例</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"list"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item1"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> $list = <span class="built_in">document</span>.querySelector(<span class="string">'.list'</span>)</div><div class="line"><span class="keyword">let</span> $item1 = <span class="built_in">document</span>.querySelector(<span class="string">'.item1'</span>)</div><div class="line"></div><div class="line">$list.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.innerHTML)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line">$item1.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.innerHTML)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line"><span class="comment">// 1. 创建一个事件对象 document.createEvent(event)</span></div><div class="line"><span class="keyword">let</span> event = <span class="built_in">document</span>.createEvent(<span class="string">'Event'</span>)</div><div class="line"><span class="comment">// 2. 初始化事件对象 event.initEvent(type, bubbles, true)</span></div><div class="line">event.initEvent(<span class="string">'click'</span>, <span class="literal">true</span>, <span class="literal">true</span>)</div><div class="line"><span class="comment">// 3. 分发事件  dom.dispatchEvent(event)</span></div><div class="line">$item1.dispatchEvent(event)</div></pre></td></tr></table></figure>
+<p>这个时候控制台打印出了</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1</div><div class="line"></div><div class="line">&lt;li class="item1"&gt;1&lt;/li&gt;</div><div class="line">&lt;li&gt;2&lt;/li&gt;</div><div class="line">&lt;li&gt;3&lt;/li&gt;</div></pre></td></tr></table></figure>
+<p>1是item1的事件处理函数打印出来的。</p>
+<p>后面的li那部分则是list打印出来的。</p>
+<p>如果将initEvent的第二个参数设置为false，将不允许冒泡，则只会打印出1</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>如果这部分对你有点点帮助，点个star怎么样呀 😀😀😀</p>
+</blockquote>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">仓库地址</a></p>
 
       
     </div>
@@ -447,7 +481,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2017/06/07/你知道如何手动触发DOM事件吗？/"
-     data-title="你知道如何手动触发DOM事件吗？"
+     data-title="向zepto.js学习如何手动触发DOM事件"
      data-content=""
      data-url="https://qianlongo.github.io/2017/06/07/你知道如何手动触发DOM事件吗？/">
   <div class="ds-share-inline">
@@ -477,7 +511,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/06/07/你知道如何手动触发DOM事件吗？/"
-           data-title="你知道如何手动触发DOM事件吗？" data-url="https://qianlongo.github.io/2017/06/07/你知道如何手动触发DOM事件吗？/">
+           data-title="向zepto.js学习如何手动触发DOM事件" data-url="https://qianlongo.github.io/2017/06/07/你知道如何手动触发DOM事件吗？/">
       </div>
     
   </div>
@@ -590,7 +624,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#event-js模块"><span class="nav-number">2.</span> <span class="nav-text">event.js模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一步步看trigger怎么实现"><span class="nav-number">3.</span> <span class="nav-text">一步步看trigger怎么实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新看trigger函数源码"><span class="nav-number">4.</span> <span class="nav-text">重新看trigger函数源码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#event-js模块"><span class="nav-number">2.</span> <span class="nav-text">event.js模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一步步看trigger怎么实现"><span class="nav-number">3.</span> <span class="nav-text">一步步看trigger怎么实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新看trigger函数源码"><span class="nav-number">4.</span> <span class="nav-text">重新看trigger函数源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event是个啥"><span class="nav-number">5.</span> <span class="nav-text">$.Event是个啥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动触发dom事件最后一步"><span class="nav-number">6.</span> <span class="nav-text">手动触发dom事件最后一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动diy一个"><span class="nav-number">7.</span> <span class="nav-text">手动diy一个</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">8.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
