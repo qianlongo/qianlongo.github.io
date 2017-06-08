@@ -284,6 +284,146 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/08/说谁你只是会用jQuery/" itemprop="url">
+                  说谁你只是"会用"jQuery?
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-08T22:02:23+08:00" content="2017-06-08">
+              2017-06-08
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/06/08/说谁你只是会用jQuery/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/08/说谁你只是会用jQuery/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/06/08/说谁你只是会用jQuery/" class="leancloud_visitors" data-flag-title="说谁你只是"会用"jQuery?">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>前言</p>
+<blockquote>
+<p>套用上篇文章<a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a> 的开头😀😀😀</p>
+</blockquote>
+<p>前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。</p>
+<p>最近一直在看zepto的源码，希望通过学习它掌握一些框架设计的技巧，也将很久不再拾起的js基础重新温习巩固一遍。如果你对这个系列感兴趣，欢迎<a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">点击</a><code>watch</code>,随时关注动态。这篇文章主要想说一下zepto中事件模块(event.js)的添加事件<code>on</code>以及移除事件<code>off</code>实现原理。</p>
+<p><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">原文地址</a></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">仓库地址</a></p>
+<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><blockquote>
+<p>在没有vue和react，甚至angular都没怎么接触的刀耕火种的时代，jQuery或者zepto是我们手中的利器，是刀刃，他让我们游刃有余地开发出兼容性好的漂亮的网页，我们膜拜并感叹作者带来的便利，沉浸其中，无法自拔。</p>
+</blockquote>
+<p>=== 准备放一张照片一梭子jQuery</p>
+<p>但是用了这么久的zepto你知道你平时这样写代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$(<span class="string">'.list'</span>).on(<span class="string">'click'</span>, <span class="string">'li'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log($(<span class="keyword">this</span>).html())</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>是怎么实现事件委托的吗？为啥此时的<code>this</code>就是你点中的<code>li</code>呢?</p>
+<p>平常我们可能还会这样写。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$(<span class="string">'.list li'</span>).bind(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div><div class="line"></div><div class="line">$(<span class="string">'.list'</span>).delegate(<span class="string">'li'</span>, <span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div><div class="line"></div><div class="line">$(<span class="string">'.list li'</span>).live(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div><div class="line"></div><div class="line">$(<span class="string">'.list li'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div></pre></td></tr></table></figure>
+<p>写法多个数不过来，也许你还有其他的写法，那么</p>
+<p><code>on</code></p>
+<p><code>bind</code></p>
+<p><code>delegate</code></p>
+<p><code>live</code></p>
+<p><code>click()</code></p>
+<p>这些添加事件的形式，有什么区别，内部之间又有什么联系呢？</p>
+<p>相信你在面试过程中也遇到过类似的问题？</p>
+<p>接下来我们从源码的角度一步步去探究其内部实现的原理。</p>
+<h2 id="一切从on开始"><a href="#一切从on开始" class="headerlink" title="一切从on开始"></a>一切从<code>on</code>开始</h2><blockquote>
+<p>为什么选择从<code>on</code>添加事件的方式开始说起，原因在于其他写法几乎都是<code>on</code>衍生出来的，明白了<code>on</code>的实现原理，其他的也就差不多那么回事了。</p>
+</blockquote>
+<p><strong>寄出一张画了好久的图</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/on.png" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/07/你知道如何手动触发DOM事件吗？/" itemprop="url">
                   向zepto.js学习如何手动触发DOM事件
                 </a>
@@ -732,127 +872,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/17/koa源码分析之中间件执行/" itemprop="url">
-                  你知道koa中间件执行原理吗？
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-17T23:12:07+08:00" content="2017-05-17">
-              2017-05-17
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/05/17/koa源码分析之中间件执行/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/17/koa源码分析之中间件执行/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/05/17/koa源码分析之中间件执行/" class="leancloud_visitors" data-flag-title="你知道koa中间件执行原理吗？">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/resume-native/issues/1">原文地址</a></p>
-<blockquote>
-<p>最近几天花了比较长的时间在koa(1)的源码分析上面，初次看的时候，被中间件执行那段整的晕乎乎的，完全不知道所以，再次看，好像明白了些什么，再反复看，我去，简直神了，简直泪流满面，简直丧心病狂啊！！！</p>
-</blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f363339363931332f6b6f612f6c6f676f2e706e67.png" alt="koa"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/17/koa源码分析之中间件执行/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -893,7 +917,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

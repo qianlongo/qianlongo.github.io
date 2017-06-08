@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript," />
+  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto," />
 
 
 
@@ -85,33 +85,32 @@
 
 
 <meta name="description" content="前言
-回想起之前的一些面试，几乎每次都会问到一个js中关于call、apply、bind的问题，比如…
 
+套用上篇文章向zepto.js学习如何手动触发DOM事件 的开头😀😀😀
 
-怎么利用call、apply来求一个数组中最大或者最小值
-如何利用call、apply来做继承
-apply、call、bind的区别和主要应用场景">
+前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。
+最近一直在看">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js中call、apply、bind那些事">
-<meta property="og:url" content="https://qianlongo.github.io/2016/04/26/js中call、apply、bind那些事/index.html">
+<meta property="og:title" content="说谁你只是"会用"jQuery?">
+<meta property="og:url" content="https://qianlongo.github.io/2017/06/08/说谁你只是会用jQuery/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-回想起之前的一些面试，几乎每次都会问到一个js中关于call、apply、bind的问题，比如…
 
+套用上篇文章向zepto.js学习如何手动触发DOM事件 的开头😀😀😀
 
-怎么利用call、apply来求一个数组中最大或者最小值
-如何利用call、apply来做继承
-apply、call、bind的区别和主要应用场景">
-<meta property="og:updated_time" content="2017-01-01T11:01:50.000Z">
+前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。
+最近一直在看">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/on.png">
+<meta property="og:updated_time" content="2017-06-08T14:40:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js中call、apply、bind那些事">
+<meta name="twitter:title" content="说谁你只是"会用"jQuery?">
 <meta name="twitter:description" content="前言
-回想起之前的一些面试，几乎每次都会问到一个js中关于call、apply、bind的问题，比如…
 
+套用上篇文章向zepto.js学习如何手动触发DOM事件 的开头😀😀😀
 
-怎么利用call、apply来求一个数组中最大或者最小值
-如何利用call、apply来做继承
-apply、call、bind的区别和主要应用场景">
+前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。
+最近一直在看">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/on.png">
 
 
 
@@ -132,9 +131,9 @@ apply、call、bind的区别和主要应用场景">
 
 
 
-  <link rel="canonical" href="https://qianlongo.github.io/2016/04/26/js中call、apply、bind那些事/"/>
+  <link rel="canonical" href="https://qianlongo.github.io/2017/06/08/说谁你只是会用jQuery/"/>
 
-  <title> js中call、apply、bind那些事 | 谦龙的小天地 </title>
+  <title> 说谁你只是"会用"jQuery? | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -300,7 +299,7 @@ apply、call、bind的区别和主要应用场景">
             
             
               
-                js中call、apply、bind那些事
+                说谁你只是"会用"jQuery?
               
             
           </h1>
@@ -312,8 +311,8 @@ apply、call、bind的区别和主要应用场景">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-26T10:29:48+08:00" content="2016-04-26">
-              2016-04-26
+            <time itemprop="dateCreated" datetime="2017-06-08T22:02:23+08:00" content="2017-06-08">
+              2017-06-08
             </time>
           </span>
 
@@ -323,8 +322,8 @@ apply、call、bind的区别和主要应用场景">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/04/26/js中call、apply、bind那些事/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/26/js中call、apply、bind那些事/" itemprop="commentsCount"></span>
+                <a href="/2017/06/08/说谁你只是会用jQuery/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/08/说谁你只是会用jQuery/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -334,7 +333,7 @@ apply、call、bind的区别和主要应用场景">
 
           
           
-             <span id="/2016/04/26/js中call、apply、bind那些事/" class="leancloud_visitors" data-flag-title="js中call、apply、bind那些事">
+             <span id="/2017/06/08/说谁你只是会用jQuery/" class="leancloud_visitors" data-flag-title="说谁你只是"会用"jQuery?">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -356,74 +355,37 @@ apply、call、bind的区别和主要应用场景">
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>回想起之前的一些面试，几乎每次都会问到一个js中关于call、apply、bind的问题，比如…</p>
-</blockquote>
-<ol>
-<li>怎么利用call、apply来求一个数组中最大或者最小值</li>
-<li>如何利用call、apply来做继承</li>
-<li>apply、call、bind的区别和主要应用场景</li>
-</ol>
-<a id="more"></a>
+        <p>前言</p>
 <blockquote>
-<p>虽然网上有很多关于这方面的博客和文章，但还是决定写一篇自己对这方面知识的理解。</p>
+<p>套用上篇文章<a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a> 的开头😀😀😀</p>
 </blockquote>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><blockquote>
-<p>首先问个问题，这三个函数的存在意义是什么？答案是<strong>改变函数执行时的上下文</strong>，再具体一点就是<strong>改变函数运行时的this指向</strong>。有了这个认识，接下来我们来看一下,怎么使用这三个函数。</p>
+<p>前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。</p>
+<p>最近一直在看zepto的源码，希望通过学习它掌握一些框架设计的技巧，也将很久不再拾起的js基础重新温习巩固一遍。如果你对这个系列感兴趣，欢迎<a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">点击</a><code>watch</code>,随时关注动态。这篇文章主要想说一下zepto中事件模块(event.js)的添加事件<code>on</code>以及移除事件<code>off</code>实现原理。</p>
+<p><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">原文地址</a></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">仓库地址</a></p>
+<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><blockquote>
+<p>在没有vue和react，甚至angular都没怎么接触的刀耕火种的时代，jQuery或者zepto是我们手中的利器，是刀刃，他让我们游刃有余地开发出兼容性好的漂亮的网页，我们膜拜并感叹作者带来的便利，沉浸其中，无法自拔。</p>
 </blockquote>
-<p><strong>举个栗子</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">  <span class="keyword">this</span>.name = name;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">  <span class="attr">constructor</span>: Person,</div><div class="line">  <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="string">'qianlong'</span>);</div><div class="line">  person.showName();</div></pre></td></tr></table></figure>
-<p>上面的代码中person调用showName方法后会在浏览器的控制台输出<code>qianlong</code></p>
-<p><strong>接下来</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> animal = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'cat'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面代码中有一个对象字面量，他没有所谓的showName方法，但是我还是想用？怎么办？(坑爹了，这好像在让巧媳妇去做无米之炊)，不过没关系，call、apply、bind可以帮我们干这件事。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 1 call</span></div><div class="line">person.showName.call(animal);</div><div class="line"><span class="comment">// 2 apply</span></div><div class="line">person.showName.apply(animal);</div><div class="line"><span class="comment">// 3 bind</span></div><div class="line">person.showName.bind(animal)();</div></pre></td></tr></table></figure>
-<p><strong>啦啦啦，有木有很神奇，控制台输出了三次<code>cat</code></strong></p>
-<p>我们拿别人的showName方法，并动态改变其<strong>上下文</strong>帮自己输出了信息，说到底就是实现了<strong>复用</strong></p>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><blockquote>
-<p>上面看起来三个函数的作用差不多，干的事几乎是一样的，那为什么要存在3个家伙呢，留一个不就可以。所以其实他们干的事从本质上讲都是一样的<strong>动态的改变this上下文</strong>,但是多少还是有一些差别的..</p>
+<p>=== 准备放一张照片一梭子jQuery</p>
+<p>但是用了这么久的zepto你知道你平时这样写代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$(<span class="string">'.list'</span>).on(<span class="string">'click'</span>, <span class="string">'li'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log($(<span class="keyword">this</span>).html())</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>是怎么实现事件委托的吗？为啥此时的<code>this</code>就是你点中的<code>li</code>呢?</p>
+<p>平常我们可能还会这样写。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$(<span class="string">'.list li'</span>).bind(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div><div class="line"></div><div class="line">$(<span class="string">'.list'</span>).delegate(<span class="string">'li'</span>, <span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div><div class="line"></div><div class="line">$(<span class="string">'.list li'</span>).live(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div><div class="line"></div><div class="line">$(<span class="string">'.list li'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;)</div></pre></td></tr></table></figure>
+<p>写法多个数不过来，也许你还有其他的写法，那么</p>
+<p><code>on</code></p>
+<p><code>bind</code></p>
+<p><code>delegate</code></p>
+<p><code>live</code></p>
+<p><code>click()</code></p>
+<p>这些添加事件的形式，有什么区别，内部之间又有什么联系呢？</p>
+<p>相信你在面试过程中也遇到过类似的问题？</p>
+<p>接下来我们从源码的角度一步步去探究其内部实现的原理。</p>
+<h2 id="一切从on开始"><a href="#一切从on开始" class="headerlink" title="一切从on开始"></a>一切从<code>on</code>开始</h2><blockquote>
+<p>为什么选择从<code>on</code>添加事件的方式开始说起，原因在于其他写法几乎都是<code>on</code>衍生出来的，明白了<code>on</code>的实现原理，其他的也就差不多那么回事了。</p>
 </blockquote>
-<p><strong>call、apply与bind的差别</strong></p>
-<blockquote>
-<p>call和apply改变了函数的<strong>this</strong>上下文后便<strong>执行</strong>该函数,而bind则是返回改变了上下文后的一个函数。</p>
-</blockquote>
-<p><strong>call、apply的区别</strong></p>
-<blockquote>
-<p>他们俩之间的差别在于参数的区别，call和aplly的第一个参数都是要改变上下文的对象，而call从第二个参数开始以参数列表的形式展现，apply则是把除了改变上下文对象的参数放在一个数组里面作为它的第二个参数。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">fn.call(obj, arg1, arg2, arg3...);</div><div class="line">fn.apply(obj, [arg1, arg2, arg3...]);</div></pre></td></tr></table></figure>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><blockquote>
-<p>知道了怎么使用和他们之间的区别，接下来我们来了解一下通过call、apply、bind的常见应用场景。</p>
-</blockquote>
-<ul>
-<li><strong>求数组中的最大和最小值</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr = [<span class="number">34</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">54</span>,<span class="number">6</span>,<span class="number">-67</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">-8</span>,<span class="number">687</span>];</div><div class="line"></div><div class="line"><span class="built_in">Math</span>.max.apply(<span class="built_in">Math</span>, arr);</div><div class="line"><span class="built_in">Math</span>.max.call(<span class="built_in">Math</span>, <span class="number">34</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">54</span>,<span class="number">6</span>,<span class="number">-67</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">-8</span>,<span class="number">687</span>);</div><div class="line"></div><div class="line"><span class="built_in">Math</span>.min.apply(<span class="built_in">Math</span>, arr);</div><div class="line"><span class="built_in">Math</span>.min.call(<span class="built_in">Math</span>, <span class="number">34</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">54</span>,<span class="number">6</span>,<span class="number">-67</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">-8</span>,<span class="number">687</span>);</div></pre></td></tr></table></figure>
-<ul>
-<li><strong>将伪数组转化为数组</strong></li>
-</ul>
-<blockquote>
-<p>js中的伪数组(例如通过<code>document.getElementsByTagName</code>获取的元素)具有length属性，并且可以通过0、1、2…下标来访问其中的元素，但是没有Array中的push、pop等方法。我们可以利用call、apply来将其转化为真正的数组这样便可以方便地使用数组方法了。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arrayLike = &#123;</div><div class="line">  <span class="number">0</span>: <span class="string">'qianlong'</span>,</div><div class="line">  <span class="number">1</span>: <span class="string">'ziqi'</span>,</div><div class="line">  <span class="number">2</span>: <span class="string">'qianduan'</span>,</div><div class="line">  <span class="attr">length</span>: <span class="number">3</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面就是一个普通的对象字面量，怎么把它变成一个数组呢？最简单的方法就是</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr = <span class="built_in">Array</span>.prototype.slice.call(arrayLike);</div></pre></td></tr></table></figure>
-<p>上面arr便是一个包含arrayLike元素的真正的数组啦( <strong>注意数据结构必须是以数字为下标而且一定要有length属性</strong> )</p>
-<ul>
-<li><strong>数组追加</strong></li>
-</ul>
-<blockquote>
-<p>在js中要往数组中添加元素，可以直接用push方法，</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</div><div class="line"><span class="keyword">var</span> arr2 = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>];</div><div class="line"></div><div class="line">[].push.apply(arr1, arr2);</div><div class="line"></div><div class="line"><span class="comment">// arr1 [1, 2, 3, 4, 5, 6]</span></div><div class="line"><span class="comment">// arr2 [4,5,6]</span></div></pre></td></tr></table></figure>
-<p><strong>判断变量类型</strong></p>
-<blockquote>
-<p>对于对象型的数据类型，我们可以借助call来得知他的具体类型，例如数组</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isArray</span>(<span class="params">obj</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(obj) == <span class="string">'[object Array]'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">isArray([]) <span class="comment">// true</span></div><div class="line">isArray(<span class="string">'qianlong'</span>) <span class="comment">// false</span></div></pre></td></tr></table></figure>
-<p><strong>2016.12.31日更新，有些读者对文章提了一些意见，觉得还是蛮好的，现在就其中部分进行更新。</strong></p>
-<p><strong>利用call和apply做继承</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span> (<span class="params">name, age</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.name = name;</div><div class="line">  <span class="keyword">this</span>.age = age;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> Girl = <span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</div><div class="line">  Person.call(<span class="keyword">this</span>, name);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> Boy = <span class="function"><span class="keyword">function</span> (<span class="params">name, age</span>) </span>&#123;</div><div class="line">  Person.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> g1 = <span class="keyword">new</span> Girl (<span class="string">'qing'</span>);</div><div class="line"><span class="keyword">var</span> b1 = <span class="keyword">new</span> Boy(<span class="string">'qianlong'</span>, <span class="number">100</span>);</div></pre></td></tr></table></figure>
+<p><strong>寄出一张画了好久的图</strong></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/on.png" alt=""></p>
 
       
     </div>
@@ -448,6 +410,12 @@ apply、call、bind的区别和主要应用场景">
           
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
+          
+            <a href="/tags/zepto/" rel="tag">#zepto</a>
+          
         </div>
       
 
@@ -455,17 +423,13 @@ apply、call、bind的区别和主要应用场景">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/24/基于canvas的局部清晰图片查看效果/" rel="next" title="基于canvas的局部清晰图片查看效果">
-                <i class="fa fa-chevron-left"></i> 基于canvas的局部清晰图片查看效果
+              <a href="/2017/06/07/你知道如何手动触发DOM事件吗？/" rel="next" title="向zepto.js学习如何手动触发DOM事件">
+                <i class="fa fa-chevron-left"></i> 向zepto.js学习如何手动触发DOM事件
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/14/jQuery源码分析－分析碎片－init解读/" rel="prev" title="jQuery源码分析－分析碎片－init解读">
-                jQuery源码分析－分析碎片－init解读 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -480,10 +444,10 @@ apply、call、bind的区别和主要应用场景">
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/04/26/js中call、apply、bind那些事/"
-     data-title="js中call、apply、bind那些事"
+        <div class="ds-share flat" data-thread-key="2017/06/08/说谁你只是会用jQuery/"
+     data-title="说谁你只是"会用"jQuery?"
      data-content=""
-     data-url="https://qianlongo.github.io/2016/04/26/js中call、apply、bind那些事/">
+     data-url="https://qianlongo.github.io/2017/06/08/说谁你只是会用jQuery/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -510,8 +474,8 @@ apply、call、bind的区别和主要应用场景">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/04/26/js中call、apply、bind那些事/"
-           data-title="js中call、apply、bind那些事" data-url="https://qianlongo.github.io/2016/04/26/js中call、apply、bind那些事/">
+      <div class="ds-thread" data-thread-key="2017/06/08/说谁你只是会用jQuery/"
+           data-title="说谁你只是"会用"jQuery?" data-url="https://qianlongo.github.io/2017/06/08/说谁你只是会用jQuery/">
       </div>
     
   </div>
@@ -624,7 +588,7 @@ apply、call、bind的区别和主要应用场景">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区别"><span class="nav-number">3.</span> <span class="nav-text">区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#说在前面"><span class="nav-number">1.</span> <span class="nav-text">说在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一切从on开始"><span class="nav-number">2.</span> <span class="nav-text">一切从on开始</span></a></li></ol></div>
             
           </div>
         </section>
