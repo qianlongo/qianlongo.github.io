@@ -95,7 +95,7 @@ jsonp(JSON with padding)你一定不会陌生，前端向后端拿数据的方�
 jsonp(JSON with padding)你一定不会陌生，前端向后端拿数据的方式之一，也是处理跨域请求的得利助手。
 我们早已习惯，早已熟练了jQ或者zepto的ajax调用方式。但是有可能还不太它内部具体是如何实现一个jsonp的，从请求的发出，到指定的成功(success)或失败(error)回调函数的执行。这中间前端需要做什么？后端又需要做些什么来支持？超时场景又该如何处理？">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/%E9%94%99%E8%AF%AF.png">
-<meta property="og:updated_time" content="2017-06-11T16:08:53.000Z">
+<meta property="og:updated_time" content="2017-06-11T16:20:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="原来你是这样的jsonp(原理与具体实现)">
 <meta name="twitter:description" content="前言
@@ -424,7 +424,17 @@ jsonp(JSON with padding)你一定不会陌生，前端向后端拿数据的方�
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 清楚超时定时器</span></div><div class="line">clearTimeout(abortTimeout)</div><div class="line"><span class="comment">// 从网页中移除创建的script元素以及将挂在它上面的所有事件都移除</span></div><div class="line">$(script).off().remove()</div></pre></td></tr></table></figure>
 <p>起什么作用呢？</p>
 <p>第一句自然是针对超时处理，如果请求在指定超时时间之前完成，自然是要把他清除一下，不然指定的时间到了，超时的回调还是会执行，这是不对的。</p>
-<p>第二句话，把创建的script元素从网页中给删除掉，绑定的事件(‘load error’)也全部移除，干嘛要把事件都给移除呢？你想想，一个请求已经发出去了，我们还能让他半途停止吗？该是不能吧，</p>
+<p>第二句话，把创建的script元素从网页中给删除掉，绑定的事件(‘load error’)也全部移除，干嘛要把事件都给移除呢？你想想，一个请求已经发出去了，我们还能让他半途停止吗？该是不能吧，但是我们能够阻止请求回来之后要做的事情呀！而这个回调不就是请求回来之后要做的事情么。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (e.type == <span class="string">'error'</span> || !responseData) &#123;</div><div class="line">  ajaxError(<span class="literal">null</span>, errorType || <span class="string">'error'</span>, xhr, options, deferred)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  ajaxSuccess(responseData[<span class="number">0</span>], xhr, options, deferred)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么再接下来，就是请求的成功或失败的处理了。失败的条件就是触发了<code>error</code>事件(不管是超时还是解析错误，又或者状态码不在HTTP 2xx)，甚至如果后端没有正确给到数据<code>responseData</code>也是错误。</p>
+<p><strong>再回顾一下responseData是怎么来的</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 重写全局上的callbackName</span></div><div class="line"><span class="built_in">window</span>[callbackName] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  responseData = <span class="built_in">arguments</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>ajaxErro函数究竟做了些啥事呢？</strong></p>
+<p><code>ajaxError</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// type: "timeout", "error", "abort", "parsererror"</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajaxError</span>(<span class="params">error, type, xhr, settings, deferred</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> context = settings.context</div><div class="line">  <span class="comment">// 执行用户传进去的error函数，注意这里的context决定了error函数中的this执行</span></div><div class="line">  settings.error.call(context, xhr, type, error)</div><div class="line">  <span class="keyword">if</span> (deferred) deferred.rejectWith(context, [xhr, type, error])</div><div class="line">  <span class="comment">// 触发全局的钩子ajaxError</span></div><div class="line">  triggerGlobal(settings, context, <span class="string">'ajaxError'</span>, [xhr, settings, error || type])</div><div class="line">  <span class="comment">// 调用ajaxComplete函数</span></div><div class="line">  ajaxComplete(type, xhr, settings)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到他调用了我们穿进去的<code>error</code>函数,并且触发了全局的<code>ajaxError</code>钩子，所以我们其实可以在<code>document</code>上监听一个钩子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$(<span class="built_in">document</span>).on(<span class="string">'ajaxError'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'ajaxError'</span>)</div><div class="line">  <span class="built_in">console</span>.log(e)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>这个时候便可以拿到<code>ajaxError</code>信息了</p>
 
       
     </div>
