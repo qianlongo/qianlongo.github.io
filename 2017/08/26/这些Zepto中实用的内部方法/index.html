@@ -98,7 +98,7 @@
 
 将数组铺平(flatten)
 面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
-<meta property="og:updated_time" content="2017-08-26T10:07:41.000Z">
+<meta property="og:updated_time" content="2017-08-26T10:24:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些Zepto中实用的内部方法">
 <meta name="twitter:description" content="前言
@@ -367,7 +367,11 @@
 <p><strong>方式2</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> flatten = <span class="function">(<span class="params">array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> result = []</div><div class="line">  <span class="keyword">let</span> idx = <span class="number">0</span></div><div class="line"></div><div class="line">  array.forEach(<span class="function">(<span class="params">val, i</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</div><div class="line">      <span class="keyword">let</span> value = flatten(val)</div><div class="line">      <span class="keyword">let</span> len = value.length</div><div class="line">      <span class="keyword">let</span> j = <span class="number">0</span></div><div class="line">      result.length += len</div><div class="line"></div><div class="line">      <span class="keyword">while</span> ( j &lt; len) &#123;</div><div class="line">        result[idx++] = value[j++]</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      result[idx++] = val</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>同样和上面得到的结果一致</strong></p>
-<p></p>
+<h2 id="数组去重-uniq"><a href="#数组去重-uniq" class="headerlink" title="数组去重(uniq)"></a>数组去重(uniq)</h2><blockquote>
+<p>数组去重可谓是老生常谈的话题了，方式有非常多。好久之前写过一篇<a href="https://segmentfault.com/a/1190000003899049" target="_blank" rel="external">关于去重的文章</a>,欢迎查看。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> uniq = <span class="function"><span class="keyword">function</span> (<span class="params">array</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> filter.call(array, <span class="function"><span class="keyword">function</span> (<span class="params">item, idx</span>) </span>&#123;     <span class="keyword">return</span> array.indexOf(item) == idx</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结合数组的filter方法，查看数组的某项出现的索引是不是与idx相等，不相等，肯定出现过2次以上，即将其过滤掉。<br></p>
 <p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
@@ -583,7 +587,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">将数组铺平(flatten)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">数组去重(uniq)</span></a></li></ol></div>
             
           </div>
         </section>
