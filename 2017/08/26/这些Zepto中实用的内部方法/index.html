@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript,zepto源码分析,源码分析,zepto,网络请求," />
+  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto,网络请求," />
 
 
 
@@ -85,29 +85,21 @@
 
 
 <meta name="description" content="前言
-时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
-
-1. 将数组铺平(flatten)
-面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
+时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这些Zepto中实用的内部方法集">
+<meta property="og:title" content="这些Zepto中实用的方法集">
 <meta property="og:url" content="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
-
-1. 将数组铺平(flatten)
-面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
+时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/facebook.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png">
-<meta property="og:updated_time" content="2017-08-26T13:55:11.000Z">
+<meta property="og:updated_time" content="2017-08-26T14:16:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="这些Zepto中实用的内部方法集">
+<meta name="twitter:title" content="这些Zepto中实用的方法集">
 <meta name="twitter:description" content="前言
-时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
-
-1. 将数组铺平(flatten)
-面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
-<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png">
+时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/facebook.png">
 
 
 
@@ -130,7 +122,7 @@
 
   <link rel="canonical" href="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/"/>
 
-  <title> 这些Zepto中实用的内部方法集 | 谦龙的小天地 </title>
+  <title> 这些Zepto中实用的方法集 | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -296,7 +288,7 @@
             
             
               
-                这些Zepto中实用的内部方法集
+                这些Zepto中实用的方法集
               
             
           </h1>
@@ -330,7 +322,7 @@
 
           
           
-             <span id="/2017/08/26/这些Zepto中实用的内部方法/" class="leancloud_visitors" data-flag-title="这些Zepto中实用的内部方法集">
+             <span id="/2017/08/26/这些Zepto中实用的内部方法/" class="leancloud_visitors" data-flag-title="这些Zepto中实用的方法集">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -355,6 +347,8 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。</p>
 </blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/facebook.png" alt=""></p>
+<a id="more"></a>
 <h2 id="1-将数组铺平-flatten"><a href="#1-将数组铺平-flatten" class="headerlink" title="1. 将数组铺平(flatten)"></a>1. 将数组铺平(flatten)</h2><blockquote>
 <p>面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将<code>[1, 2, [3], [4], [5]]</code>最后变成<code>[1, 2, 3, 4, 5]</code></p>
 </blockquote>
@@ -480,9 +474,9 @@
           
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
-            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
-          
             <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
           
             <a href="/tags/zepto/" rel="tag">#zepto</a>
           
@@ -517,7 +511,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2017/08/26/这些Zepto中实用的内部方法/"
-     data-title="这些Zepto中实用的内部方法集"
+     data-title="这些Zepto中实用的方法集"
      data-content=""
      data-url="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/">
   <div class="ds-share-inline">
@@ -547,7 +541,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/08/26/这些Zepto中实用的内部方法/"
-           data-title="这些Zepto中实用的内部方法集" data-url="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/">
+           data-title="这些Zepto中实用的方法集" data-url="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/">
       </div>
     
   </div>

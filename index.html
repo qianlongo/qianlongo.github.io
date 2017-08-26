@@ -285,7 +285,7 @@
               
                 
                 <a class="post-title-link" href="/2017/08/26/这些Zepto中实用的内部方法/" itemprop="url">
-                  这些Zepto中实用的内部方法集
+                  这些Zepto中实用的方法集
                 </a>
               
             
@@ -320,7 +320,7 @@
 
           
           
-             <span id="/2017/08/26/这些Zepto中实用的内部方法/" class="leancloud_visitors" data-flag-title="这些Zepto中实用的内部方法集">
+             <span id="/2017/08/26/这些Zepto中实用的内部方法/" class="leancloud_visitors" data-flag-title="这些Zepto中实用的方法集">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -343,113 +343,15 @@
 
       
         
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。</p>
 </blockquote>
-<h2 id="1-将数组铺平-flatten"><a href="#1-将数组铺平-flatten" class="headerlink" title="1. 将数组铺平(flatten)"></a>1. 将数组铺平(flatten)</h2><blockquote>
-<p>面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将<code>[1, 2, [3], [4], [5]]</code>最后变成<code>[1, 2, 3, 4, 5]</code></p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">flatten</span>(<span class="params">array</span>) </span>&#123; </div><div class="line">  <span class="keyword">return</span> array.length &gt; <span class="number">0</span> ? $.fn.concat.apply([], array) : array </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里先将<code>$.fn.concat</code>理解成原生数组的<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/concat" target="_blank" rel="external">concat方法</a>,我们会发现，其实他只能铺平一层。例如</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>], [<span class="number">4</span>, [<span class="number">5</span>]]] =&gt; [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="number">5</span>]]</div></pre></td></tr></table></figure>
-<p>那怎样才能将多层嵌套的数组完全铺平为一层呢？这里介绍两种方式。</p>
-<p><strong>方式1</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> flatten = <span class="function">(<span class="params">array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> array.reduce(<span class="function">(<span class="params">result, val</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> result.concat(<span class="built_in">Array</span>.isArray(val) ? flatten(val) : val)</div><div class="line">  &#125;, [])</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>测试</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> testArr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</div><div class="line"><span class="keyword">let</span> testArr2 = [<span class="number">1</span>, [<span class="number">2</span>], <span class="number">3</span>, [<span class="number">4</span>, [<span class="number">5</span>, [<span class="number">6</span>, [<span class="number">7</span>]]]]]</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(flatten(testArr1)) <span class="comment">// =&gt; [1, 2, 3, 4]</span></div><div class="line"><span class="built_in">console</span>.log(flatten(testArr2)) <span class="comment">// =&gt; [1, 2, 3, 4, 5, 6, 7]</span></div></pre></td></tr></table></figure>
-<p><strong>方式2</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> flatten = <span class="function">(<span class="params">array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> result = []</div><div class="line">  <span class="keyword">let</span> idx = <span class="number">0</span></div><div class="line"></div><div class="line">  array.forEach(<span class="function">(<span class="params">val, i</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</div><div class="line">      <span class="keyword">let</span> value = flatten(val)</div><div class="line">      <span class="keyword">let</span> len = value.length</div><div class="line">      <span class="keyword">let</span> j = <span class="number">0</span></div><div class="line">      result.length += len</div><div class="line"></div><div class="line">      <span class="keyword">while</span> ( j &lt; len) &#123;</div><div class="line">        result[idx++] = value[j++]</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      result[idx++] = val</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>同样和上面得到的结果一致</strong></p>
-<h2 id="2-数组去重-uniq"><a href="#2-数组去重-uniq" class="headerlink" title="2. 数组去重(uniq)"></a>2. 数组去重(uniq)</h2><blockquote>
-<p>数组去重可谓是老生常谈的话题了，方式有非常多。好久之前写过一篇<a href="https://segmentfault.com/a/1190000003899049" target="_blank" rel="external">关于去重的文章</a>,欢迎查看。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> uniq = <span class="function"><span class="keyword">function</span> (<span class="params">array</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> filter.call(array, <span class="function"><span class="keyword">function</span> (<span class="params">item, idx</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> array.indexOf(item) == idx</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>结合数组的filter方法，查看数组的某项出现的索引是不是与idx相等，不相等，肯定出现过2次以上，即将其过滤掉。其实结合es6中的Set数据结构，可以很方便的做到数组去重。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> uniq = <span class="function">(<span class="params">array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span>  [...new <span class="built_in">Set</span>(array)]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>测试</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> testArr = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">-1</span>]</div><div class="line"><span class="built_in">console</span>.log(uniq(testArr)) <span class="comment">// =&gt; [1, 2, 3, 0, -1]</span></div></pre></td></tr></table></figure>
-<p></p>
-<h2 id="3-下划线命名转小驼峰（camelize）"><a href="#3-下划线命名转小驼峰（camelize）" class="headerlink" title="3. 下划线命名转小驼峰（camelize）"></a>3. 下划线命名转小驼峰（camelize）</h2><blockquote>
-<p>这个方法挺实用的，可以将<code>a-b-c</code>这种形式转换成<code>aBC</code>,当然下划线的数量可以是多个，<code>a---b-----c</code> =&gt; <code>aBC</code></p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> camelize = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> str.replace(<span class="regexp">/-+(.)?/g</span>, <span class="function"><span class="keyword">function</span> (<span class="params">match, chr</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> chr ? chr.toUpperCase() : <span class="string">''</span></div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="4-判断是否为document对象-isDocument-。"><a href="#4-判断是否为document对象-isDocument-。" class="headerlink" title="4. 判断是否为document对象(isDocument)。"></a>4. 判断是否为document对象(isDocument)。</h2><blockquote>
-<p>通过dom元素的nodeType属性可以知道其属于哪种元素类型。结合下面这张表(<a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" target="_blank" rel="external">developer.mozilla.org/en-US/docs/Web/API/Node/nodeType</a>)，其实不仅仅可以写出判断是否为document对象，还可以判断是否为元素对象等。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isDocument</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj != <span class="literal">null</span> &amp;&amp; obj.nodeType == obj.DOCUMENT_NODE</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png" alt=""></p>
-<h2 id="5-判断obj是否为类数组-likeArray"><a href="#5-判断obj是否为类数组-likeArray" class="headerlink" title="5. 判断obj是否为类数组(likeArray)"></a>5. 判断obj是否为类数组(likeArray)</h2><blockquote>
-<p>什么是类数组对象呢？</p>
-</blockquote>
-<p>类数组对象：</p>
-<ol>
-<li>含有指向对象元素的数字索引下标以及length属性标志属性的个数</li>
-<li>不含有数组的push、concat等方法</li>
-</ol>
-<p>常见的类数组对象有<code>auguments</code>,<code>document.getElementsByClassName</code>等api获取的dom集合，符合上述条件的对象等。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">likeArray</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="comment">// !!obj 直接过滤掉了false，null，undefined，''等值</span></div><div class="line">  <span class="comment">// 然后obj必须包含length属性</span></div><div class="line">  <span class="keyword">var</span> length = !!obj &amp;&amp; <span class="string">'length'</span> <span class="keyword">in</span> obj &amp;&amp; obj.length,</div><div class="line">  <span class="comment">// 获取obj的数据类型</span></div><div class="line">    type = $.type(obj)</div><div class="line">  <span class="comment">// 不能是function类型，不能是window</span></div><div class="line">  <span class="comment">// 如果是array则直接返回true</span></div><div class="line">  <span class="comment">// 或者当length的数据类型是number，并且其取值范围是0到(length - 1)这里是通过判断length - 1 是否为obj的属性</span></div><div class="line">  <span class="keyword">return</span> <span class="string">'function'</span> != type &amp;&amp; !isWindow(obj) &amp;&amp; (</div><div class="line">    <span class="string">'array'</span> == type || length === <span class="number">0</span> ||</div><div class="line">    (<span class="keyword">typeof</span> length == <span class="string">'number'</span> &amp;&amp; length &gt; <span class="number">0</span> &amp;&amp; (length - <span class="number">1</span>) <span class="keyword">in</span> obj)</div><div class="line">  )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>代码上了注释，主要我们来对比一下<code>underscore</code>中是如何判断是否为类数组的。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MAX_ARRAY_INDEX = <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">53</span>) - <span class="number">1</span>;</div><div class="line"><span class="keyword">var</span> getLength = property(<span class="string">'length'</span>);</div><div class="line"><span class="keyword">var</span> isArrayLike = <span class="function"><span class="keyword">function</span>(<span class="params">collection</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> length = getLength(collection);</div><div class="line">  <span class="keyword">return</span> <span class="keyword">typeof</span> length == <span class="string">'number'</span> &amp;&amp; length &gt;= <span class="number">0</span> &amp;&amp; length &lt;= MAX_ARRAY_INDEX;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p><code>underscore</code>中判断类数组比较宽松一些，MAX_ARRAY_INDEX是JavaScript 中能精确表示的最大数字，主要判断对象的length属性是否为数字类型，并且是否大于0且在MAX_ARRAY_INDEX范围内。</p>
-<p>zepto中类数组判断就比较严格了，因为window和函数其实都有length属性，这里把他们给过滤掉了。</p>
-<h2 id="6-判断是否为window对象"><a href="#6-判断是否为window对象" class="headerlink" title="6. 判断是否为window对象"></a>6. 判断是否为window对象</h2><blockquote>
-<p>window对象的window属性指向其本身，我们来直接看下<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/window" target="_blank" rel="external">mdn</a>上的解释。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isWindow</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj != <span class="literal">null</span> &amp;&amp; obj == obj.window</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>但实际上下面的代码也会被认为是window对象。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = &#123;&#125;</div><div class="line">a.window = a</div><div class="line"></div><div class="line">a === a.window <span class="comment">// true</span></div><div class="line">isWindow(a) <span class="comment">// true</span></div></pre></td></tr></table></figure>
-<h2 id="7-判断数据类型"><a href="#7-判断数据类型" class="headerlink" title="7. 判断数据类型"></a>7. 判断数据类型</h2><blockquote>
-<p>利用<code>Object.prototype.toString</code>方法来做数据类型的判断。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> class2type = &#123;&#125;</div><div class="line"><span class="keyword">let</span> toString = class2type.toString</div><div class="line"></div><div class="line">  <span class="comment">// Populate the class2type map</span></div><div class="line">$.each(<span class="string">"Boolean Number String Function Array Date RegExp Object Error"</span>.split(<span class="string">" "</span>), <span class="function"><span class="keyword">function</span>(<span class="params">i, name</span>) </span>&#123;</div><div class="line">  class2type[<span class="string">"[object "</span> + name + <span class="string">"]"</span>] = name.toLowerCase()</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p>最后class2type会变成</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class2type = &#123;</div><div class="line">  <span class="string">"[object Boolean]"</span>: <span class="string">"boolean"</span>,</div><div class="line">  <span class="string">"[object Array]"</span>: <span class="string">"array"</span>,</div><div class="line">  <span class="string">"[object Number]"</span>: <span class="string">"number"</span></div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接着就是type函数的定义了</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">type</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj == <span class="literal">null</span> ? <span class="built_in">String</span>(obj) :</div><div class="line">  class2type[toString.call(obj)] || <span class="string">"object"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>首先如果传入的obj是null或者undefined，则用String函数返货<code>null</code>或者<code>undefined</code>,而<code>toString.call(obj)</code>返回的正是形如<code>[object Array]</code>,所以再结合上面的class2type变量，正好就可以得到例如。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">type([]) =&gt; array</div><div class="line">type(<span class="number">1</span>) =&gt; number</div></pre></td></tr></table></figure>
-<h2 id="8-判断是够为纯粹的对象（isPlainObject）"><a href="#8-判断是够为纯粹的对象（isPlainObject）" class="headerlink" title="8. 判断是够为纯粹的对象（isPlainObject）"></a>8. 判断是够为纯粹的对象（isPlainObject）</h2><blockquote>
-<p>有时候我们想要符合这样条件的对象。但是js中没有直接给到能够判断是否为纯粹的对象的方法。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 对象字面量形式</span></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 通过Object构造函数创建</span></div><div class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>(&#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p>zepto中是如何判断的呢？</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断obj是否为纯粹的对象，必须满足</span></div><div class="line"><span class="comment">// 首先必须是对象  --- isObject(obj)</span></div><div class="line"><span class="comment">// 不是window对象 --- !isWindow(obj)</span></div><div class="line"><span class="comment">// 并且原型要和 Object 的原型相等</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPlainObject</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> isObject(obj) &amp;&amp; !isWindow(obj) &amp;&amp; <span class="built_in">Object</span>.getPrototypeOf(obj) == <span class="built_in">Object</span>.prototype</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Object.getPrototypeOf() 方法返回指定对象的原型（即, 内部[[Prototype]]属性的值）,如果没有继承属性，则返回 null 。</p>
-<h2 id="9-判断是否为空对象-isEmptyObject"><a href="#9-判断是否为空对象-isEmptyObject" class="headerlink" title="9. 判断是否为空对象(isEmptyObject)"></a>9. 判断是否为空对象(isEmptyObject)</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断是否为空对象</span></div><div class="line"><span class="comment">// 使用for in遍历，只要obj有属性则认为不是空对象</span></div><div class="line"></div><div class="line">$.isEmptyObject = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> name</div><div class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> obj) <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>主要是通过走一遍for循环，来确定，所以会将以下数据也认为是空对象。</p>
-<ol>
-<li>null</li>
-<li>undefined</li>
-<li>[]</li>
-<li>‘’</li>
-<li>1024(数字)</li>
-<li>true or false</li>
-<li>{}</li>
-<li>new Person() // 自定义的构造函数</li>
-</ol>
-<p>所以这里判断空对象的初衷到底是不是只为了判断形如<code>{}</code>,<code>new Object()</code>呢</p>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
-<p>暂时就更新这些，后续在阅读源码的过程中会陆续补充</p>
-</blockquote>
-<p>参考资料</p>
-<p><a href="https://github.com/yeyuqiudeng/reading-zepto/blob/master/src/%E8%AF%BBZepto%E6%BA%90%E7%A0%81%E4%B9%8B%E5%86%85%E9%83%A8%E6%96%B9%E6%B3%95.md" target="_blank" rel="external">读Zepto源码之内部方法</a></p>
-<p><a href="http://www.gbtags.com/api/jquery/jquery-doc/jQuery.isPlainObject/index.html" target="_blank" rel="external">jQuery.isPlainObject</a></p>
-<p><a href="http://www.cnblogs.com/phpmix/articles/1733599.html" target="_blank" rel="external">对jQuery.isPlainObject()的理解</a></p>
-<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf" target="_blank" rel="external">Object.getPrototypeOf()</a></p>
-<p><strong>文章记录</strong></p>
-<ol>
-<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
-</li>
-<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a></p>
-</li>
-<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a></p>
-</li>
-<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a></p>
-</li>
-</ol>
-
-          
+<p><img src="http://odssgnnpf.bkt.clouddn.com/facebook.png" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/08/26/这些Zepto中实用的内部方法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
