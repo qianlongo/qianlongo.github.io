@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto,网络请求," />
+  <meta name="keywords" content="javascript,zepto源码分析,源码分析,zepto,网络请求," />
 
 
 
@@ -99,7 +99,7 @@
 1. 将数组铺平(flatten)
 面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png">
-<meta property="og:updated_time" content="2017-08-26T13:40:50.000Z">
+<meta property="og:updated_time" content="2017-08-26T13:55:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些Zepto中实用的内部方法集">
 <meta name="twitter:description" content="前言
@@ -437,7 +437,15 @@
 <li>new Person() // 自定义的构造函数</li>
 </ol>
 <p>所以这里判断空对象的初衷到底是不是只为了判断形如<code>{}</code>,<code>new Object()</code>呢</p>
-<h2 id="10"><a href="#10" class="headerlink" title="10"></a>10</h2><p><strong>文章记录</strong></p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>暂时就更新这些，后续在阅读源码的过程中会陆续补充</p>
+</blockquote>
+<p>参考资料</p>
+<p><a href="https://github.com/yeyuqiudeng/reading-zepto/blob/master/src/%E8%AF%BBZepto%E6%BA%90%E7%A0%81%E4%B9%8B%E5%86%85%E9%83%A8%E6%96%B9%E6%B3%95.md" target="_blank" rel="external">读Zepto源码之内部方法</a></p>
+<p><a href="http://www.gbtags.com/api/jquery/jquery-doc/jQuery.isPlainObject/index.html" target="_blank" rel="external">jQuery.isPlainObject</a></p>
+<p><a href="http://www.cnblogs.com/phpmix/articles/1733599.html" target="_blank" rel="external">对jQuery.isPlainObject()的理解</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf" target="_blank" rel="external">Object.getPrototypeOf()</a></p>
+<p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
 </li>
@@ -472,9 +480,9 @@
           
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
-            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
-          
             <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
+          
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
           
             <a href="/tags/zepto/" rel="tag">#zepto</a>
           
@@ -652,7 +660,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-判断是否为document对象-isDocument-。"><span class="nav-number">5.</span> <span class="nav-text">4. 判断是否为document对象(isDocument)。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-判断obj是否为类数组-likeArray"><span class="nav-number">6.</span> <span class="nav-text">5. 判断obj是否为类数组(likeArray)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-判断是否为window对象"><span class="nav-number">7.</span> <span class="nav-text">6. 判断是否为window对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-判断数据类型"><span class="nav-number">8.</span> <span class="nav-text">7. 判断数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-判断是够为纯粹的对象（isPlainObject）"><span class="nav-number">9.</span> <span class="nav-text">8. 判断是够为纯粹的对象（isPlainObject）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-判断是否为空对象-isEmptyObject"><span class="nav-number">10.</span> <span class="nav-text">9. 判断是否为空对象(isEmptyObject)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10"><span class="nav-number">11.</span> <span class="nav-text">10</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-判断是否为document对象-isDocument-。"><span class="nav-number">5.</span> <span class="nav-text">4. 判断是否为document对象(isDocument)。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-判断obj是否为类数组-likeArray"><span class="nav-number">6.</span> <span class="nav-text">5. 判断obj是否为类数组(likeArray)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-判断是否为window对象"><span class="nav-number">7.</span> <span class="nav-text">6. 判断是否为window对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-判断数据类型"><span class="nav-number">8.</span> <span class="nav-text">7. 判断数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-判断是够为纯粹的对象（isPlainObject）"><span class="nav-number">9.</span> <span class="nav-text">8. 判断是够为纯粹的对象（isPlainObject）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-判断是否为空对象-isEmptyObject"><span class="nav-number">10.</span> <span class="nav-text">9. 判断是否为空对象(isEmptyObject)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">11.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
