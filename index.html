@@ -409,7 +409,27 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">type</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj == <span class="literal">null</span> ? <span class="built_in">String</span>(obj) :</div><div class="line">  class2type[toString.call(obj)] || <span class="string">"object"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>首先如果传入的obj是null或者undefined，则用String函数返货<code>null</code>或者<code>undefined</code>,而<code>toString.call(obj)</code>返回的正是形如<code>[object Array]</code>,所以再结合上面的class2type变量，正好就可以得到例如。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">type([]) =&gt; array</div><div class="line">type(<span class="number">1</span>) =&gt; number</div></pre></td></tr></table></figure>
-<h2 id="8"><a href="#8" class="headerlink" title="8."></a>8.</h2><p><strong>文章记录</strong></p>
+<h2 id="8-判断是够为纯粹的对象（isPlainObject）"><a href="#8-判断是够为纯粹的对象（isPlainObject）" class="headerlink" title="8. 判断是够为纯粹的对象（isPlainObject）"></a>8. 判断是够为纯粹的对象（isPlainObject）</h2><blockquote>
+<p>有时候我们想要符合这样条件的对象。但是js中没有直接给到能够判断是否为纯粹的对象的方法。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 对象字面量形式</span></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 通过Object构造函数创建</span></div><div class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>(&#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>zepto中是如何判断的呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断obj是否为纯粹的对象，必须满足</span></div><div class="line"><span class="comment">// 首先必须是对象  --- isObject(obj)</span></div><div class="line"><span class="comment">// 不是window对象 --- !isWindow(obj)</span></div><div class="line"><span class="comment">// 并且原型要和 Object 的原型相等</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPlainObject</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> isObject(obj) &amp;&amp; !isWindow(obj) &amp;&amp; <span class="built_in">Object</span>.getPrototypeOf(obj) == <span class="built_in">Object</span>.prototype</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Object.getPrototypeOf() 方法返回指定对象的原型（即, 内部[[Prototype]]属性的值）,如果没有继承属性，则返回 null 。</p>
+<h2 id="9-判断是否为空对象-isEmptyObject"><a href="#9-判断是否为空对象-isEmptyObject" class="headerlink" title="9. 判断是否为空对象(isEmptyObject)"></a>9. 判断是否为空对象(isEmptyObject)</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断是否为空对象</span></div><div class="line"><span class="comment">// 使用for in遍历，只要obj有属性则认为不是空对象</span></div><div class="line"></div><div class="line">$.isEmptyObject = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> name</div><div class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> obj) <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要是通过走一遍for循环，来确定，所以会将以下数据也认为是空对象。</p>
+<ol>
+<li>null</li>
+<li>undefined</li>
+<li>[]</li>
+<li>‘’</li>
+<li>1024(数字)</li>
+<li>true or false</li>
+<li>{}</li>
+<li>new Person() // 自定义的构造函数</li>
+</ol>
+<p>所以这里判断空对象的初衷到底是不是只为了判断形如<code>{}</code>,<code>new Object()</code>呢</p>
+<h2 id="10"><a href="#10" class="headerlink" title="10"></a>10</h2><p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
 </li>

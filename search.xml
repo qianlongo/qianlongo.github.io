@@ -71,7 +71,27 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">type</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj == <span class="literal">null</span> ? <span class="built_in">String</span>(obj) :</div><div class="line">  class2type[toString.call(obj)] || <span class="string">"object"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>首先如果传入的obj是null或者undefined，则用String函数返货<code>null</code>或者<code>undefined</code>,而<code>toString.call(obj)</code>返回的正是形如<code>[object Array]</code>,所以再结合上面的class2type变量，正好就可以得到例如。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">type([]) =&gt; array</div><div class="line">type(<span class="number">1</span>) =&gt; number</div></pre></td></tr></table></figure>
-<h2 id="8"><a href="#8" class="headerlink" title="8."></a>8.</h2><p><strong>文章记录</strong></p>
+<h2 id="8-判断是够为纯粹的对象（isPlainObject）"><a href="#8-判断是够为纯粹的对象（isPlainObject）" class="headerlink" title="8. 判断是够为纯粹的对象（isPlainObject）"></a>8. 判断是够为纯粹的对象（isPlainObject）</h2><blockquote>
+<p>有时候我们想要符合这样条件的对象。但是js中没有直接给到能够判断是否为纯粹的对象的方法。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 对象字面量形式</span></div><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 通过Object构造函数创建</span></div><div class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>(&#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'qianlongo'</span>,</div><div class="line">  <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>zepto中是如何判断的呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断obj是否为纯粹的对象，必须满足</span></div><div class="line"><span class="comment">// 首先必须是对象  --- isObject(obj)</span></div><div class="line"><span class="comment">// 不是window对象 --- !isWindow(obj)</span></div><div class="line"><span class="comment">// 并且原型要和 Object 的原型相等</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPlainObject</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> isObject(obj) &amp;&amp; !isWindow(obj) &amp;&amp; <span class="built_in">Object</span>.getPrototypeOf(obj) == <span class="built_in">Object</span>.prototype</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Object.getPrototypeOf() 方法返回指定对象的原型（即, 内部[[Prototype]]属性的值）,如果没有继承属性，则返回 null 。</p>
+<h2 id="9-判断是否为空对象-isEmptyObject"><a href="#9-判断是否为空对象-isEmptyObject" class="headerlink" title="9. 判断是否为空对象(isEmptyObject)"></a>9. 判断是否为空对象(isEmptyObject)</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断是否为空对象</span></div><div class="line"><span class="comment">// 使用for in遍历，只要obj有属性则认为不是空对象</span></div><div class="line"></div><div class="line">$.isEmptyObject = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> name</div><div class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> obj) <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要是通过走一遍for循环，来确定，所以会将以下数据也认为是空对象。</p>
+<ol>
+<li>null</li>
+<li>undefined</li>
+<li>[]</li>
+<li>‘’</li>
+<li>1024(数字)</li>
+<li>true or false</li>
+<li>{}</li>
+<li>new Person() // 自定义的构造函数</li>
+</ol>
+<p>所以这里判断空对象的初衷到底是不是只为了判断形如<code>{}</code>,<code>new Object()</code>呢</p>
+<h2 id="10"><a href="#10" class="headerlink" title="10"></a>10</h2><p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
 </li>
@@ -3049,86 +3069,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[实习月总结]]></title>
-      <url>https://qianlongo.github.io/2016/03/05/%E5%AE%9E%E4%B9%A0%E6%9C%88%E6%80%BB%E7%BB%93/</url>
-      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>时间似流水般潺潺而过，不经意便从指尖溜走，于笔尖划过。悄然无声，却迹痕般般。投江至今足月有余，恍然恰似昨日，梦醒犹如初见。席地而坐，所思？所获？何为？…</p>
-</blockquote>
-<h2 id="印象"><a href="#印象" class="headerlink" title="印象"></a>印象</h2><blockquote>
-<p>投江近一个月，切身体会这里的人、事、景、物。30多个小伙伴组成了和睦有爱的前端大家庭，他们身怀过硬的技术专长，对工作用心务实，待新人耐心和善，领导没有高架子，与”平民”同乐，他们日出而”作”,日落而归，没有夜夜加班的bat文化，没有尔虞我诈的勾心斗角，在这里自己开心快乐，充实而饱满。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
-<li><strong>熟悉和实践移动端相关技术</strong><br>移动端在web开发中所占的地位不断加重，前端开发不了解其相关技术势必被浪潮拍在<br>沙滩上。</li>
-<li><strong>在工作中锻炼技术，提高解决问题和独立学习的能力</strong></li>
-</ol>
-<h2 id="所获"><a href="#所获" class="headerlink" title="所获"></a>所获</h2><h3 id="主动思考"><a href="#主动思考" class="headerlink" title="主动思考"></a>主动思考</h3><blockquote>
-<p>实习收获最大的一件事情就是学会主动思考，主动去思考需求本身是否合理，去思考如何做才能使体验更佳…</p>
-</blockquote>
-<p>mmp项目中有一个模块用来专门做渠道管理，使应用可以关联相应的渠道，但是产品给出的原型中应用却有一套自己独立的添加渠道操作，该渠道并不是从前面维护的渠道中选出，于是和产品沟通，如果这样渠道管理就失去了维护的意义，后来产品更改需求，交互原型也变成如下图</p>
-<p><img src="/img/mmpSource.png" alt="图片描述"></p>
-<p><img src="/img/mmpLater.png" alt="图片描述"></p>
-<h3 id="前端无需了解需求本身？"><a href="#前端无需了解需求本身？" class="headerlink" title="前端无需了解需求本身？"></a>前端无需了解需求本身？</h3><blockquote>
-<p>在之前的一段实习过程中，经常有合作的后端同学说前端无需了解需求本身，但是我觉得这样的看法是不对的。</p>
-<p><strong>抛开码农的世界</strong>，无论身处何处，在做什么，首先<strong>知道自己做的是什么</strong>是非常重要的事情，如果只是按部就班的把被安排的事情做好,这与行尸走肉无异，于己而言也就没有什么意义了。</p>
-<p><strong>回归码农的世界</strong>，前端除了了解产品界面原型和ui效果图，还应当了解产品的功能需求和业务规则。很多时候，在没有设计或者交互参与的项目中，产品对界面的把控并没有前端仔细，而且在一些交互细节上也无法做到体验最佳。如果前端不去了解业务需求，而只是按照原型将页面实现，那做出来的东西一定不是”更好的”。</p>
-</blockquote>
-<h3 id="关于编码习惯"><a href="#关于编码习惯" class="headerlink" title="关于编码习惯"></a>关于编码习惯</h3><p>好的编码习惯可以提高我们的代码质量，增强团规开发协作效，减少bug出现的几率…<br>甚至可以提高自己对曾经写过的代码的理解力(时间一长，如果编码习惯不好，哪怕是自己写的程序，恐怕也不能快速理解)</p>
-<blockquote>
-<p>与其说师兄有代码洁癖，强迫症，还不如说他养成了良好的编程习惯，有时候他在看自己写的代码的时候，经常会指出一些编程习惯的问题比如</p>
-</blockquote>
-<ol>
-<li>保持分号统一，不要一处有，一处没有</li>
-<li>写if while等的时候空一格，这有利于和函数调用区分开</li>
-<li>使用两个空格来缩进，这是保证在各大平台上代码缩进都统一办法</li>
-<li>将调试以及当前使用但未来需要删除的代码做上标记xxx方便以后将其删除<br>(经常我们的习惯是用console.log等来进行调试，但是调试完成之后使用//注释掉，很有可能在代码上线之前没有将其删除)</li>
-<li>做好注释，比如在路由那一块，哪一个模板对应什么业务应该有清晰明显的注释，方便自己和后面维护的童鞋一目了然的知晓其作用。</li>
-<li>…<blockquote>
-<p>好习惯的养成不是一朝一夕的事情，而是长时间的积累和坚持，现在自己写程序依然会有各种问题存在，这也说明习惯养成之路漫长且待坚持。</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="扩展和可配置"><a href="#扩展和可配置" class="headerlink" title="扩展和可配置"></a>扩展和可配置</h3><blockquote>
-<p>代码的扩展性是码农都追求的一个目标，我所理解的代码的扩展性一方面是为了应对或者解决需求的时常变更而给开发者带来比较大的开发代价而做的程序设计。</p>
-</blockquote>
-<p>比如有这么一个常见的导航模块，包含三大板块，每个板块下面会有自己的小模块</p>
-<p><img src="/img/mmpNav.png" alt="图片描述"></p>
-<p>刚开始做的时候是根据原型完全用<strong>写死的方式在html写好</strong>，但是后来和产品了解需求的时候发现这个项目并没有最后完全敲锤定音，也就是还存在许多可变因素，导航模块完全有可能增加和删除，为了解决这样的问题，我将原先先死的html结构抽象出来，将大模块标题，小模块，图标用数据配置的方式来生成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$scope.groups = [</div><div class="line">    &#123;</div><div class="line">      title : &apos;应用管理&apos;,//标题</div><div class="line">      icon : &apos;glyphicon glyphicon-th-list&apos;,//图标</div><div class="line">      isOpen : true,//是否展开</div><div class="line">      lists : [//子模块</div><div class="line">        &#123;</div><div class="line">          title : &apos;应用列表&apos;,</div><div class="line">          ui_sref : &apos;application_list&apos;,</div><div class="line">          icons : &apos;glyphicon glyphicon-paperclip&apos;</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">          title : &apos;渠道管理&apos;,</div><div class="line">          ui_sref : &apos;channel_management&apos;,</div><div class="line">          icons : &apos;glyphicon glyphicon-paperclip&apos;</div><div class="line">        &#125;</div><div class="line">      ]</div><div class="line">    &#125;</div><div class="line">  ];</div></pre></td></tr></table></figure></p>
-<p>再配合这一段模板就可以解决后续模块增加或者删除的问题(只需要在数据模型中增加或者删除对应的字段就可以)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;uib-accordion&gt;</div><div class="line">    &lt;uib-accordion-group  is-open=&quot;group.isOpen&quot; ng-repeat=&quot;group in groups&quot;&gt;</div><div class="line">      &lt;uib-accordion-heading&gt;</div><div class="line">        &#123;&#123; group.title &#125;&#125;  &lt;i class=&quot;&#123;&#123; group.icon &#125;&#125;&quot;&gt;&lt;/i&gt;&lt;span ng-class=&quot;&#123;&apos;triangle&apos;: group.isOpen,&apos;triangle_no&apos;:!group.isOpen&#125;&quot;&gt;&lt;/span&gt;</div><div class="line">      &lt;/uib-accordion-heading&gt;</div><div class="line">      &lt;ul&gt;</div><div class="line">        &lt;li ng-repeat=&quot;item in group.lists&quot; ng-click=&quot;tab.setCurrent(&apos;application_list&apos;)&quot;&gt;</div><div class="line">          &lt;a ui-sref=&quot;.&#123;&#123; item.ui_sref &#125;&#125;&quot;&gt;&#123;&#123; item.title &#125;&#125;&lt;/a&gt;</div><div class="line">          &lt;i class=&quot;&#123;&#123; item.icons &#125;&#125;&quot;&gt;&lt;/i&gt;</div><div class="line">        &lt;/li&gt;</div><div class="line">      &lt;/ul&gt;</div><div class="line">    &lt;/uib-accordion-group&gt;</div><div class="line">  &lt;/uib-accordion&gt;</div></pre></td></tr></table></figure></p>
-<h3 id="技术相关"><a href="#技术相关" class="headerlink" title="技术相关"></a>技术相关</h3><ol>
-<li>angular初级开发，可以利用angular提供的特性完成初步的web开发</li>
-<li>移动端入门、了解移动端相关知识熟悉flex布局</li>
-<li>gulp知识入门，可以编写常见的gulp代码来处理我们的任务</li>
-</ol>
-<h2 id="计划未完成"><a href="#计划未完成" class="headerlink" title="计划未完成"></a>计划未完成</h2><h3 id="qDrap组件开发"><a href="#qDrap组件开发" class="headerlink" title="qDrap组件开发"></a>qDrap组件开发</h3><p>产生要写这个组件的初始原因是刚来到这里的时候写了一个拖拽排序小组件<a href="https://github.com/qianlongGo/components/blob/master/DragToSort/js/dragToSort.js" target="_blank" rel="external">拖拽排序</a>师兄看了之后提了许多建议</p>
-<ol>
-<li>在进行碰撞检测的时候无需将所有的元素都检测一遍，只需要将即将可能发生碰撞的元素进行检测即可( 当然前提是需要判断哪些元素可能会与当前元素发生碰撞)</li>
-<li>有些行为应该做成可配置，比如拖拽时的动画</li>
-<li>组件开发应该尽量满足和契合其他规范，比如amd、cmd</li>
-</ol>
-<p>后来在mmp需求来了之后，把工作重心都放在mmp上，没有完成这一计划….<br><strong>做事当有始有终，不可以半途而废</strong></p>
-<h3 id="mmp项目前端工作未达到预期"><a href="#mmp项目前端工作未达到预期" class="headerlink" title="mmp项目前端工作未达到预期"></a>mmp项目前端工作未达到预期</h3><p>mmp项目期望是年前上线，排除一些前端不可控因素( 比如后端数据接口在29号才部分走通，所提供的数据联调机器在28号才给到… )从自己身上找原因</p>
-<ol>
-<li>该项目时间绝对够，快20天的时间前端只完成2/3界面编写与逻辑交互，而且现在还没有经过测试。原因何在？虽说自己设计界面从未有过涉及是一个挑战，但是变化是唯一不变的变化，不可能任何时候都让自己做自己熟悉的事情，所以面对这种情况自己花费了比较多的时间去适应，适应能力差。</li>
-<li>没有把控好时间节点，页面编写花费时间太多近2周，这是不是从侧面说明一个问题，前端基础知识css布局有待加强。</li>
-</ol>
-<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ol>
-<li><p>不能很好地分配时间，安排工作节点实际工作中对需求的评估并给出相应的完成时间节点是非常重要的一件事情,一方面节点的给出有利于其他童鞋知晓你的工作进度，以方便协调合作，一方面也让自己的时间得到有效的利用，但是在实习过程中自己明显表现出计划不合理，工作效率低的问题，说到底还是不懂的合理有效地安排时间</p>
-</li>
-<li><p>沟通表达问题团队协作离不开密切地沟通，不同角色之间如何沟通是一个学问。如何用通俗有效的语言与非技术或不懂自己从事的技术与他人沟通，让他人明白我在说什么？这方面自己非常欠缺</p>
-</li>
-<li><p>知识面宅前端开发的基础知识上还不够具体和全面， “面”很狭窄。需要多加学习和拓展。</p>
-</li>
-<li><p>“主动性”做的还不够主动思考，主动与伙伴交流，主动承担更多的责任，觉得项目中或生活中不合理的地方，要学会主动去推动他，不能依靠或等待别人来做( 比如在用后端给的数据接口的时候好些接口对前端是不够友好的，甚至于业务而言真的是错误的，刚开始并没有主动去找后端童鞋说清楚缘由，而是觉得后端童鞋自己应该会发觉问题所在 )</p>
-</li>
-<li><p>前端不懂设计<br>mmp项目实施过程中没有设计和交互的参与，界面需要自己来进行设计，如何搭配颜色，如何布局展示，怎样交互才更加合理，是一次挑战，实践过程中也发现自己缺乏这方面的知识和能力，之前做的东西大多数也是别人设计好的东西。</p>
-</li>
-</ol>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>感谢这一段实习经历，遇见一个好的团队，里面每个人都是你的师傅，他们热情耐心，毫无距离感。在这里，自己开心快乐，每天都可以学到新的东西，幸福ing。针对这些不足和问题需要一步步改正加强。兄弟们！！！待来年，从头聚。</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[js面向对象继承浅析]]></title>
       <url>https://qianlongo.github.io/2016/03/05/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%B5%85%E6%9E%90--%E7%BB%A7%E6%89%BF%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
@@ -3379,6 +3319,86 @@
 <p>这种方式通过遍历DOM节点的方式添加事件处理程序有诸多缺点，比如性能大大减低，新添加的li不具备click事件等。</p>
 <p><strong>利用事件委托（冒泡原理）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var oUl//假设oUl是li的父节点</div><div class="line">oUL.onclick=fuction(ev)&#123;</div><div class="line">    var ev=eventUtil.getEvent(ev);</div><div class="line">    var target=eventUtil.getTarget(ev);</div><div class="line">        console.log(target.innerHTML);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>利用事件委托可以大大地提高性能，后面随时添加的元素都可以拥有这个点击事件等</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[实习月总结]]></title>
+      <url>https://qianlongo.github.io/2016/03/05/%E5%AE%9E%E4%B9%A0%E6%9C%88%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>时间似流水般潺潺而过，不经意便从指尖溜走，于笔尖划过。悄然无声，却迹痕般般。投江至今足月有余，恍然恰似昨日，梦醒犹如初见。席地而坐，所思？所获？何为？…</p>
+</blockquote>
+<h2 id="印象"><a href="#印象" class="headerlink" title="印象"></a>印象</h2><blockquote>
+<p>投江近一个月，切身体会这里的人、事、景、物。30多个小伙伴组成了和睦有爱的前端大家庭，他们身怀过硬的技术专长，对工作用心务实，待新人耐心和善，领导没有高架子，与”平民”同乐，他们日出而”作”,日落而归，没有夜夜加班的bat文化，没有尔虞我诈的勾心斗角，在这里自己开心快乐，充实而饱满。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<li><strong>熟悉和实践移动端相关技术</strong><br>移动端在web开发中所占的地位不断加重，前端开发不了解其相关技术势必被浪潮拍在<br>沙滩上。</li>
+<li><strong>在工作中锻炼技术，提高解决问题和独立学习的能力</strong></li>
+</ol>
+<h2 id="所获"><a href="#所获" class="headerlink" title="所获"></a>所获</h2><h3 id="主动思考"><a href="#主动思考" class="headerlink" title="主动思考"></a>主动思考</h3><blockquote>
+<p>实习收获最大的一件事情就是学会主动思考，主动去思考需求本身是否合理，去思考如何做才能使体验更佳…</p>
+</blockquote>
+<p>mmp项目中有一个模块用来专门做渠道管理，使应用可以关联相应的渠道，但是产品给出的原型中应用却有一套自己独立的添加渠道操作，该渠道并不是从前面维护的渠道中选出，于是和产品沟通，如果这样渠道管理就失去了维护的意义，后来产品更改需求，交互原型也变成如下图</p>
+<p><img src="/img/mmpSource.png" alt="图片描述"></p>
+<p><img src="/img/mmpLater.png" alt="图片描述"></p>
+<h3 id="前端无需了解需求本身？"><a href="#前端无需了解需求本身？" class="headerlink" title="前端无需了解需求本身？"></a>前端无需了解需求本身？</h3><blockquote>
+<p>在之前的一段实习过程中，经常有合作的后端同学说前端无需了解需求本身，但是我觉得这样的看法是不对的。</p>
+<p><strong>抛开码农的世界</strong>，无论身处何处，在做什么，首先<strong>知道自己做的是什么</strong>是非常重要的事情，如果只是按部就班的把被安排的事情做好,这与行尸走肉无异，于己而言也就没有什么意义了。</p>
+<p><strong>回归码农的世界</strong>，前端除了了解产品界面原型和ui效果图，还应当了解产品的功能需求和业务规则。很多时候，在没有设计或者交互参与的项目中，产品对界面的把控并没有前端仔细，而且在一些交互细节上也无法做到体验最佳。如果前端不去了解业务需求，而只是按照原型将页面实现，那做出来的东西一定不是”更好的”。</p>
+</blockquote>
+<h3 id="关于编码习惯"><a href="#关于编码习惯" class="headerlink" title="关于编码习惯"></a>关于编码习惯</h3><p>好的编码习惯可以提高我们的代码质量，增强团规开发协作效，减少bug出现的几率…<br>甚至可以提高自己对曾经写过的代码的理解力(时间一长，如果编码习惯不好，哪怕是自己写的程序，恐怕也不能快速理解)</p>
+<blockquote>
+<p>与其说师兄有代码洁癖，强迫症，还不如说他养成了良好的编程习惯，有时候他在看自己写的代码的时候，经常会指出一些编程习惯的问题比如</p>
+</blockquote>
+<ol>
+<li>保持分号统一，不要一处有，一处没有</li>
+<li>写if while等的时候空一格，这有利于和函数调用区分开</li>
+<li>使用两个空格来缩进，这是保证在各大平台上代码缩进都统一办法</li>
+<li>将调试以及当前使用但未来需要删除的代码做上标记xxx方便以后将其删除<br>(经常我们的习惯是用console.log等来进行调试，但是调试完成之后使用//注释掉，很有可能在代码上线之前没有将其删除)</li>
+<li>做好注释，比如在路由那一块，哪一个模板对应什么业务应该有清晰明显的注释，方便自己和后面维护的童鞋一目了然的知晓其作用。</li>
+<li>…<blockquote>
+<p>好习惯的养成不是一朝一夕的事情，而是长时间的积累和坚持，现在自己写程序依然会有各种问题存在，这也说明习惯养成之路漫长且待坚持。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="扩展和可配置"><a href="#扩展和可配置" class="headerlink" title="扩展和可配置"></a>扩展和可配置</h3><blockquote>
+<p>代码的扩展性是码农都追求的一个目标，我所理解的代码的扩展性一方面是为了应对或者解决需求的时常变更而给开发者带来比较大的开发代价而做的程序设计。</p>
+</blockquote>
+<p>比如有这么一个常见的导航模块，包含三大板块，每个板块下面会有自己的小模块</p>
+<p><img src="/img/mmpNav.png" alt="图片描述"></p>
+<p>刚开始做的时候是根据原型完全用<strong>写死的方式在html写好</strong>，但是后来和产品了解需求的时候发现这个项目并没有最后完全敲锤定音，也就是还存在许多可变因素，导航模块完全有可能增加和删除，为了解决这样的问题，我将原先先死的html结构抽象出来，将大模块标题，小模块，图标用数据配置的方式来生成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$scope.groups = [</div><div class="line">    &#123;</div><div class="line">      title : &apos;应用管理&apos;,//标题</div><div class="line">      icon : &apos;glyphicon glyphicon-th-list&apos;,//图标</div><div class="line">      isOpen : true,//是否展开</div><div class="line">      lists : [//子模块</div><div class="line">        &#123;</div><div class="line">          title : &apos;应用列表&apos;,</div><div class="line">          ui_sref : &apos;application_list&apos;,</div><div class="line">          icons : &apos;glyphicon glyphicon-paperclip&apos;</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">          title : &apos;渠道管理&apos;,</div><div class="line">          ui_sref : &apos;channel_management&apos;,</div><div class="line">          icons : &apos;glyphicon glyphicon-paperclip&apos;</div><div class="line">        &#125;</div><div class="line">      ]</div><div class="line">    &#125;</div><div class="line">  ];</div></pre></td></tr></table></figure></p>
+<p>再配合这一段模板就可以解决后续模块增加或者删除的问题(只需要在数据模型中增加或者删除对应的字段就可以)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;uib-accordion&gt;</div><div class="line">    &lt;uib-accordion-group  is-open=&quot;group.isOpen&quot; ng-repeat=&quot;group in groups&quot;&gt;</div><div class="line">      &lt;uib-accordion-heading&gt;</div><div class="line">        &#123;&#123; group.title &#125;&#125;  &lt;i class=&quot;&#123;&#123; group.icon &#125;&#125;&quot;&gt;&lt;/i&gt;&lt;span ng-class=&quot;&#123;&apos;triangle&apos;: group.isOpen,&apos;triangle_no&apos;:!group.isOpen&#125;&quot;&gt;&lt;/span&gt;</div><div class="line">      &lt;/uib-accordion-heading&gt;</div><div class="line">      &lt;ul&gt;</div><div class="line">        &lt;li ng-repeat=&quot;item in group.lists&quot; ng-click=&quot;tab.setCurrent(&apos;application_list&apos;)&quot;&gt;</div><div class="line">          &lt;a ui-sref=&quot;.&#123;&#123; item.ui_sref &#125;&#125;&quot;&gt;&#123;&#123; item.title &#125;&#125;&lt;/a&gt;</div><div class="line">          &lt;i class=&quot;&#123;&#123; item.icons &#125;&#125;&quot;&gt;&lt;/i&gt;</div><div class="line">        &lt;/li&gt;</div><div class="line">      &lt;/ul&gt;</div><div class="line">    &lt;/uib-accordion-group&gt;</div><div class="line">  &lt;/uib-accordion&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="技术相关"><a href="#技术相关" class="headerlink" title="技术相关"></a>技术相关</h3><ol>
+<li>angular初级开发，可以利用angular提供的特性完成初步的web开发</li>
+<li>移动端入门、了解移动端相关知识熟悉flex布局</li>
+<li>gulp知识入门，可以编写常见的gulp代码来处理我们的任务</li>
+</ol>
+<h2 id="计划未完成"><a href="#计划未完成" class="headerlink" title="计划未完成"></a>计划未完成</h2><h3 id="qDrap组件开发"><a href="#qDrap组件开发" class="headerlink" title="qDrap组件开发"></a>qDrap组件开发</h3><p>产生要写这个组件的初始原因是刚来到这里的时候写了一个拖拽排序小组件<a href="https://github.com/qianlongGo/components/blob/master/DragToSort/js/dragToSort.js" target="_blank" rel="external">拖拽排序</a>师兄看了之后提了许多建议</p>
+<ol>
+<li>在进行碰撞检测的时候无需将所有的元素都检测一遍，只需要将即将可能发生碰撞的元素进行检测即可( 当然前提是需要判断哪些元素可能会与当前元素发生碰撞)</li>
+<li>有些行为应该做成可配置，比如拖拽时的动画</li>
+<li>组件开发应该尽量满足和契合其他规范，比如amd、cmd</li>
+</ol>
+<p>后来在mmp需求来了之后，把工作重心都放在mmp上，没有完成这一计划….<br><strong>做事当有始有终，不可以半途而废</strong></p>
+<h3 id="mmp项目前端工作未达到预期"><a href="#mmp项目前端工作未达到预期" class="headerlink" title="mmp项目前端工作未达到预期"></a>mmp项目前端工作未达到预期</h3><p>mmp项目期望是年前上线，排除一些前端不可控因素( 比如后端数据接口在29号才部分走通，所提供的数据联调机器在28号才给到… )从自己身上找原因</p>
+<ol>
+<li>该项目时间绝对够，快20天的时间前端只完成2/3界面编写与逻辑交互，而且现在还没有经过测试。原因何在？虽说自己设计界面从未有过涉及是一个挑战，但是变化是唯一不变的变化，不可能任何时候都让自己做自己熟悉的事情，所以面对这种情况自己花费了比较多的时间去适应，适应能力差。</li>
+<li>没有把控好时间节点，页面编写花费时间太多近2周，这是不是从侧面说明一个问题，前端基础知识css布局有待加强。</li>
+</ol>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ol>
+<li><p>不能很好地分配时间，安排工作节点实际工作中对需求的评估并给出相应的完成时间节点是非常重要的一件事情,一方面节点的给出有利于其他童鞋知晓你的工作进度，以方便协调合作，一方面也让自己的时间得到有效的利用，但是在实习过程中自己明显表现出计划不合理，工作效率低的问题，说到底还是不懂的合理有效地安排时间</p>
+</li>
+<li><p>沟通表达问题团队协作离不开密切地沟通，不同角色之间如何沟通是一个学问。如何用通俗有效的语言与非技术或不懂自己从事的技术与他人沟通，让他人明白我在说什么？这方面自己非常欠缺</p>
+</li>
+<li><p>知识面宅前端开发的基础知识上还不够具体和全面， “面”很狭窄。需要多加学习和拓展。</p>
+</li>
+<li><p>“主动性”做的还不够主动思考，主动与伙伴交流，主动承担更多的责任，觉得项目中或生活中不合理的地方，要学会主动去推动他，不能依靠或等待别人来做( 比如在用后端给的数据接口的时候好些接口对前端是不够友好的，甚至于业务而言真的是错误的，刚开始并没有主动去找后端童鞋说清楚缘由，而是觉得后端童鞋自己应该会发觉问题所在 )</p>
+</li>
+<li><p>前端不懂设计<br>mmp项目实施过程中没有设计和交互的参与，界面需要自己来进行设计，如何搭配颜色，如何布局展示，怎样交互才更加合理，是一次挑战，实践过程中也发现自己缺乏这方面的知识和能力，之前做的东西大多数也是别人设计好的东西。</p>
+</li>
+</ol>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>感谢这一段实习经历，遇见一个好的团队，里面每个人都是你的师傅，他们热情耐心，毫无距离感。在这里，自己开心快乐，每天都可以学到新的东西，幸福ing。针对这些不足和问题需要一步步改正加强。兄弟们！！！待来年，从头聚。</p>
 ]]></content>
     </entry>
     
