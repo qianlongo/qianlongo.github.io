@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto,网络请求," />
+  <meta name="keywords" content="javascript,zepto源码分析,源码分析,zepto,网络请求," />
 
 
 
@@ -87,16 +87,8 @@
 <meta name="description" content="前言
 时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
 
-## 
-文章记录
-
-原来你是这样的jsonp(原理与具体实现细节)
-
-谁说你只是”会用”jQuery?
-
-向zepto.js学习如何手动触发DOM事件
-
-mous">
+将数组铺平(flatten)
+面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="这些Zepto中实用的内部方法">
 <meta property="og:url" content="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/index.html">
@@ -104,32 +96,16 @@ mous">
 <meta property="og:description" content="前言
 时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
 
-## 
-文章记录
-
-原来你是这样的jsonp(原理与具体实现细节)
-
-谁说你只是”会用”jQuery?
-
-向zepto.js学习如何手动触发DOM事件
-
-mous">
-<meta property="og:updated_time" content="2017-08-26T09:15:23.000Z">
+将数组铺平(flatten)
+面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
+<meta property="og:updated_time" content="2017-08-26T09:56:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些Zepto中实用的内部方法">
 <meta name="twitter:description" content="前言
 时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
 
-## 
-文章记录
-
-原来你是这样的jsonp(原理与具体实现细节)
-
-谁说你只是”会用”jQuery?
-
-向zepto.js学习如何手动触发DOM事件
-
-mous">
+将数组铺平(flatten)
+面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
 
 
 
@@ -377,7 +353,15 @@ mous">
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。</p>
 </blockquote>
-<p>## </p>
+<h2 id="将数组铺平-flatten"><a href="#将数组铺平-flatten" class="headerlink" title="将数组铺平(flatten)"></a>将数组铺平(flatten)</h2><blockquote>
+<p>面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将<code>[1, 2, [3], [4], [5]]</code>最后变成<code>[1, 2, 3, 4, 5]</code></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">flatten</span>(<span class="params">array</span>) </span>&#123; </div><div class="line">  <span class="keyword">return</span> array.length &gt; <span class="number">0</span> ? $.fn.concat.apply([], array) : array </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里先将<code>$.fn.concat</code>理解成原生数组的<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/concat" target="_blank" rel="external">concat方法</a>,我们会发现，其实他只能铺平一层。例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>], [<span class="number">4</span>, [<span class="number">5</span>]]] =&gt; [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, [<span class="number">5</span>]]</div></pre></td></tr></table></figure>
+<p>那怎样才能将多层嵌套的数组完全铺平为一层呢？这里介绍两种方式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> flatten = <span class="function">(<span class="params">array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> array.reduce(<span class="function">(<span class="params">result, val</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> result.concat(<span class="built_in">Array</span>.isArray(val) ? flatten(val) : val)</div><div class="line">  &#125;, [])</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p></p>
 <p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
@@ -413,9 +397,9 @@ mous">
           
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
-            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
-          
             <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
+          
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
           
             <a href="/tags/zepto/" rel="tag">#zepto</a>
           
@@ -593,7 +577,7 @@ mous">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">将数组铺平(flatten)</span></a></li></ol></div>
             
           </div>
         </section>
