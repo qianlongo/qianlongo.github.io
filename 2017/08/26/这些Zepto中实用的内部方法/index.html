@@ -87,8 +87,8 @@
 <meta name="description" content="前言
 时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
 
-将数组铺平(flatten)
-面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
+1. 将数组铺平(flatten)
+面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="这些Zepto中实用的内部方法">
 <meta property="og:url" content="https://qianlongo.github.io/2017/08/26/这些Zepto中实用的内部方法/index.html">
@@ -96,16 +96,16 @@
 <meta property="og:description" content="前言
 时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
 
-将数组铺平(flatten)
-面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
-<meta property="og:updated_time" content="2017-08-26T10:28:59.000Z">
+1. 将数组铺平(flatten)
+面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
+<meta property="og:updated_time" content="2017-08-26T10:42:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些Zepto中实用的内部方法">
 <meta name="twitter:description" content="前言
 时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。
 
-将数组铺平(flatten)
-面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3, 4,">
+1. 将数组铺平(flatten)
+面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
 
 
 
@@ -353,7 +353,7 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>时间过得可真快，转眼间2017年已去大半有余，你就说吓不吓人，这一年你成长了多少，是否荒度了很多时光，亦或者天天向上，收获满满。今天主要写一些看Zepto基础模块时，比较实用的部分内部方法，在我们日常工作或者学习中也会用的到。</p>
 </blockquote>
-<h2 id="将数组铺平-flatten"><a href="#将数组铺平-flatten" class="headerlink" title="将数组铺平(flatten)"></a>将数组铺平(flatten)</h2><blockquote>
+<h2 id="1-将数组铺平-flatten"><a href="#1-将数组铺平-flatten" class="headerlink" title="1. 将数组铺平(flatten)"></a>1. 将数组铺平(flatten)</h2><blockquote>
 <p>面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将<code>[1, 2, [3], [4], [5]]</code>最后变成<code>[1, 2, 3, 4, 5]</code></p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">flatten</span>(<span class="params">array</span>) </span>&#123; </div><div class="line">  <span class="keyword">return</span> array.length &gt; <span class="number">0</span> ? $.fn.concat.apply([], array) : array </div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -367,7 +367,7 @@
 <p><strong>方式2</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> flatten = <span class="function">(<span class="params">array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> result = []</div><div class="line">  <span class="keyword">let</span> idx = <span class="number">0</span></div><div class="line"></div><div class="line">  array.forEach(<span class="function">(<span class="params">val, i</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</div><div class="line">      <span class="keyword">let</span> value = flatten(val)</div><div class="line">      <span class="keyword">let</span> len = value.length</div><div class="line">      <span class="keyword">let</span> j = <span class="number">0</span></div><div class="line">      result.length += len</div><div class="line"></div><div class="line">      <span class="keyword">while</span> ( j &lt; len) &#123;</div><div class="line">        result[idx++] = value[j++]</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      result[idx++] = val</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>同样和上面得到的结果一致</strong></p>
-<h2 id="数组去重-uniq"><a href="#数组去重-uniq" class="headerlink" title="数组去重(uniq)"></a>数组去重(uniq)</h2><blockquote>
+<h2 id="2-数组去重-uniq"><a href="#2-数组去重-uniq" class="headerlink" title="2. 数组去重(uniq)"></a>2. 数组去重(uniq)</h2><blockquote>
 <p>数组去重可谓是老生常谈的话题了，方式有非常多。好久之前写过一篇<a href="https://segmentfault.com/a/1190000003899049" target="_blank" rel="external">关于去重的文章</a>,欢迎查看。</p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> uniq = <span class="function"><span class="keyword">function</span> (<span class="params">array</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> filter.call(array, <span class="function"><span class="keyword">function</span> (<span class="params">item, idx</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> array.indexOf(item) == idx</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -376,6 +376,10 @@
 <p><strong>测试</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> testArr = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">-1</span>]</div><div class="line"><span class="built_in">console</span>.log(uniq(testArr)) <span class="comment">// =&gt; [1, 2, 3, 0, -1]</span></div></pre></td></tr></table></figure>
 <p></p>
+<h2 id="3-下划线命名转小驼峰（camelize）"><a href="#3-下划线命名转小驼峰（camelize）" class="headerlink" title="3. 下划线命名转小驼峰（camelize）"></a>3. 下划线命名转小驼峰（camelize）</h2><blockquote>
+<p>这个方法挺实用的，可以将<code>a-b-c</code>这种形式转换成<code>aBC</code>,当然下划线的数量可以是多个，<code>a---b-----c</code> =&gt; <code>aBC</code></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> camelize = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> str.replace(<span class="regexp">/-+(.)?/g</span>, <span class="function"><span class="keyword">function</span> (<span class="params">match, chr</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> chr ? chr.toUpperCase() : <span class="string">''</span></div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
@@ -591,7 +595,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">数组去重(uniq)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li></ol></div>
             
           </div>
         </section>
