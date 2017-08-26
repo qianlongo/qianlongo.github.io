@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto,网络请求," />
+  <meta name="keywords" content="javascript,zepto源码分析,源码分析,zepto,网络请求," />
 
 
 
@@ -99,7 +99,7 @@
 1. 将数组铺平(flatten)
 面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png">
-<meta property="og:updated_time" content="2017-08-26T12:24:15.000Z">
+<meta property="og:updated_time" content="2017-08-26T12:48:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些Zepto中实用的方法集">
 <meta name="twitter:description" content="前言
@@ -401,7 +401,23 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MAX_ARRAY_INDEX = <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">53</span>) - <span class="number">1</span>;</div><div class="line"><span class="keyword">var</span> getLength = property(<span class="string">'length'</span>);</div><div class="line"><span class="keyword">var</span> isArrayLike = <span class="function"><span class="keyword">function</span>(<span class="params">collection</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> length = getLength(collection);</div><div class="line">  <span class="keyword">return</span> <span class="keyword">typeof</span> length == <span class="string">'number'</span> &amp;&amp; length &gt;= <span class="number">0</span> &amp;&amp; length &lt;= MAX_ARRAY_INDEX;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p><code>underscore</code>中判断类数组比较宽松一些，MAX_ARRAY_INDEX是JavaScript 中能精确表示的最大数字，主要判断对象的length属性是否为数字类型，并且是否大于0且在MAX_ARRAY_INDEX范围内。</p>
 <p>zepto中类数组判断就比较严格了，因为window和函数其实都有length属性，这里把他们给过滤掉了。</p>
-<p><strong>文章记录</strong></p>
+<h2 id="6-判断是否为window对象"><a href="#6-判断是否为window对象" class="headerlink" title="6. 判断是否为window对象"></a>6. 判断是否为window对象</h2><blockquote>
+<p>window对象的window属性指向其本身，我们来直接看下<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/window" target="_blank" rel="external">mdn</a>上的解释。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isWindow</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj != <span class="literal">null</span> &amp;&amp; obj == obj.window</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但实际上下面的代码也会被认为是window对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = &#123;&#125;</div><div class="line">a.window = a</div><div class="line"></div><div class="line">a === a.window <span class="comment">// true</span></div><div class="line">isWindow(a) <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h2 id="7-判断数据类型"><a href="#7-判断数据类型" class="headerlink" title="7. 判断数据类型"></a>7. 判断数据类型</h2><blockquote>
+<p>利用<code>Object.prototype.toString</code>方法来做数据类型的判断。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> class2type = &#123;&#125;</div><div class="line"><span class="keyword">let</span> toString = class2type.toString</div><div class="line"></div><div class="line">  <span class="comment">// Populate the class2type map</span></div><div class="line">$.each(<span class="string">"Boolean Number String Function Array Date RegExp Object Error"</span>.split(<span class="string">" "</span>), <span class="function"><span class="keyword">function</span>(<span class="params">i, name</span>) </span>&#123;</div><div class="line">  class2type[<span class="string">"[object "</span> + name + <span class="string">"]"</span>] = name.toLowerCase()</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>最后class2type会变成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class2type = &#123;</div><div class="line">  <span class="string">"[object Boolean]"</span>: <span class="string">"boolean"</span>,</div><div class="line">  <span class="string">"[object Array]"</span>: <span class="string">"array"</span>,</div><div class="line">  <span class="string">"[object Number]"</span>: <span class="string">"number"</span></div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着就是type函数的定义了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">type</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj == <span class="literal">null</span> ? <span class="built_in">String</span>(obj) :</div><div class="line">  class2type[toString.call(obj)] || <span class="string">"object"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先如果传入的obj是null或者undefined，则用String函数返货<code>null</code>或者<code>undefined</code>,而<code>toString.call(obj)</code>返回的正是形如<code>[object Array]</code>,所以再结合上面的class2type变量，正好就可以得到例如。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">type([]) =&gt; array</div><div class="line">type(<span class="number">1</span>) =&gt; number</div></pre></td></tr></table></figure>
+<h2 id="8"><a href="#8" class="headerlink" title="8."></a>8.</h2><p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
 </li>
@@ -436,9 +452,9 @@
           
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
-            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
-          
             <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
+          
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
           
             <a href="/tags/zepto/" rel="tag">#zepto</a>
           
@@ -616,7 +632,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-判断是否为document对象-isDocument-。"><span class="nav-number">5.</span> <span class="nav-text">4. 判断是否为document对象(isDocument)。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-判断obj是否为类数组-likeArray"><span class="nav-number">6.</span> <span class="nav-text">5. 判断obj是否为类数组(likeArray)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-判断是否为document对象-isDocument-。"><span class="nav-number">5.</span> <span class="nav-text">4. 判断是否为document对象(isDocument)。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-判断obj是否为类数组-likeArray"><span class="nav-number">6.</span> <span class="nav-text">5. 判断obj是否为类数组(likeArray)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-判断是否为window对象"><span class="nav-number">7.</span> <span class="nav-text">6. 判断是否为window对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-判断数据类型"><span class="nav-number">8.</span> <span class="nav-text">7. 判断数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8"><span class="nav-number">9.</span> <span class="nav-text">8.</span></a></li></ol></div>
             
           </div>
         </section>
