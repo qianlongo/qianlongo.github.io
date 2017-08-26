@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript,zepto源码分析,源码分析,zepto,网络请求," />
+  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto,网络请求," />
 
 
 
@@ -98,7 +98,8 @@
 
 1. 将数组铺平(flatten)
 面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
-<meta property="og:updated_time" content="2017-08-26T10:43:24.000Z">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png">
+<meta property="og:updated_time" content="2017-08-26T11:04:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这些Zepto中实用的方法集">
 <meta name="twitter:description" content="前言
@@ -106,6 +107,7 @@
 
 1. 将数组铺平(flatten)
 面试或者工作中经常遇到要将多维数组铺平成一维数组。例如将[1, 2, [3], [4], [5]]最后变成[1, 2, 3,">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png">
 
 
 
@@ -380,6 +382,11 @@
 <p>这个方法挺实用的，可以将<code>a-b-c</code>这种形式转换成<code>aBC</code>,当然下划线的数量可以是多个，<code>a---b-----c</code> =&gt; <code>aBC</code></p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> camelize = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> str.replace(<span class="regexp">/-+(.)?/g</span>, <span class="function"><span class="keyword">function</span> (<span class="params">match, chr</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> chr ? chr.toUpperCase() : <span class="string">''</span></div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="判断是否为document对象-isDocument-。"><a href="#判断是否为document对象-isDocument-。" class="headerlink" title="判断是否为document对象(isDocument)。"></a>判断是否为document对象(isDocument)。</h2><blockquote>
+<p>通过dom元素的nodeType属性可以知道其属于哪种元素类型。结合下面这张表(<a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" target="_blank" rel="external">developer.mozilla.org/en-US/docs/Web/API/Node/nodeType</a>)，其实不仅仅可以写出判断是否为document对象，还可以判断是否为元素对象等。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isDocument</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj != <span class="literal">null</span> &amp;&amp; obj.nodeType == obj.DOCUMENT_NODE</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170826-185409@2x.png" alt=""></p>
 <p><strong>文章记录</strong></p>
 <ol>
 <li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
@@ -415,9 +422,9 @@
           
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
-            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
-          
             <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
           
             <a href="/tags/zepto/" rel="tag">#zepto</a>
           
@@ -595,7 +602,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-将数组铺平-flatten"><span class="nav-number">2.</span> <span class="nav-text">1. 将数组铺平(flatten)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组去重-uniq"><span class="nav-number">3.</span> <span class="nav-text">2. 数组去重(uniq)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-下划线命名转小驼峰（camelize）"><span class="nav-number">4.</span> <span class="nav-text">3. 下划线命名转小驼峰（camelize）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判断是否为document对象-isDocument-。"><span class="nav-number">5.</span> <span class="nav-text">判断是否为document对象(isDocument)。</span></a></li></ol></div>
             
           </div>
         </section>
