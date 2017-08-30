@@ -87,10 +87,7 @@
 <meta name="description" content="前言
 平时开发过程中经常会用类似each、map、forEach之类的方法，Zepto本身也把这些方法挂载到$函数身上，作为静态方法存在，既可以给Zepto的实例使用，也能给普通的js对象使用。今天我们主要针对其提供的这些api做一些源码实现分析。
 
-源码仓库原文链接
-具体各个api如何使用可以参照英文文档Zepto.js 中文文档Zepto.js
-1. $.camelCase
-该方法主要是将连字">
+源码仓库原文链接">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zepto核心模块之工具方法拾遗">
 <meta property="og:url" content="https://qianlongo.github.io/2017/08/30/Zepto核心模块之工具方法拾遗/index.html">
@@ -98,23 +95,18 @@
 <meta property="og:description" content="前言
 平时开发过程中经常会用类似each、map、forEach之类的方法，Zepto本身也把这些方法挂载到$函数身上，作为静态方法存在，既可以给Zepto的实例使用，也能给普通的js对象使用。今天我们主要针对其提供的这些api做一些源码实现分析。
 
-源码仓库原文链接
-具体各个api如何使用可以参照英文文档Zepto.js 中文文档Zepto.js
-1. $.camelCase
-该方法主要是将连字">
+源码仓库原文链接">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/facebook.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170830-224307@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170830-231229@2x.png">
-<meta property="og:updated_time" content="2017-08-30T15:18:49.000Z">
+<meta property="og:updated_time" content="2017-08-30T15:50:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zepto核心模块之工具方法拾遗">
 <meta name="twitter:description" content="前言
 平时开发过程中经常会用类似each、map、forEach之类的方法，Zepto本身也把这些方法挂载到$函数身上，作为静态方法存在，既可以给Zepto的实例使用，也能给普通的js对象使用。今天我们主要针对其提供的这些api做一些源码实现分析。
 
-源码仓库原文链接
-具体各个api如何使用可以参照英文文档Zepto.js 中文文档Zepto.js
-1. $.camelCase
-该方法主要是将连字">
-<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170830-224307@2x.png">
+源码仓库原文链接">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/facebook.png">
 
 
 
@@ -363,6 +355,8 @@
 <p>平时开发过程中经常会用类似<code>each</code>、<code>map</code>、<code>forEach</code>之类的方法，Zepto本身也把这些方法挂载到<code>$</code>函数身上，作为静态方法存在，既可以给Zepto的实例使用，也能给普通的js对象使用。今天我们主要针对其提供的这些api做一些源码实现分析。</p>
 </blockquote>
 <p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">源码仓库</a><br><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">原文链接</a></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/facebook.png" alt=""></p>
+<a id="more"></a>
 <p>具体各个api如何使用可以参照<a href="http://zeptojs.com/" target="_blank" rel="external">英文文档Zepto.js</a> <a href="http://www.css88.com/doc/zeptojs_api/" target="_blank" rel="external">中文文档Zepto.js</a></p>
 <h2 id="1-camelCase"><a href="#1-camelCase" class="headerlink" title="1. $.camelCase"></a>1. $.camelCase</h2><blockquote>
 <p>该方法主要是将连字符转化成驼峰命名法。例如可以将<code>a-b-c</code>这种形式转换成<code>aBC</code>,当然连字符的数量可以是多个，<code>a---b-----c</code> =&gt; <code>aBC</code>,具体实现已经在<a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>说过了，可以点击查看。而其代码也只是将<code>camelize</code>函数赋值给了$.camelCase</p>
@@ -479,6 +473,54 @@
 <p>接下来看看源码是怎么实现的。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"> $.map = <span class="function"><span class="keyword">function</span> (<span class="params">elements, callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> value, values = [], i, key</div><div class="line">  <span class="comment">// 如果是类数组，则用for循环</span></div><div class="line">  <span class="keyword">if</span> (likeArray(elements))</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</div><div class="line">      value = callback(elements[i], i)</div><div class="line">      <span class="comment">// 如果callback的返回值不为null或者undefined，就push进values</span></div><div class="line">      <span class="keyword">if</span> (value != <span class="literal">null</span>) values.push(value)</div><div class="line">    &#125;</div><div class="line">  <span class="keyword">else</span></div><div class="line">    <span class="comment">// 对象走这个逻辑</span></div><div class="line">    <span class="keyword">for</span> (key <span class="keyword">in</span> elements) &#123;</div><div class="line">      value = callback(elements[key], key)</div><div class="line">      <span class="keyword">if</span> (value != <span class="literal">null</span>) values.push(value)</div><div class="line">    &#125;</div><div class="line">  <span class="comment">// 最后返回的是只能铺平一层数组 </span></div><div class="line">  <span class="keyword">return</span> flatten(values)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>从源码实现上可以看出因为<code>value != null</code>以及<code>flatten(values)</code>造成了上述差异。</p>
+<h2 id="12-noop"><a href="#12-noop" class="headerlink" title="12. $.noop"></a>12. $.noop</h2><blockquote>
+<p>其实就是引用一个空的函数，什么都不处理，那它到底有啥用呢？</p>
+</blockquote>
+<p>比如。我们定义了几个变量，他未来是作为函数使用的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> doSomeThing = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</div><div class="line"><span class="keyword">let</span> doSomeThingElse = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</div></pre></td></tr></table></figure>
+<p>如果直接这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> doSomeThing = $.noop</div><div class="line"><span class="keyword">let</span> doSomeThingElse = $.noop</div></pre></td></tr></table></figure>
+<p>宿主环境就不必为我们创建多个匿名函数了。</p>
+<p>其实还有一种可能用的不多的场景，在判断一个变量是否是<code>undefined</code>的时候，可以用到。因为函数没有返回值，默认返回<code>undefined</code>,也就是排除了那些老式浏览器undefined可以被修改的情况</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (xxx === $.noop()) &#123;</div><div class="line">  <span class="comment">// xxx</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="13-parseJSON"><a href="#13-parseJSON" class="headerlink" title="13. $.parseJSON"></a>13. $.parseJSON</h2><blockquote>
+<p>原生JSON.parse方法的别名,接收的是一个字符串对象，返回一个对象。</p>
+</blockquote>
+<p><strong>源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$.parseJSON = <span class="built_in">JSON</span>.parse</div></pre></td></tr></table></figure>
+<h2 id="14-trim"><a href="#14-trim" class="headerlink" title="14. $.trim"></a>14. $.trim</h2><blockquote>
+<p>删除字符串首尾的空白符,如果传入<code>null</code>或<code>undefined</code>返回空字符串</p>
+</blockquote>
+<p><strong>源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.trim = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> str == <span class="literal">null</span> ? <span class="string">""</span> : <span class="built_in">String</span>.prototype.trim.call(str)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="15-type"><a href="#15-type" class="headerlink" title="15. $.type"></a>15. $.type</h2><blockquote>
+<p>获取JavaScript 对象的类型。可能的类型有： null undefined boolean number string function array date regexp object error.</p>
+</blockquote>
+<p>该方法内部实现其实就是内部的<code>type</code>函数,并且已经在<a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>聊过了，可以点击查看。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$.type = type</div></pre></td></tr></table></figure>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>Zepto大部分工具方法或者说静态方法就是这些了，欢迎大家指正其中的错误和问题。</p>
+</blockquote>
+<p>参考资料</p>
+<p><a href="https://github.com/yeyuqiudeng/reading-zepto/blob/master/src/%E8%AF%BBZepto%E6%BA%90%E7%A0%81%E4%B9%8B%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0.md" target="_blank" rel="external">读zepto源码之工具函数</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/Trim" target="_blank" rel="external">MDN trim</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof" target="_blank" rel="external">MDN typeof</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN" target="_blank" rel="external">MDN isNaN</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" rel="external">MDN Number</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Node/contains" target="_blank" rel="external">MDN Node.contains</a></p>
+<p><strong>文章记录</strong></p>
+<ol>
+<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></p>
+</li>
+<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a></p>
+</li>
+<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a></p>
+</li>
+<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a></p>
+</li>
+<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a></p>
+</li>
+</ol>
 
       
     </div>
@@ -683,7 +725,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-camelCase"><span class="nav-number">2.</span> <span class="nav-text">1. $.camelCase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-contains"><span class="nav-number">3.</span> <span class="nav-text">2. $.contains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-each"><span class="nav-number">4.</span> <span class="nav-text">3. $.each</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-extend"><span class="nav-number">5.</span> <span class="nav-text">4. $.extend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-grep"><span class="nav-number">6.</span> <span class="nav-text">5. $.grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-inArray"><span class="nav-number">7.</span> <span class="nav-text">6. $.inArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-isArray"><span class="nav-number">8.</span> <span class="nav-text">7. $.isArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-isFunction"><span class="nav-number">9.</span> <span class="nav-text">8. $.isFunction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-isNumeric"><span class="nav-number">10.</span> <span class="nav-text">9. $.isNumeric</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-isPlainObject"><span class="nav-number">11.</span> <span class="nav-text">9. $.isPlainObject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-isWindow"><span class="nav-number">12.</span> <span class="nav-text">10. $.isWindow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-map"><span class="nav-number">13.</span> <span class="nav-text">11. $.map</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-camelCase"><span class="nav-number">2.</span> <span class="nav-text">1. $.camelCase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-contains"><span class="nav-number">3.</span> <span class="nav-text">2. $.contains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-each"><span class="nav-number">4.</span> <span class="nav-text">3. $.each</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-extend"><span class="nav-number">5.</span> <span class="nav-text">4. $.extend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-grep"><span class="nav-number">6.</span> <span class="nav-text">5. $.grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-inArray"><span class="nav-number">7.</span> <span class="nav-text">6. $.inArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-isArray"><span class="nav-number">8.</span> <span class="nav-text">7. $.isArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-isFunction"><span class="nav-number">9.</span> <span class="nav-text">8. $.isFunction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-isNumeric"><span class="nav-number">10.</span> <span class="nav-text">9. $.isNumeric</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-isPlainObject"><span class="nav-number">11.</span> <span class="nav-text">9. $.isPlainObject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-isWindow"><span class="nav-number">12.</span> <span class="nav-text">10. $.isWindow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-map"><span class="nav-number">13.</span> <span class="nav-text">11. $.map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-noop"><span class="nav-number">14.</span> <span class="nav-text">12. $.noop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-parseJSON"><span class="nav-number">15.</span> <span class="nav-text">13. $.parseJSON</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-trim"><span class="nav-number">16.</span> <span class="nav-text">14. $.trim</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-type"><span class="nav-number">17.</span> <span class="nav-text">15. $.type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">18.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
