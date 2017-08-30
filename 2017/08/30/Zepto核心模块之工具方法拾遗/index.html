@@ -102,7 +102,8 @@
 具体各个api如何使用可以参照英文文档Zepto.js 中文文档Zepto.js
 1. $.camelCase
 该方法主要是将连字">
-<meta property="og:updated_time" content="2017-08-30T10:46:09.000Z">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170830-224307@2x.png">
+<meta property="og:updated_time" content="2017-08-30T14:54:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zepto核心模块之工具方法拾遗">
 <meta name="twitter:description" content="前言
@@ -112,6 +113,7 @@
 具体各个api如何使用可以参照英文文档Zepto.js 中文文档Zepto.js
 1. $.camelCase
 该方法主要是将连字">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20170830-224307@2x.png">
 
 
 
@@ -415,9 +417,45 @@
 <p><strong>我们知道判断一个值是否为对象，方式其实挺多的，比如下面的这几种方式</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 1. es6中的isArray</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray([])) <span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="comment">// 2. 利用instanceof判断</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log([] <span class="keyword">instanceof</span> <span class="built_in">Array</span>) <span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="comment">// 3. 最好的方式 toString</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call([]) === <span class="string">'[object Array]'</span>) <span class="comment">// true</span></div></pre></td></tr></table></figure>
 <p>而Zepto中就是采用的第二种方式</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> isArray = <span class="built_in">Array</span>.isArray || <span class="function"><span class="keyword">function</span> (<span class="params">object</span>) </span>&#123;     <span class="keyword">return</span> object <span class="keyword">instanceof</span> <span class="built_in">Array</span> </div><div class="line">&#125;</div><div class="line"></div><div class="line">$.isArray = isArray</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> isArray = <span class="built_in">Array</span>.isArray || <span class="function"><span class="keyword">function</span> (<span class="params">object</span>) </span>&#123;     <span class="keyword">return</span> object <span class="keyword">instanceof</span> <span class="built_in">Array</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">$.isArray = isArray</div></pre></td></tr></table></figure>
 <p>如果支持isArray方法就用原生支持的，否则通过<code>instanceof</code>判断,其实不太清楚为什么第二种方式，我们都知道这是有缺陷的，在有iframe场景下，就会出现判断不准确的情况.</p>
-<h2 id="8"><a href="#8" class="headerlink" title="8."></a>8.</h2>
+<h2 id="8-isFunction"><a href="#8-isFunction" class="headerlink" title="8. $.isFunction"></a>8. $.isFunction</h2><blockquote>
+<p>判断一个值是否为函数类型</p>
+</blockquote>
+<p><strong>源码实现</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isFunction</span>(<span class="params">value</span>) </span>&#123; </div><div class="line">  <span class="keyword">return</span> type(value) == <span class="string">"function"</span> </div><div class="line">&#125;</div><div class="line"></div><div class="line">$.isFunction = isFunction</div></pre></td></tr></table></figure>
+<p>主要还是通过内部方法<code>type</code>来实现的，详情可以点击<a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>查看。</p>
+<h2 id="9-isNumeric"><a href="#9-isNumeric" class="headerlink" title="9. $.isNumeric"></a>9. $.isNumeric</h2><blockquote>
+<p>如果传入的值为有限数值或一个字符串表示的数字，则返回ture。</p>
+</blockquote>
+<p><strong>举例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$.isNumeric(<span class="literal">null</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(<span class="literal">undefined</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(<span class="literal">true</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(<span class="literal">false</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(<span class="number">0</span>) <span class="comment">// true</span></div><div class="line">$.isNumeric(<span class="string">'0'</span>) <span class="comment">// true</span></div><div class="line">$.isNumeric(<span class="string">''</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(<span class="literal">NaN</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(<span class="literal">Infinity</span>) <span class="comment">// false</span></div><div class="line">$.isNumeric(-<span class="literal">Infinity</span>) <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$.isNumeric = <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> num = <span class="built_in">Number</span>(val), type = <span class="keyword">typeof</span> val</div><div class="line">  <span class="keyword">return</span> val != <span class="literal">null</span> &amp;&amp; type != <span class="string">'boolean'</span> &amp;&amp;</div><div class="line">    (type != <span class="string">'string'</span> || val.length) &amp;&amp;</div><div class="line">    !<span class="built_in">isNaN</span>(num) &amp;&amp; <span class="built_in">isFinite</span>(num) || <span class="literal">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先<code>val</code>经过<code>Number</code>函数转化，得到<code>num</code>,然后获取<code>val</code>的类型得到<code>type</code>。</p>
+<p>我们来回顾一下<code>Number(val)</code>的转化规则，这里截取一张图。</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170830-224307@2x.png" alt="Number转化规则"></p>
+<p>看起来转化规则非常复杂，但是有几点我们可以确定，</p>
+<ol>
+<li>如果输入的是数字例如<code>1</code>,<code>1.3</code>那转化后的还是数字，</li>
+<li>如果输入的是字符串数字类型例如<code>&#39;123&#39;</code>, <code>&#39;12.3&#39;</code>那转化后的也是数字</li>
+<li>如果输入的是空字符串<code>&#39;&#39;</code>那转化后得到的是0</li>
+</ol>
+<p>所以再结合下面的判断</p>
+<ol>
+<li><p>通过<code>val != null</code>排除掉<code>null</code>和<code>undefined</code></p>
+</li>
+<li><p>通过<code>type != &#39;boolean&#39;</code>排除掉，<code>true</code>和<code>false</code></p>
+</li>
+<li><p>通过<code>isFinite(num)</code>限定必须是一个有限数值</p>
+</li>
+<li><p>通过<code>!isNaN(num)</code>排除掉被<code>Number(val)</code>转化为<code>NaN</code>的值</p>
+</li>
+<li><p><code>(type != &#39;string&#39; || val.length)</code>, <code>val</code>为字符串，并且字符串的长度大于0，排除<code>&#39;&#39;</code>空字符串的场景。</p>
+</li>
+</ol>
+<p>以上各种判断下来基本就满足了这个函数原来的初衷要求。</p>
+
       
     </div>
 
@@ -621,7 +659,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-camelCase"><span class="nav-number">2.</span> <span class="nav-text">1. $.camelCase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-contains"><span class="nav-number">3.</span> <span class="nav-text">2. $.contains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-each"><span class="nav-number">4.</span> <span class="nav-text">3. $.each</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-extend"><span class="nav-number">5.</span> <span class="nav-text">4. $.extend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-grep"><span class="nav-number">6.</span> <span class="nav-text">5. $.grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-inArray"><span class="nav-number">7.</span> <span class="nav-text">6. $.inArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-isArray"><span class="nav-number">8.</span> <span class="nav-text">7. $.isArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8"><span class="nav-number">9.</span> <span class="nav-text">8.</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-camelCase"><span class="nav-number">2.</span> <span class="nav-text">1. $.camelCase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-contains"><span class="nav-number">3.</span> <span class="nav-text">2. $.contains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-each"><span class="nav-number">4.</span> <span class="nav-text">3. $.each</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-extend"><span class="nav-number">5.</span> <span class="nav-text">4. $.extend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-grep"><span class="nav-number">6.</span> <span class="nav-text">5. $.grep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-inArray"><span class="nav-number">7.</span> <span class="nav-text">6. $.inArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-isArray"><span class="nav-number">8.</span> <span class="nav-text">7. $.isArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-isFunction"><span class="nav-number">9.</span> <span class="nav-text">8. $.isFunction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-isNumeric"><span class="nav-number">10.</span> <span class="nav-text">9. $.isNumeric</span></a></li></ol></div>
             
           </div>
         </section>
