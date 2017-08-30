@@ -426,6 +426,7 @@
 <li>如果输入的是数字例如<code>1</code>,<code>1.3</code>那转化后的还是数字，</li>
 <li>如果输入的是字符串数字类型例如<code>&#39;123&#39;</code>, <code>&#39;12.3&#39;</code>那转化后的也是数字</li>
 <li>如果输入的是空字符串<code>&#39;&#39;</code>那转化后得到的是0</li>
+<li>如果输入是类似字符串<code>&#39;123aaa&#39;</code>，那转化后得到的是<code>NaN</code></li>
 </ol>
 <p>所以再结合下面的判断</p>
 <ol>
@@ -441,6 +442,28 @@
 </li>
 </ol>
 <p>以上各种判断下来基本就满足了这个函数原来的初衷要求。</p>
+<h2 id="9-isPlainObject"><a href="#9-isPlainObject" class="headerlink" title="9. $.isPlainObject"></a>9. $.isPlainObject</h2><blockquote>
+<p>测试对象是否是“纯粹”的对象，这个对象是通过 对象常量（”{}”） 或者 new Object 创建的，如果是，则返回true</p>
+</blockquote>
+<h2 id="10-isWindow"><a href="#10-isWindow" class="headerlink" title="10. $.isWindow"></a>10. $.isWindow</h2><blockquote>
+<p>如果object参数为一个window对象，那么返回true</p>
+</blockquote>
+<p>该两个方法在<a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>也聊过了，可以点击查看一下。</p>
+<h2 id="11-map"><a href="#11-map" class="headerlink" title="11. $.map"></a>11. $.map</h2><blockquote>
+<p>和原生的map比较相似,但是又有不同的地方，比如这里的map得到的记过有可能不是一一映射的，也就是可能得到比原来数组项数更多的数组,以及这里的map是可以用来遍历对象的。</p>
+</blockquote>
+<p><strong>我们先看几个例子</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> testArr = [<span class="number">1</span>, <span class="number">2</span>, <span class="literal">null</span>, <span class="literal">undefined</span>]</div><div class="line"><span class="keyword">let</span> resultArr1 = $.map(testArr, (val, i) =&gt; &#123;</div><div class="line">  <span class="keyword">return</span> val</div><div class="line">&#125;)</div><div class="line"><span class="keyword">let</span> resultArr2 = $.map(testArr, (val, i) =&gt; &#123;</div><div class="line">  <span class="keyword">return</span> [val, [val]]</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// 再来看看原生的map的表现</span></div><div class="line"><span class="keyword">let</span> resultArr3 = testArr.map(<span class="function">(<span class="params">val, i</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> val</div><div class="line">&#125;)</div><div class="line"><span class="keyword">let</span> resultArr4 = testArr.map(<span class="function">(<span class="params">val, i</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> [val, [val]]</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>运行结果如下</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20170830-231229@2x.png" alt=""></p>
+<p>可以看出</p>
+<ol>
+<li><code>resultArr1</code>和<code>resultArr3</code>的区别是<code>$.map</code>把<code>undefined</code>和<code>null</code>给过滤掉了。</li>
+<li><code>resultArr2</code>与<code>resultArr4</code>的区别是<code>$.map</code>把回调函数的返回值给铺平了。</li>
+</ol>
+<p>接下来看看源码是怎么实现的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"> $.map = <span class="function"><span class="keyword">function</span> (<span class="params">elements, callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> value, values = [], i, key</div><div class="line">  <span class="comment">// 如果是类数组，则用for循环</span></div><div class="line">  <span class="keyword">if</span> (likeArray(elements))</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</div><div class="line">      value = callback(elements[i], i)</div><div class="line">      <span class="comment">// 如果callback的返回值不为null或者undefined，就push进values</span></div><div class="line">      <span class="keyword">if</span> (value != <span class="literal">null</span>) values.push(value)</div><div class="line">    &#125;</div><div class="line">  <span class="keyword">else</span></div><div class="line">    <span class="comment">// 对象走这个逻辑</span></div><div class="line">    <span class="keyword">for</span> (key <span class="keyword">in</span> elements) &#123;</div><div class="line">      value = callback(elements[key], key)</div><div class="line">      <span class="keyword">if</span> (value != <span class="literal">null</span>) values.push(value)</div><div class="line">    &#125;</div><div class="line">  <span class="comment">// 最后返回的是只能铺平一层数组 </span></div><div class="line">  <span class="keyword">return</span> flatten(values)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从源码实现上可以看出因为<code>value != null</code>以及<code>flatten(values)</code>造成了上述差异。</p>
 
           
         
