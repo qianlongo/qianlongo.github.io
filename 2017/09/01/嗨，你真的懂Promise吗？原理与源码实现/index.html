@@ -85,18 +85,42 @@
 
 
 <meta name="description" content="前言
-着手写一篇Promise源码实现的文章">
+着手写一篇Promise源码实现的文章
+
+问题集锦
+能够注册多个回调函数
+返回值包括两个函数，一个注册观察者，一个通知观察者执行的执行代码
+只可以resolve一次
+需要能够链式调用
+在下一个回调函数中需要能够接受上一个回调函数的值
+每个then方法都需要返回一个promise">
 <meta property="og:type" content="article">
 <meta property="og:title" content="嗨，你真的懂Promise吗(原理与源码实现)？">
 <meta property="og:url" content="https://qianlongo.github.io/2017/09/01/嗨，你真的懂Promise吗？原理与源码实现/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-着手写一篇Promise源码实现的文章">
-<meta property="og:updated_time" content="2017-08-31T16:25:42.000Z">
+着手写一篇Promise源码实现的文章
+
+问题集锦
+能够注册多个回调函数
+返回值包括两个函数，一个注册观察者，一个通知观察者执行的执行代码
+只可以resolve一次
+需要能够链式调用
+在下一个回调函数中需要能够接受上一个回调函数的值
+每个then方法都需要返回一个promise">
+<meta property="og:updated_time" content="2017-09-02T12:35:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="嗨，你真的懂Promise吗(原理与源码实现)？">
 <meta name="twitter:description" content="前言
-着手写一篇Promise源码实现的文章">
+着手写一篇Promise源码实现的文章
+
+问题集锦
+能够注册多个回调函数
+返回值包括两个函数，一个注册观察者，一个通知观察者执行的执行代码
+只可以resolve一次
+需要能够链式调用
+在下一个回调函数中需要能够接受上一个回调函数的值
+每个then方法都需要返回一个promise">
 
 
 
@@ -344,6 +368,15 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>着手写一篇Promise源码实现的文章</p>
 </blockquote>
+<h2 id="问题集锦"><a href="#问题集锦" class="headerlink" title="问题集锦"></a>问题集锦</h2><ol>
+<li>能够注册多个回调函数</li>
+<li>返回值包括两个函数，一个注册观察者，一个通知观察者执行的执行代码</li>
+<li>只可以resolve一次</li>
+<li>需要能够链式调用</li>
+<li>在下一个回调函数中需要能够接受上一个回调函数的值</li>
+<li>每个then方法都需要返回一个promise</li>
+<li></li>
+</ol>
 
       
     </div>
@@ -542,7 +575,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题集锦"><span class="nav-number">2.</span> <span class="nav-text">问题集锦</span></a></li></ol></div>
             
           </div>
         </section>
