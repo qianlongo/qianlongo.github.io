@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="zepto源码分析,javascript,zepto,源码分析,网络请求," />
+  <meta name="keywords" content="javascript,源码分析,zepto源码分析,zepto,网络请求," />
 
 
 
@@ -89,7 +89,7 @@ JavaScript最初的一个应用场景就是分担服务器处理表单的责任�
 
 原文链接
 github项目地址
-表单提交回顾
+表单相关回顾
 在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zepto源码分析之form模块">
@@ -100,9 +100,9 @@ JavaScript最初的一个应用场景就是分担服务器处理表单的责任�
 
 原文链接
 github项目地址
-表单提交回顾
+表单相关回顾
 在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaS">
-<meta property="og:updated_time" content="2017-10-01T03:25:43.000Z">
+<meta property="og:updated_time" content="2017-10-01T03:29:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zepto源码分析之form模块">
 <meta name="twitter:description" content="前言
@@ -110,7 +110,7 @@ JavaScript最初的一个应用场景就是分担服务器处理表单的责任�
 
 原文链接
 github项目地址
-表单提交回顾
+表单相关回顾
 在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaS">
 
 
@@ -361,7 +361,7 @@ github项目地址
 </blockquote>
 <p><a href="">原文链接</a></p>
 <p><a href="">github项目地址</a></p>
-<h2 id="表单提交回顾"><a href="#表单提交回顾" class="headerlink" title="表单提交回顾"></a>表单提交回顾</h2><blockquote>
+<h2 id="表单相关回顾"><a href="#表单相关回顾" class="headerlink" title="表单相关回顾"></a>表单相关回顾</h2><blockquote>
 <p>在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaScript高级程序设计》第14章 14.4节 表单序列化)</p>
 </blockquote>
 <ol>
@@ -375,6 +375,10 @@ github项目地址
 </ol>
 <p>在表单序列化得过程中，一般不包含任何按钮字段，因为结果字符串很可能是通过其他方式提交的，除此之外其他规则都应该遵循。</p>
 <p><strong>有了上面的知识的回顾，接下来我们开始看zepto中<code>serialize</code>和<code>serializeArray</code>的实现</strong></p>
+<h2 id="serializeArray"><a href="#serializeArray" class="headerlink" title="serializeArray"></a>serializeArray</h2><blockquote>
+<p>因为serialize依赖serializeArray的实现，所以我们先来看看它是怎么实现的。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$.fn.serializeArray = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> name, type, result = [],</div><div class="line">		add = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">			<span class="keyword">if</span> (value.forEach) <span class="keyword">return</span> value.forEach(add)</div><div class="line">			result.push(&#123; <span class="attr">name</span>: name, <span class="attr">value</span>: value &#125;)</div><div class="line">		&#125;</div><div class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>[<span class="number">0</span>]) $.each(<span class="keyword">this</span>[<span class="number">0</span>].elements, <span class="function"><span class="keyword">function</span>(<span class="params">_, field</span>)</span>&#123;</div><div class="line">		type = field.type, name = field.name</div><div class="line">		<span class="keyword">if</span> (name &amp;&amp; field.nodeName.toLowerCase() != <span class="string">'fieldset'</span> &amp;&amp;</div><div class="line">			!field.disabled &amp;&amp; type != <span class="string">'submit'</span> &amp;&amp; type != <span class="string">'reset'</span> &amp;&amp; type != <span class="string">'button'</span> &amp;&amp; type != <span class="string">'file'</span> &amp;&amp;</div><div class="line">			((type != <span class="string">'radio'</span> &amp;&amp; type != <span class="string">'checkbox'</span>) || field.checked))</div><div class="line">				add($(field).val())</div><div class="line">	&#125;)</div><div class="line">	<span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -397,13 +401,13 @@ github项目地址
       
         <div class="post-tags">
           
-            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
-          
             <a href="/tags/javascript/" rel="tag">#javascript</a>
           
-            <a href="/tags/zepto/" rel="tag">#zepto</a>
-          
             <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
+          
+            <a href="/tags/zepto/" rel="tag">#zepto</a>
           
             <a href="/tags/网络请求/" rel="tag">#网络请求</a>
           
@@ -579,7 +583,7 @@ github项目地址
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单提交回顾"><span class="nav-number">2.</span> <span class="nav-text">表单提交回顾</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单相关回顾"><span class="nav-number">2.</span> <span class="nav-text">表单相关回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serializeArray"><span class="nav-number">3.</span> <span class="nav-text">serializeArray</span></a></li></ol></div>
             
           </div>
         </section>
