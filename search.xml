@@ -9,8 +9,10 @@
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中<code>form</code>模块关于表单处理的几个方法，<code>serialize</code>、<code>serializeArray</code>、<code>submit</code>。 </p>
 </blockquote>
-<p><a href="">原文链接</a></p>
-<p><a href="">github项目地址</a> </p>
+<p><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">原文链接</a></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">github项目地址</a> </p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/1-wMZnVAEei1xbY1v6sAbYxQ.png" alt=""></p>
+<a id="more"></a>
 <h2 id="表单相关回顾"><a href="#表单相关回顾" class="headerlink" title="表单相关回顾"></a>表单相关回顾</h2><blockquote>
 <p>在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaScript高级程序设计》第14章 14.4节 表单序列化) </p>
 </blockquote>
@@ -42,7 +44,7 @@
 </ol>
 <p>在上面的条件都满足的条件下，调用<code>add</code>函数并将通过$(elements).val()获取到的值传入。</p>
 <p>add函数的逻辑也非常简单。如果value是数组，则将value数组递归的每一项传入add。不是数组就是直接按照<code>{ name: name, value: value }</code>形式推入result了。</p>
-<p><strong>不过什么时候value会为数组呢？我们需要从zepto的val函数实现看起</strong></p>
+<p><strong>不过什么时候value会为数组呢？我们需要从zepto模块的val函数实现看起</strong></p>
 <p><strong>val函数实现</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">val</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="number">0</span> <span class="keyword">in</span> <span class="built_in">arguments</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span>) value = <span class="string">""</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</div><div class="line">      <span class="keyword">this</span>.value = funcArg(<span class="keyword">this</span>, value, idx, <span class="keyword">this</span>.value)</div><div class="line">    &#125;)</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// 主要看这里,multiple是用来设置下拉列表是否可以多选的。</span></div><div class="line">    <span class="comment">// 如果是多选的，则选择被选中(即selected为true)的元素并通过pluck方法，读取该元素的value值，最后返回的是一个数组</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[<span class="number">0</span>] &amp;&amp; (<span class="keyword">this</span>[<span class="number">0</span>].multiple ?</div><div class="line">      $(<span class="keyword">this</span>[<span class="number">0</span>]).find(<span class="string">'option'</span>).filter(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>.selected &#125;).pluck(<span class="string">'value'</span>) :</div><div class="line">      <span class="keyword">this</span>[<span class="number">0</span>].value)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="serialize"><a href="#serialize" class="headerlink" title="serialize"></a>serialize</h2><blockquote>
@@ -57,7 +59,24 @@
 </blockquote>
 <p><strong>源代码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$.fn.submit = <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>) </span>&#123;</div><div class="line">  <span class="comment">// 如果传了回调函数，则在选中的元素上添加submit事件</span></div><div class="line">  <span class="keyword">if</span> (<span class="number">0</span> <span class="keyword">in</span> <span class="built_in">arguments</span>) <span class="keyword">this</span>.bind(<span class="string">'submit'</span>, callback)</div><div class="line">  <span class="comment">// 否则在没有传递回调函数的情况下，并且选中有表单元素  </span></div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.length) &#123;</div><div class="line">    <span class="keyword">var</span> event = $.Event(<span class="string">'submit'</span>)</div><div class="line">    <span class="comment">// 触发选中的第一个表单的是submit事件，注意这里只是手动触发绑定的submit事件，并不会提交表单</span></div><div class="line">    <span class="keyword">this</span>.eq(<span class="number">0</span>).trigger(event)</div><div class="line">    <span class="comment">// 如果没有阻止默认事件，便调用form.submit()提交表单</span></div><div class="line">    <span class="keyword">if</span> (!event.isDefaultPrevented()) <span class="keyword">this</span>.get(<span class="number">0</span>).submit()</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>## </p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>以上是zepto form模块的相关源码分析，欢迎大家指正。</p>
+</blockquote>
+<h2 id="文章记录"><a href="#文章记录" class="headerlink" title="文章记录"></a>文章记录</h2><h2 id="form模块"><a href="#form模块" class="headerlink" title="form模块"></a>form模块</h2><ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a></li>
+</ol>
+<h2 id="zepto模块"><a href="#zepto模块" class="headerlink" title="zepto模块"></a>zepto模块</h2><ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a></li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">Zepto核心模块之工具方法拾遗 </a></li>
+</ol>
+<h2 id="event模块"><a href="#event模块" class="headerlink" title="event模块"></a>event模块</h2><ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a></li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a></li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a></li>
+</ol>
+<h2 id="ajax模块"><a href="#ajax模块" class="headerlink" title="ajax模块"></a>ajax模块</h2><ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></li>
+</ol>
 ]]></content>
     </entry>
     
