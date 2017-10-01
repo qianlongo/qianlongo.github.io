@@ -99,7 +99,7 @@ JavaScript最初的一个应用场景就是分担服务器处理表单的责任�
 原文链接
 github项目地址">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/1-wMZnVAEei1xbY1v6sAbYxQ.png">
-<meta property="og:updated_time" content="2017-10-01T05:19:34.000Z">
+<meta property="og:updated_time" content="2017-10-01T05:22:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zepto源码分析之form模块">
 <meta name="twitter:description" content="前言
@@ -408,19 +408,24 @@ github项目地址">
 <h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
 <p>以上是zepto form模块的相关源码分析，欢迎大家指正。</p>
 </blockquote>
-<h2 id="文章记录"><a href="#文章记录" class="headerlink" title="文章记录"></a>文章记录</h2><h2 id="form模块"><a href="#form模块" class="headerlink" title="form模块"></a>form模块</h2><ol>
+<p><strong>文章记录</strong></p>
+<p> <strong>form模块</strong></p>
+<ol>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a></li>
 </ol>
-<h2 id="zepto模块"><a href="#zepto模块" class="headerlink" title="zepto模块"></a>zepto模块</h2><ol>
+<p><strong>zepto模块</strong></p>
+<ol>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a></li>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">Zepto核心模块之工具方法拾遗 </a></li>
 </ol>
-<h2 id="event模块"><a href="#event模块" class="headerlink" title="event模块"></a>event模块</h2><ol>
+<p><strong>event模块</strong></p>
+<ol>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a></li>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a></li>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a></li>
 </ol>
-<h2 id="ajax模块"><a href="#ajax模块" class="headerlink" title="ajax模块"></a>ajax模块</h2><ol>
+<p><strong>ajax模块</strong></p>
+<ol>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a></li>
 </ol>
 
@@ -627,7 +632,7 @@ github项目地址">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单相关回顾"><span class="nav-number">2.</span> <span class="nav-text">表单相关回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serializeArray"><span class="nav-number">3.</span> <span class="nav-text">serializeArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serialize"><span class="nav-number">4.</span> <span class="nav-text">serialize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submit"><span class="nav-number">5.</span> <span class="nav-text">submit()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">6.</span> <span class="nav-text">结尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章记录"><span class="nav-number">7.</span> <span class="nav-text">文章记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#form模块"><span class="nav-number">8.</span> <span class="nav-text">form模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zepto模块"><span class="nav-number">9.</span> <span class="nav-text">zepto模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#event模块"><span class="nav-number">10.</span> <span class="nav-text">event模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ajax模块"><span class="nav-number">11.</span> <span class="nav-text">ajax模块</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单相关回顾"><span class="nav-number">2.</span> <span class="nav-text">表单相关回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serializeArray"><span class="nav-number">3.</span> <span class="nav-text">serializeArray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serialize"><span class="nav-number">4.</span> <span class="nav-text">serialize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#submit"><span class="nav-number">5.</span> <span class="nav-text">submit()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">6.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
           </div>
         </section>
