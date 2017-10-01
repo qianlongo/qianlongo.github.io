@@ -298,7 +298,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-10-01T10:50:06+08:00" content="2017-10-01">
+            <time itemprop="dateCreated" datetime="2017-10-01T11:43:46+08:00" content="2017-10-01">
               2017-10-01
             </time>
           </span>
@@ -345,28 +345,28 @@
         
           
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中<code>form</code>模块关于表单处理的几个方法，<code>serialize</code>、<code>serializeArray</code>、<code>submit</code>。</p>
+<p>JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中<code>form</code>模块关于表单处理的几个方法，<code>serialize</code>、<code>serializeArray</code>、<code>submit</code>。 </p>
 </blockquote>
 <p><a href="">原文链接</a></p>
-<p><a href="">github项目地址</a></p>
+<p><a href="">github项目地址</a> </p>
 <h2 id="表单相关回顾"><a href="#表单相关回顾" class="headerlink" title="表单相关回顾"></a>表单相关回顾</h2><blockquote>
-<p>在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaScript高级程序设计》第14章 14.4节 表单序列化)</p>
+<p>在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaScript高级程序设计》第14章 14.4节 表单序列化) </p>
 </blockquote>
 <ol>
-<li>对表单字段的名称和值进行URL编码，使用&amp;分隔。</li>
-<li>不发送禁用的表单字段。(也就是属性disabled为true的)</li>
-<li>只发送勾选的复选框和单选按钮</li>
-<li>不发送type为reset和button的按钮</li>
-<li>多选选择框中每个选择的值单独一个条目</li>
-<li>在单击提交按钮表单的情况下，也会发送提交按钮的value值，否则不发送提交按钮。</li>
-<li>select元素的值，就是选中的option元素的value属性的值，如果option元素没有value属性，则是option元素的文本值。</li>
+<li>对表单字段的名称和值进行URL编码，使用&amp;分隔。 </li>
+<li>不发送禁用的表单字段。(也就是属性disabled为true的) </li>
+<li>只发送勾选的复选框和单选按钮 </li>
+<li>不发送type为reset和button的按钮 </li>
+<li>多选选择框中每个选择的值单独一个条目 </li>
+<li>在单击提交按钮表单的情况下，也会发送提交按钮的value值，否则不发送提交按钮。 </li>
+<li>select元素的值，就是选中的option元素的value属性的值，如果option元素没有value属性，则是option元素的文本值。 在表单序列化得过程中，一般不包含任何按钮字段，因为结果字符串很可能是通过其他方式提交的，除此之外其他规则都应该遵循。</li>
 </ol>
-<p>在表单序列化得过程中，一般不包含任何按钮字段，因为结果字符串很可能是通过其他方式提交的，除此之外其他规则都应该遵循。</p>
-<p><strong>有了上面的知识的回顾，接下来我们开始看zepto中<code>serialize</code>和<code>serializeArray</code>的实现</strong></p>
+<p><strong>有了上面的知识的回顾，接下来我们开始看zepto中<code>serialize</code>和<code>serializeArray</code>的实现</strong> </p>
 <h2 id="serializeArray"><a href="#serializeArray" class="headerlink" title="serializeArray"></a>serializeArray</h2><blockquote>
 <p>因为serialize依赖serializeArray的实现，所以我们先来看看它是怎么实现的。</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"> $.fn.serializeArray = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> name, type, result = [],</div><div class="line">		add = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">			<span class="keyword">if</span> (value.forEach) <span class="keyword">return</span> value.forEach(add)</div><div class="line">			result.push(&#123; <span class="attr">name</span>: name, <span class="attr">value</span>: value &#125;)</div><div class="line">		&#125;</div><div class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>[<span class="number">0</span>]) $.each(<span class="keyword">this</span>[<span class="number">0</span>].elements, <span class="function"><span class="keyword">function</span>(<span class="params">_, field</span>)</span>&#123;</div><div class="line">		type = field.type, name = field.name</div><div class="line">		<span class="keyword">if</span> (name &amp;&amp; field.nodeName.toLowerCase() != <span class="string">'fieldset'</span> &amp;&amp;</div><div class="line">			!field.disabled &amp;&amp; type != <span class="string">'submit'</span> &amp;&amp; type != <span class="string">'reset'</span> &amp;&amp; type != <span class="string">'button'</span> &amp;&amp; type != <span class="string">'file'</span> &amp;&amp;</div><div class="line">			((type != <span class="string">'radio'</span> &amp;&amp; type != <span class="string">'checkbox'</span>) || field.checked))</div><div class="line">				add($(field).val())</div><div class="line">	&#125;)</div><div class="line">	<span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"> $.fn.serializeArray = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> name, type, result = [],</div><div class="line">    add = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (value.forEach) <span class="keyword">return</span> value.forEach(add)</div><div class="line">      result.push(&#123; <span class="attr">name</span>: name, <span class="attr">value</span>: value &#125;)</div><div class="line">    &#125;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>[<span class="number">0</span>]) $.each(<span class="keyword">this</span>[<span class="number">0</span>].elements, <span class="function"><span class="keyword">function</span>(<span class="params">_, field</span>)</span>&#123;</div><div class="line">    type = field.type, name = field.name</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (name &amp;&amp; field.nodeName.toLowerCase() != <span class="string">'fieldset'</span> &amp;&amp;</div><div class="line">      !field.disabled &amp;&amp; type != <span class="string">'submit'</span> &amp;&amp; type != <span class="string">'reset'</span> &amp;&amp; type != <span class="string">'button'</span> &amp;&amp; type != <span class="string">'file'</span> &amp;&amp;</div><div class="line">      ((type != <span class="string">'radio'</span> &amp;&amp; type != <span class="string">'checkbox'</span>) || field.checked))</div><div class="line">        </div><div class="line">        add($(field).val())</div><div class="line">  &#125;)</div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还是和其他模块一样，在$的原型上添加了<code>serializeArray</code>相关方法。一开始声明了<code>name</code>,<code>type</code>, <code>result</code>三个变量，分别存储表单控件的name属性，type属性，以及最后函数执行完成后要返回的数组。</p>
 
           
         
