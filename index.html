@@ -363,7 +363,7 @@
 </ol>
 <p><strong>有了上面的知识的回顾，接下来我们开始看zepto中<code>serialize</code>和<code>serializeArray</code>的实现</strong> </p>
 <h2 id="serializeArray"><a href="#serializeArray" class="headerlink" title="serializeArray"></a>serializeArray</h2><blockquote>
-<p>因为serialize依赖serializeArray的实现，所以我们先来看看它是怎么实现的。</p>
+<p>因为serialize依赖serializeArray的实现，所以我们先来看看它是怎么实现的。而他的作用是把form表单序列化成一个由 name 和 value 属性组成的对象的数组。</p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"> $.fn.serializeArray = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> name, type, result = [],</div><div class="line">    add = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (value.forEach) <span class="keyword">return</span> value.forEach(add)</div><div class="line">      result.push(&#123; <span class="attr">name</span>: name, <span class="attr">value</span>: value &#125;)</div><div class="line">    &#125;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>[<span class="number">0</span>]) $.each(<span class="keyword">this</span>[<span class="number">0</span>].elements, <span class="function"><span class="keyword">function</span>(<span class="params">_, field</span>)</span>&#123;</div><div class="line">    type = field.type, name = field.name</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (name &amp;&amp; field.nodeName.toLowerCase() != <span class="string">'fieldset'</span> &amp;&amp;</div><div class="line">      !field.disabled &amp;&amp; type != <span class="string">'submit'</span> &amp;&amp; type != <span class="string">'reset'</span> &amp;&amp; type != <span class="string">'button'</span> &amp;&amp; type != <span class="string">'file'</span> &amp;&amp;</div><div class="line">      ((type != <span class="string">'radio'</span> &amp;&amp; type != <span class="string">'checkbox'</span>) || field.checked))</div><div class="line">        </div><div class="line">        add($(field).val())</div><div class="line">  &#125;)</div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在$的原型上添加了<code>serializeArray</code>相关方法。一开始声明了<code>name</code>,<code>type</code>, <code>result</code>三个变量，分别存储表单控件的name属性，type属性，以及最后函数执行完成后要返回的数组。</p>
@@ -376,7 +376,8 @@
 <li>不能是submit、reset、button、file等元素</li>
 <li>对于单选和多选控件，只发送已经勾选的。</li>
 </ol>
-<p>在上面的条件都满足的条件下，调用<code>add</code>函数并将当前表单空间的val传入。</p>
+<p>在上面的条件都满足的条件下，调用<code>add</code>函数并将通过$(elements).val()获取到的值传入。</p>
+<p>add函数的逻辑也非常简单。如果value是数组，则将value数组递归的每一项传入add。不是数组就是直接按照<code>{ name: name, value: value }</code>形式推入result了。</p>
 
           
         
