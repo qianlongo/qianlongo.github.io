@@ -85,18 +85,33 @@
 
 
 <meta name="description" content="前言
-JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中form模块关于表单处理的几个方法，serialize、serializeArray、submit。">
+JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中form模块关于表单处理的几个方法，serialize、serializeArray、submit。
+
+原文链接
+github项目地址
+表单提交回顾
+在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zepto源码分析之form模块">
 <meta property="og:url" content="https://qianlongo.github.io/2017/10/01/zepto源码分析之form模块/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中form模块关于表单处理的几个方法，serialize、serializeArray、submit。">
-<meta property="og:updated_time" content="2017-10-01T03:03:42.000Z">
+JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中form模块关于表单处理的几个方法，serialize、serializeArray、submit。
+
+原文链接
+github项目地址
+表单提交回顾
+在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaS">
+<meta property="og:updated_time" content="2017-10-01T03:25:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zepto源码分析之form模块">
 <meta name="twitter:description" content="前言
-JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中form模块关于表单处理的几个方法，serialize、serializeArray、submit。">
+JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中form模块关于表单处理的几个方法，serialize、serializeArray、submit。
+
+原文链接
+github项目地址
+表单提交回顾
+在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaS">
 
 
 
@@ -344,6 +359,22 @@ JavaScript最初的一个应用场景就是分担服务器处理表单的责任�
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>JavaScript最初的一个应用场景就是分担服务器处理表单的责任，打破处处依赖服务器的局面，这篇文章主要介绍zepto中<code>form</code>模块关于表单处理的几个方法，<code>serialize</code>、<code>serializeArray</code>、<code>submit</code>。</p>
 </blockquote>
+<p><a href="">原文链接</a></p>
+<p><a href="">github项目地址</a></p>
+<h2 id="表单提交回顾"><a href="#表单提交回顾" class="headerlink" title="表单提交回顾"></a>表单提交回顾</h2><blockquote>
+<p>在开始学些form模块相关方法前，我们先来回顾一下表单提交时，浏览器是怎么样将数据发送给服务器的(以下内容摘自《JavaScript高级程序设计》第14章 14.4节 表单序列化)</p>
+</blockquote>
+<ol>
+<li>对表单字段的名称和值进行URL编码，使用&amp;分隔。</li>
+<li>不发送禁用的表单字段。(也就是属性disabled为true的)</li>
+<li>只发送勾选的复选框和单选按钮</li>
+<li>不发送type为reset和button的按钮</li>
+<li>多选选择框中每个选择的值单独一个条目</li>
+<li>在单击提交按钮表单的情况下，也会发送提交按钮的value值，否则不发送提交按钮。</li>
+<li>select元素的值，就是选中的option元素的value属性的值，如果option元素没有value属性，则是option元素的文本值。</li>
+</ol>
+<p>在表单序列化得过程中，一般不包含任何按钮字段，因为结果字符串很可能是通过其他方式提交的，除此之外其他规则都应该遵循。</p>
+<p><strong>有了上面的知识的回顾，接下来我们开始看zepto中<code>serialize</code>和<code>serializeArray</code>的实现</strong></p>
 
       
     </div>
@@ -548,7 +579,7 @@ JavaScript最初的一个应用场景就是分担服务器处理表单的责任�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单提交回顾"><span class="nav-number">2.</span> <span class="nav-text">表单提交回顾</span></a></li></ol></div>
             
           </div>
         </section>
