@@ -101,7 +101,7 @@ dom也就是文档对象模型，是针对HTML和XML的一个api，描绘了一�
 原文链接
 github项目地址">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171002-194838@2x.png">
-<meta property="og:updated_time" content="2017-10-02T14:53:55.000Z">
+<meta property="og:updated_time" content="2017-10-02T14:59:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="看zepto如何实现增删改查DOM">
 <meta name="twitter:description" content="前言
@@ -458,6 +458,8 @@ github项目地址">
 <p>最后便是调用<code>target[&#39;eval&#39;].call(target, el.innerHTML)</code>去执行script中的代码了。</p>
 <p>到这里我们终于知道了’after’, ‘prepend’, ‘before’, ‘append’实现全过程(偷乐一下😀，不容易啊)。</p>
 <p>紧接着我们继续往前走，前面说了插入操作有很多个方法，其中<br><code>insertAfter</code>,<code>insertBefore</code>,<code>prependTo</code>,<code>appendTo</code>的实现基于上述几个方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// append   =&gt; appendTo</span></div><div class="line"><span class="comment">// prepend  =&gt; prependTo</span></div><div class="line"><span class="comment">// before   =&gt; insertBefore</span></div><div class="line"><span class="comment">// after    =&gt; insertAfter</span></div><div class="line"></div><div class="line">$.fn[inside ? operator + <span class="string">'To'</span> : <span class="string">'insert'</span> + (operatorIndex ? <span class="string">'Before'</span> : <span class="string">'After'</span>)] = <span class="function"><span class="keyword">function</span> (<span class="params">html</span>) </span>&#123;</div><div class="line">  $(html)[operator](<span class="keyword">this</span>)</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是<code>append</code>或者<code>prepend</code>则往$原型上添加<code>appendTo</code>和<code>prependTo</code>方法，如果是<code>before</code>或者<code>after</code>的时候，便往$的原型上添加<code>insertBefore</code>和<code>insertAfter</code>方法。因为其两两对应的方法本质上是同样的功能，只是在使用上有点相反的意思，所以简单的反向调用一下就可以了。</p>
 
       
     </div>
