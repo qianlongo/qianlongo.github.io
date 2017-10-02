@@ -345,12 +345,29 @@
         
           
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>dom也就是文档对象模型，是针对HTML和XML的一个api，描绘了一个层次化的节点树。虽然浏览器原生给我们提供了许多操作dom的方法，使我们可以对dom进行查找，复制，替换和删除等操作。但是zepto在其基础上再次封装，给以我们更加便捷的操作方式。先看一张图，</p>
+<p>dom也就是文档对象模型，是针对HTML和XML的一个api，描绘了一个层次化的节点树。虽然浏览器原生给我们提供了许多操作dom的方法，使我们可以对dom进行查找，复制，替换和删除等操作。但是zepto在其基础上再次封装，给以我们更加便捷的操作方式。先看下图，我们以<code>删除元素</code>，<code>插入元素</code>,<code>复制元素</code>，<code>包裹元素</code>和<code>替换元素</code>几个模块分别探究zepto如何一一将其实现。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20171002-194838@2x.png" alt="DOM操作"></p>
 <p><a href="https://github.com/qianlongo/zepto-analysis/issues/8" target="_blank" rel="external">原文链接</a></p>
 <p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">github项目地址</a> </p>
-<p>## </p>
+<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><p><strong>remove</strong></p>
+<blockquote>
+<p>当父节点存在时，从其父节点中删除当前集合中的元素。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">remove: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.parentNode != <span class="literal">null</span>)</div><div class="line">      <span class="keyword">this</span>.parentNode.removeChild(<span class="keyword">this</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>遍历当前集合中的元素，当该元素的父节点存在的时候，使用<code>removeChild</code>删除该元素。</p>
+<p><strong>detach</strong></p>
+<blockquote>
+<p>功能和remove一样，都是删除元素。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$.fn.detach = $.fn.remove</div></pre></td></tr></table></figure>
+<p>可以看到就是在$的原型上添加了一个指向<code>remove</code>函数的方法<code>detach</code>。</p>
+<p><strong>empty</strong></p>
+<blockquote>
+<p>清空对象集合中每个元素的DOM内容</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">empty: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.innerHTML = <span class="string">''</span> &#125;)</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>遍历当前集合中的元素，然后将元素的<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/innerHTML" target="_blank" rel="external">innerHTML</a>属性设置为空。也就达到了清除DOM内容的目的。</p>
 
           
         
