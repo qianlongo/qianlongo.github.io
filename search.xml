@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title><![CDATA[看zepto如何实现增删改查DOM]]></title>
+      <url>https://qianlongo.github.io/2017/10/02/%E7%9C%8Bzepto%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5DOM/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>dom也就是文档对象模型，是针对HTML和XML的一个api，描绘了一个层次化的节点树。虽然浏览器原生给我们提供了许多操作dom的方法，使我们可以对dom进行查找，复制，替换和删除等操作。但是zepto在其基础上再次封装，给以我们更加便捷的操作方式。先看一张图，</p>
+</blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20171002-194838@2x.png" alt="DOM操作"></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis/issues/8" target="_blank" rel="external">原文链接</a></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">github项目地址</a> </p>
+<p>## </p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[zepto源码分析之form模块]]></title>
       <url>https://qianlongo.github.io/2017/10/01/zepto%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bform%E6%A8%A1%E5%9D%97/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
