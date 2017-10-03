@@ -7,10 +7,12 @@
       <title><![CDATA[Zepto中数据缓存原理与实现]]></title>
       <url>https://qianlongo.github.io/2017/10/03/Zepto%E4%B8%AD%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>以前我们使用Zepto进行开发的时候，会把一些自定义的数据存在到dom节点上，好处是非常直观和便捷，但是也带来了例如直接将数据暴露出来会出现安全问题，数据以html自定义属性标签存在，对于浏览器本身来说是没有多大意义的，最后要获取数据的时候还得操作dom。Zepto有一个<code>data</code>模块，专门用来做数据缓存，允许我们存放任何与dom相关的数据。</p>
+<p>以前我们使用Zepto进行开发的时候，会把一些自定义的数据存到dom节点上，好处是非常直观和便捷，但是也带来了例如直接将数据暴露出来会出现安全问题，数据以html自定义属性标签存在，对于浏览器本身来说是没有多大意义的，最后要获取数据的时候还得操作dom。Zepto有一个<code>data</code>模块，专门用来做数据缓存，允许我们存放任何与dom相关的数据。</p>
 </blockquote>
 <p><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">原文链接</a></p>
 <p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">源码仓库</a></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/BigData.jpg" alt="data"></p>
+<a id="more"></a>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><blockquote>
 <p>在开始学习和阅读Zepto中的data模块前，我们先大致了解一下dom元素和要缓存的数据是如何联系起来的。</p>
 </blockquote>
@@ -116,11 +118,12 @@
 <p>以上是Zepto种data模块所有源码分析，欢迎大家指正其中有问题的地方。</p>
 </blockquote>
 <p><strong>文章记录</strong></p>
-<p> <strong>data模块</strong></p>
+<p><strong>data模块</strong></p>
 <ol>
-<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现</a>(2017-10-03)</p>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现</a>(2017-10-03)</li>
+</ol>
 <p><strong>form模块</strong></p>
-</li>
+<ol>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a>(2017-10-01)</li>
 </ol>
 <p><strong>zepto模块</strong></p>
