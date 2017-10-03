@@ -103,7 +103,7 @@
 原理
 在开始学习和阅读Zep">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171003-163013@2x344.png">
-<meta property="og:updated_time" content="2017-10-03T08:40:17.000Z">
+<meta property="og:updated_time" content="2017-10-03T08:51:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zepto中数据缓存原理与实现">
 <meta name="twitter:description" content="前言
@@ -367,6 +367,18 @@
 <p>在开始学习和阅读Zepto中的data模块前，我们先大致了解一下dom元素和要缓存的数据是如何联系起来的。</p>
 </blockquote>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20171003-163013@2x344.png" alt="原理"></p>
+<p>看一下上面那张图。简单地理解就是</p>
+<ul>
+<li>dom元素身上有一<code>exp(Zepto1507010934916)</code>属性，其对应的值是1,2,3整数数字，</li>
+<li>data是一个存储着与dom元素相关联的自定义数据的大对象类似下面这样</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&#123;</div><div class="line">  <span class="number">1</span>: &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'qianlongo'</span></div><div class="line">  &#125;,</div><div class="line">  <span class="number">2</span>: &#123;</div><div class="line">    <span class="attr">sex</span>: <span class="string">'boy'</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>dom元素就是通过1,2,3数字索引和大对象data关联起来</p>
+</li>
+<li><p>对于DOM自定义数据的增删改查就是在对数字索引对应的对象进行操作。</p>
+</li>
+</ul>
 
       
     </div>
