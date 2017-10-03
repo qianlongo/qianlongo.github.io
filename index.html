@@ -434,6 +434,49 @@
 <p>我们可以指定删除单个属性，也可以通过空格隔开删除多个属性，也可以传入一个要删除的属性数组，甚至当你什么都不传的时候，原先设置在该元素身上的data会被全部清空</p>
 <p><strong>源码</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$.fn.removeData = <span class="function"><span class="keyword">function</span>(<span class="params">names</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> names == <span class="string">'string'</span>) names = names.split(<span class="regexp">/\s+/</span>)</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> id = <span class="keyword">this</span>[exp], store = id &amp;&amp; data[id]</div><div class="line">    <span class="keyword">if</span> (store) $.each(names || store, <span class="function"><span class="keyword">function</span>(<span class="params">key</span>)</span>&#123;</div><div class="line">      <span class="keyword">delete</span> store[names ? camelize(<span class="keyword">this</span>) : key]</div><div class="line">    &#125;)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先传进来的names是字符串的情况下，先转化成数组，接着就是对当前匹配的元素集合进行遍历，逐个删除元素对应的缓存的数据。</p>
+<p>当查找到store的时候对转化后的names或者store进行遍历，如果是自己指定要删除的属性，先驼峰化一下，再用delete删除，否则全部清空则直接delete store中的key</p>
+<h2 id="data"><a href="#data" class="headerlink" title="$.data"></a>$.data</h2><blockquote>
+<p>存储任意数据到指定的元素并且/或者返回设置的值</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.data = <span class="function"><span class="keyword">function</span>(<span class="params">elem, name, value</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> $(elem).data(name, value)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>定义在$函数身上的静态方法，底层还是调用的实例方法.data。</p>
+<h2 id="hasData"><a href="#hasData" class="headerlink" title="$.hasData"></a>$.hasData</h2><blockquote>
+<p>确定元素是否有与之相关的Zepto数据。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$.hasData = <span class="function"><span class="keyword">function</span>(<span class="params">elem</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> id = elem[exp], store = id &amp;&amp; data[id]</div><div class="line">  <span class="keyword">return</span> store ? !$.isEmptyObject(store) : <span class="literal">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同样定义在$函数身上的静态方法，原理就是拿着<code>elem</code>身上的id，去data中查找是否有与之关联的数据对象，如果找到了并且不是一个空对象，便返回true，否则没有找到或者是空对象都是返回false</p>
+<h2 id="remove-empty"><a href="#remove-empty" class="headerlink" title="remove, empty"></a>remove, empty</h2><blockquote>
+<p>生成扩展的remove和empty方法,未扩展之前的remove和empty功能依旧还在，增添了删除选中的元素缓存的数据功能。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">;[<span class="string">'remove'</span>, <span class="string">'empty'</span>].forEach(<span class="function"><span class="keyword">function</span>(<span class="params">methodName</span>)</span>&#123;</div><div class="line">  <span class="comment">// 缓存原型上之前对应的remove和empty方法</span></div><div class="line">  <span class="keyword">var</span> origFn = $.fn[methodName]</div><div class="line">  <span class="comment">// 重写两个方法</span></div><div class="line">  $.fn[methodName] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 获取当前选中元素的所有内部包含元素</span></div><div class="line">    <span class="keyword">var</span> elements = <span class="keyword">this</span>.find(<span class="string">'*'</span>)</div><div class="line">    <span class="comment">// 如果是remove方法，则在获取的elements元素基础上把本身也添加进去</span></div><div class="line">    <span class="keyword">if</span> (methodName === <span class="string">'remove'</span>) elements = elements.add(<span class="keyword">this</span>)</div><div class="line">    <span class="comment">// 调用removeData删除与dom关联的data中的数据</span></div><div class="line">    elements.removeData()</div><div class="line">    <span class="comment">// 最后还是调用对应的方法删除dom，或者清除dom的内容</span></div><div class="line">    <span class="keyword">return</span> origFn.call(<span class="keyword">this</span>)</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>以上是Zepto种data模块所有源码分析，欢迎大家指正其中有问题的地方。</p>
+</blockquote>
+<p><strong>文章记录</strong></p>
+<p> <strong>data模块</strong></p>
+<ol>
+<li><p><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现</a>(2017-10-03)</p>
+<p><strong>form模块</strong></p>
+</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a>(2017-10-01)</li>
+</ol>
+<p><strong>zepto模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>(2017-08-26)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">Zepto核心模块之工具方法拾遗 </a>(2017-08-30)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/8" target="_blank" rel="external">看zepto如何实现增删改查DOM </a>(2017-10-2)</li>
+</ol>
+<p><strong>event模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a>(2017-06-05)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a>(2017-06-07)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a>(2017-06-08)</li>
+</ol>
+<p><strong>ajax模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a>(2017-06-11)</li>
+</ol>
 
           
         
