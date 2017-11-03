@@ -284,6 +284,120 @@
             
               
                 
+                <a class="post-title-link" href="/2017/11/03/Zepto源码分析之ie模块/" itemprop="url">
+                  Zepto源码分析之ie模块
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-11-03T22:07:17+08:00" content="2017-11-03">
+              2017-11-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/11/03/Zepto源码分析之ie模块/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/11/03/Zepto源码分析之ie模块/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/11/03/Zepto源码分析之ie模块/" class="leancloud_visitors" data-flag-title="Zepto源码分析之ie模块">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>Zepto中的ie模块主要是改写<code>getComputedStyle</code>浏览器API，代码量很少，但也是其重要模块之一。在看源代码之前，我们先回顾一下如何使用</p>
+</blockquote>
+<h2 id="getComputedStyle"><a href="#getComputedStyle" class="headerlink" title="getComputedStyle"></a>getComputedStyle</h2><blockquote>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/10/03/Zepto中数据缓存原理与实现/" itemprop="url">
                   Zepto中数据缓存原理与实现
                 </a>
@@ -735,122 +849,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/30/Zepto核心模块之工具方法拾遗/" itemprop="url">
-                  Zepto核心模块之工具方法拾遗
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-30T14:59:46+08:00" content="2017-08-30">
-              2017-08-30
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/08/30/Zepto核心模块之工具方法拾遗/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/30/Zepto核心模块之工具方法拾遗/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/08/30/Zepto核心模块之工具方法拾遗/" class="leancloud_visitors" data-flag-title="Zepto核心模块之工具方法拾遗">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>平时开发过程中经常会用类似<code>each</code>、<code>map</code>、<code>forEach</code>之类的方法，Zepto本身也把这些方法挂载到<code>$</code>函数身上，作为静态方法存在，既可以给Zepto的实例使用，也能给普通的js对象使用。今天我们主要针对其提供的这些api做一些源码实现分析。</p>
-</blockquote>
-<p><a href="https://github.com/qianlongo/zepto-analysis">源码仓库</a><br><a href="https://github.com/qianlongo/zepto-analysis/issues/6">原文链接</a></p>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/facebook.png" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/30/Zepto核心模块之工具方法拾遗/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -896,7 +894,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
