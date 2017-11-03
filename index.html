@@ -348,7 +348,50 @@
 <p>Zepto中的ie模块主要是改写<code>getComputedStyle</code>浏览器API，代码量很少，但也是其重要模块之一。在看源代码之前，我们先回顾一下如何使用</p>
 </blockquote>
 <h2 id="getComputedStyle"><a href="#getComputedStyle" class="headerlink" title="getComputedStyle"></a>getComputedStyle</h2><blockquote>
+<p>Window.getComputedStyle() 方法给出应用活动样式表后的元素的所有CSS属性的值，并解析这些值可能包含的任何基本计算。<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle" target="_blank" rel="external">MDN</a></p>
 </blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> style = <span class="built_in">window</span>.getComputedStyle(element, [pseudoElt]);</div></pre></td></tr></table></figure>
+<p><strong>element</strong></p>
+<p>element参数即是我们要获取样式的元素</p>
+<p><strong>pseudoElt</strong></p>
+<p>要匹配的伪元素字符串，对于普通元素来说需省略（null）</p>
+<p><strong>结果</strong></p>
+<p>特别重要的是该方法执行后返回的样式是一个实时的 CSSStyleDeclaration 对象，当元素的样式更改时，它会自动更新本身。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line"> #elem&#123;</div><div class="line">   position: absolute;</div><div class="line">   left: 100px;</div><div class="line">   top: 200px;</div><div class="line">   height: 100px;</div><div class="line"> &#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"elem"</span>&gt;</span>dummy<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">let</span> $elem = <span class="built_in">document</span>.querySelector(<span class="string">'#elem'</span>)</div><div class="line"><span class="keyword">let</span> cssProps = getComputedStyle($elem, <span class="literal">null</span>)</div><div class="line"></div><div class="line"><span class="keyword">let</span> &#123; width, height &#125; = cssProps</div><div class="line"><span class="built_in">console</span>.log(width, height)</div></pre></td></tr></table></figure>
+<h2 id="特别注意"><a href="#特别注意" class="headerlink" title="特别注意"></a>特别注意</h2><blockquote>
+<p>第一个参数必须是Element对象(传递一个非节点元素，如 一个#text 节点， 将会抛出一个错误)<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle" target="_blank" rel="external">MDN</a>,这也可能是Zepto要重写它的原因吧</p>
+</blockquote>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">// getComputedStyle shouldn't freak out when called</span></div><div class="line">  <span class="comment">// without a valid element as argument</span></div><div class="line">  <span class="comment">// 重写getComputedStyle</span></div><div class="line">  <span class="comment">// 第一个参数如果不是元素节点则会抛出错误，被catch捕获，并被重写。</span></div><div class="line">  <span class="comment">// 重写后的方法，如果传入的第一个参数不是元素节点，被catch捕获，返回null，则不影响后续代码的运行</span></div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    getComputedStyle(<span class="literal">undefined</span>)</div><div class="line">  &#125; <span class="keyword">catch</span>(e) &#123;</div><div class="line">    <span class="keyword">var</span> nativeGetComputedStyle = getComputedStyle</div><div class="line">    <span class="built_in">window</span>.getComputedStyle = <span class="function"><span class="keyword">function</span>(<span class="params">element, pseudoElement</span>)</span>&#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">return</span> nativeGetComputedStyle(element, pseudoElement)</div><div class="line">      &#125; <span class="keyword">catch</span>(e) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">null</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;)()</div></pre></td></tr></table></figure>
+<p>代码非常简单，浏览器在加载该模块的时候，如果调用getComputedStyle第一个参数不为元素节点时抛出错误，则被catch捕获，并重写该方法。重写的方法中是另一个try catch，如果后续再发生错误，将返回null，不阻碍后续js代码的执行。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>以上便是Zepto ie模块的源码分析的全部，欢迎提出意见和建议。</p>
+</blockquote>
+<p><strong>文章记录</strong></p>
+<p><strong>data模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现</a>(2017-10-03)</li>
+</ol>
+<p><strong>form模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a>(2017-10-01)</li>
+</ol>
+<p><strong>zepto模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>(2017-08-26)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">Zepto核心模块之工具方法拾遗 </a>(2017-08-30)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/8" target="_blank" rel="external">看zepto如何实现增删改查DOM </a>(2017-10-2)</li>
+</ol>
+<p><strong>event模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a>(2017-06-05)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a>(2017-06-07)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a>(2017-06-08)</li>
+</ol>
+<p><strong>ajax模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a>(2017-06-11)</li>
+</ol>
 
           
         
