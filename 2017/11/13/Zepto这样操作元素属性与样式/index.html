@@ -100,7 +100,7 @@ attr()
 attr()
 
 读取或设置dom的属性。">
-<meta property="og:updated_time" content="2017-11-26T11:30:38.000Z">
+<meta property="og:updated_time" content="2017-11-26T11:44:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zepto这样操作元素属性">
 <meta name="twitter:description" content="前言
@@ -388,6 +388,11 @@ attr()
 <p>看个实际使用的例子</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">'.box'</span>).attr(<span class="string">'name'</span>, <span class="string">'qianlongo'</span>)</div><div class="line"></div><div class="line">$(<span class="string">'.box'</span>).attr(<span class="string">'name'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">idx, oldVal</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> oldVal + <span class="string">'qianlongo'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
 <p>可以看到如果传入的是回调函数，那回调函数可以接收到元素的索引，以及要设置的属性的之前的值。</p>
+<h2 id="removeAttr"><a href="#removeAttr" class="headerlink" title="removeAttr()"></a>removeAttr()</h2><blockquote>
+<p>移除当前对象集合中所有元素的指定属性，理论上讲attr也可以做到removeAttr的功能。只要将要移除的name属性设置为null或者undefined即可。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 通过将name分割，再将需要移除的属性进行遍历删除</span></div><div class="line">  <span class="keyword">this</span>.nodeType === <span class="number">1</span> &amp;&amp; name.split(<span class="string">' '</span>).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">attribute</span>) </span>&#123;</div><div class="line">    setAttribute(<span class="keyword">this</span>, attribute)</div><div class="line">  &#125;, <span class="keyword">this</span>)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码本身很简单，对当前选中的元素集合进行遍历操作，然后对name参数进行空格分割（这样对于name传入类似’name sex age’就可以批量删除了），最后还是调用的setAttribute方法进行属性删除操作。</p>
 
       
     </div>
@@ -592,7 +597,7 @@ attr()
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attr"><span class="nav-number">2.</span> <span class="nav-text">attr()</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attr"><span class="nav-number">2.</span> <span class="nav-text">attr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeAttr"><span class="nav-number">3.</span> <span class="nav-text">removeAttr()</span></a></li></ol></div>
             
           </div>
         </section>
