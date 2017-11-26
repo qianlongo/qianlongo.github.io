@@ -397,6 +397,14 @@
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</div><div class="line">  name = propMap[name] || name</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">delete</span> <span class="keyword">this</span>[name] &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>直接通过<code>delete</code>去删除，但是如果尝试删除DOM的一些内置属性，如className或maxLength，将不会有任何效果，因为浏览器禁止删除这些属性。</p>
+<h2 id="html"><a href="#html" class="headerlink" title="html()"></a>html()</h2><blockquote>
+<p>获取或设置对象集合中元素的HTML内容。当没有给定content参数时，返回对象集合中第一个元素的innerHtml。当给定content参数时，用其替换对象集合中每个元素的内容。content可以是append中描述的所有类型<a href="http://www.css88.com/doc/zeptojs_api/#html" target="_blank" rel="external">zeptojs_api/#html</a></p>
+</blockquote>
+<p><strong>源码分析</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params">html</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="number">0</span> <span class="keyword">in</span> <span class="built_in">arguments</span> ?</div><div class="line">    <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> originHtml = <span class="keyword">this</span>.innerHTML</div><div class="line">      $(<span class="keyword">this</span>).empty().append(funcArg(<span class="keyword">this</span>, html, idx, originHtml))</div><div class="line">    &#125;) :</div><div class="line">    (<span class="number">0</span> <span class="keyword">in</span> <span class="keyword">this</span> ? <span class="keyword">this</span>[<span class="number">0</span>].innerHTML : <span class="literal">null</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果html传了，就遍历通过append函数设置html，没传就是获取（即返回当前集合的第一个元素的innerHTML）注意：这里的html参数可以是个函数,接收的参数是当前元素的索引和html。</p>
+<h2 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h2><blockquote>
+</blockquote>
 
           
         
