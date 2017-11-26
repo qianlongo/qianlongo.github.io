@@ -4,9 +4,13 @@
   
     
     <entry>
-      <title><![CDATA[Zepto这样操作元素属性与样式]]></title>
+      <title><![CDATA[Zepto这样操作元素属性]]></title>
       <url>https://qianlongo.github.io/2017/11/13/Zepto%E8%BF%99%E6%A0%B7%E6%93%8D%E4%BD%9C%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7%E4%B8%8E%E6%A0%B7%E5%BC%8F/</url>
-      <content type="html"></content>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有<code>attr()</code>,<code>removeAttr()</code>,<code>prop()</code>,<code>removeProp()</code>,<code>data()</code>,<code>offset()</code>,<code>position()</code>等。接下来我们挨个整明白他们是如何实现的…</p>
+</blockquote>
+<p>## </p>
+]]></content>
     </entry>
     
     <entry>
