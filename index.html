@@ -451,6 +451,29 @@
 <p><strong>接下来我们回去继续看设置部分</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (value == <span class="literal">null</span>) value = <span class="string">""</span></div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.value = funcArg(<span class="keyword">this</span>, value, idx, <span class="keyword">this</span>.value)</div><div class="line">  &#125;)</div></pre></td></tr></table></figure>
 <p>与html，text等方法类似，通过调用funcArg方法使得既支持普通字符串设置，也支持传入回调函数返回值设置值。</p>
+<h2 id="data"><a href="#data" class="headerlink" title="data"></a>data</h2><blockquote>
+<p>读取或写入dom的 data-* 属性。行为有点像 attr ，但是属性名称前面加上 data-。<a href="http://www.css88.com/doc/zeptojs_api/#data" target="_blank" rel="external">#data</a></p>
+</blockquote>
+<ol>
+<li>data(name)   ⇒ value</li>
+<li>data(name, value)   ⇒ self</li>
+</ol>
+<p>当读取属性值时，会有下列转换：</p>
+<ol>
+<li>“true”, “false”, and “null” 被转换为相应的类型；</li>
+<li>数字值转换为实际的数字类型；</li>
+<li>JSON值将会被解析，如果它是有效的JSON；</li>
+<li>其它的一切作为字符串返回。</li>
+</ol>
+<p>注意：data方法本质上也是借用attr方法去实现的，不同之处在于data设置或者读取的属性为data-打头。</p>
+<p><strong>源码分析</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">data: <span class="function"><span class="keyword">function</span> (<span class="params">name, value</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> attrName = <span class="string">'data-'</span> + name.replace(capitalRE, <span class="string">'-$1'</span>).toLowerCase()</div><div class="line"></div><div class="line">  <span class="keyword">var</span> data = (<span class="number">1</span> <span class="keyword">in</span> <span class="built_in">arguments</span>) ?</div><div class="line">    <span class="keyword">this</span>.attr(attrName, value) :</div><div class="line">    <span class="keyword">this</span>.attr(attrName)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> data !== <span class="literal">null</span> ? deserializeValue(data) : <span class="literal">undefined</span></div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>data方法源码分为三个部分</p>
+<ol>
+<li>将传入的name属性转化为data-开头的连字符</li>
+<li>通过attr方法设置或者获取属性</li>
+<li>对attr方法的返回值再做一层映射处理</li>
+</ol>
 
           
         
