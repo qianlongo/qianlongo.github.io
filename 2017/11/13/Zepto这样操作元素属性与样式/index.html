@@ -100,7 +100,7 @@ attr()
 attr()
 
 读取或设置dom的属性。">
-<meta property="og:updated_time" content="2017-12-09T07:56:57.000Z">
+<meta property="og:updated_time" content="2017-12-09T08:32:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zepto这样操作元素属性">
 <meta name="twitter:description" content="前言
@@ -435,6 +435,31 @@ attr()
 <p><strong>设置text</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> newText = funcArg(<span class="keyword">this</span>, text, idx, <span class="keyword">this</span>.textContent)</div><div class="line">  <span class="keyword">this</span>.textContent = newText == <span class="literal">null</span> ? <span class="string">''</span> : <span class="string">''</span> + newText</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
 <p>设置与html的设置部分比较类似，既支持直接传入普通的字符串也支持传入回调函数。如果得到的newText为null或者undefined,会统一转成空字符串再进行设置。</p>
+<h2 id="val"><a href="#val" class="headerlink" title="val"></a>val</h2><blockquote>
+<p>获取或设置匹配元素的值。当没有给定value参数，返回第一个元素的值。如果是<code>&lt;select multiple&gt;</code>标签，则返回一个数组。当给定value参数，那么将设置所有元素的值。<a href="http://www.css88.com/doc/zeptojs_api/#val" target="_blank" rel="external">val</a></p>
+</blockquote>
+<ol>
+<li>val()   ⇒ string</li>
+<li>val(value)   ⇒ self</li>
+<li>val(function(index, oldValue){ … })   ⇒ self</li>
+</ol>
+<p>以上是基本用法</p>
+<p><strong>源码分析</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">val: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="number">0</span> <span class="keyword">in</span> <span class="built_in">arguments</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span>) value = <span class="string">""</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</div><div class="line">      <span class="keyword">this</span>.value = funcArg(<span class="keyword">this</span>, value, idx, <span class="keyword">this</span>.value)</div><div class="line">    &#125;)</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[<span class="number">0</span>] &amp;&amp; (<span class="keyword">this</span>[<span class="number">0</span>].multiple ?</div><div class="line">      $(<span class="keyword">this</span>[<span class="number">0</span>]).find(<span class="string">'option'</span>).filter(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>.selected &#125;).pluck(<span class="string">'value'</span>) :</div><div class="line">      <span class="keyword">this</span>[<span class="number">0</span>].value)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>html</code>,<code>text</code>和<code>val</code>方法对待取值和设置值的套路基本都是一样的，判断有没有传入第一个参数，有则认为是设置，没有就是读取。</p>
+<p><strong>先看读取部分</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">return</span> <span class="keyword">this</span>[<span class="number">0</span>] &amp;&amp; (<span class="keyword">this</span>[<span class="number">0</span>].multiple ?</div><div class="line">  $(<span class="keyword">this</span>[<span class="number">0</span>]).find(<span class="string">'option'</span>).filter(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>.selected &#125;).pluck(<span class="string">'value'</span>) :</div><div class="line">  <span class="keyword">this</span>[<span class="number">0</span>].value)</div></pre></td></tr></table></figure>
+<p>假设<code>this[0](也就是元素集合中第一个元素存在)</code>我们把它拆成两个部分来学习</p>
+<ol>
+<li>获取多选下拉列表的value</li>
+<li>普通表单元素value</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">this</span>[<span class="number">0</span>].multiple ? <span class="string">'获取多选下拉列表的value'</span> : <span class="string">'普通表单元素value'</span></div></pre></td></tr></table></figure>
+<p>针对第一种情况首先会通过find函数取查找子元素option集合，然后再过<code>this.selected</code>过滤出已经选中的option元素数组，最后还是通过调用<code>pluck</code>函数返回该option元素集合中的value数组。</p>
+<p>第二种情况则是直接读取元素的value属性即可。</p>
+<p><strong>接下来我们回去继续看设置部分</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (value == <span class="literal">null</span>) value = <span class="string">""</span></div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.value = funcArg(<span class="keyword">this</span>, value, idx, <span class="keyword">this</span>.value)</div><div class="line">  &#125;)</div></pre></td></tr></table></figure>
+<p>与html，text等方法类似，通过调用funcArg方法使得既支持普通字符串设置，也支持传入回调函数返回值设置值。</p>
 
       
     </div>
@@ -639,7 +664,7 @@ attr()
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attr"><span class="nav-number">2.</span> <span class="nav-text">attr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeAttr"><span class="nav-number">3.</span> <span class="nav-text">removeAttr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prop"><span class="nav-number">4.</span> <span class="nav-text">prop()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeProp"><span class="nav-number">5.</span> <span class="nav-text">removeProp()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">6.</span> <span class="nav-text">html()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-number">7.</span> <span class="nav-text">text()</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attr"><span class="nav-number">2.</span> <span class="nav-text">attr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeAttr"><span class="nav-number">3.</span> <span class="nav-text">removeAttr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prop"><span class="nav-number">4.</span> <span class="nav-text">prop()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeProp"><span class="nav-number">5.</span> <span class="nav-text">removeProp()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">6.</span> <span class="nav-text">html()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-number">7.</span> <span class="nav-text">text()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#val"><span class="nav-number">8.</span> <span class="nav-text">val</span></a></li></ol></div>
             
           </div>
         </section>
