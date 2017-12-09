@@ -85,30 +85,20 @@
 
 
 <meta name="description" content="前言
-使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有attr(),removeAttr(),prop(),removeProp(),data(),offset(),position()等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的zepto模块源码注释已经基本完成，欢迎查看和提意见。
-
-attr()
-
-读取或设置dom的属性。">
+使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有attr(),removeAttr(),prop(),removeProp(),data(),offset(),position()等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的zepto模块源码注释已经基本完成，欢迎查看和提意见。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zepto这样操作元素属性">
 <meta property="og:url" content="https://qianlongo.github.io/2017/11/13/Zepto这样操作元素属性与样式/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有attr(),removeAttr(),prop(),removeProp(),data(),offset(),position()等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的zepto模块源码注释已经基本完成，欢迎查看和提意见。
-
-attr()
-
-读取或设置dom的属性。">
-<meta property="og:updated_time" content="2017-12-09T09:10:14.000Z">
+使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有attr(),removeAttr(),prop(),removeProp(),data(),offset(),position()等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的zepto模块源码注释已经基本完成，欢迎查看和提意见。">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/images-js.png">
+<meta property="og:updated_time" content="2017-12-09T09:25:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zepto这样操作元素属性">
 <meta name="twitter:description" content="前言
-使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有attr(),removeAttr(),prop(),removeProp(),data(),offset(),position()等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的zepto模块源码注释已经基本完成，欢迎查看和提意见。
-
-attr()
-
-读取或设置dom的属性。">
+使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有attr(),removeAttr(),prop(),removeProp(),data(),offset(),position()等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的zepto模块源码注释已经基本完成，欢迎查看和提意见。">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/images-js.png">
 
 
 
@@ -356,6 +346,8 @@ attr()
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>使用Zepto的时候，我们经常会要去操作一些DOM的属性，或元素本身的固有属性或自定义属性等。比如常见的有<code>attr()</code>,<code>removeAttr()</code>,<code>prop()</code>,<code>removeProp()</code>,<code>data()</code>,<code>offset()</code>,<code>position()</code>等。接下来我们挨个整明白他们是如何实现的…这篇文章对应的<a href="https://github.com/qianlongo/zepto-analysis/blob/master/src/zepto.js" target="_blank" rel="external">zepto模块</a>源码注释已经基本完成，欢迎查看和提意见。</p>
 </blockquote>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/images-js.png" alt=""></p>
+<a id="more"></a>
 <h2 id="attr"><a href="#attr" class="headerlink" title="attr()"></a>attr()</h2><blockquote>
 <ol>
 <li>读取或设置dom的属性。</li>
@@ -499,6 +491,49 @@ attr()
 <li>当value以{或者[为开头时，使用parseJSON解析（但是有点不严格，因为以{[开头不一定就是对象字符串）,否则直接返回value</li>
 </ol>
 <p><strong>最后还有一个问题，不知道大家有没有注意到zepto模块中的data方法和<a href="https://github.com/qianlongo/zepto-analysis/blob/master/src/data.js" target="_blank" rel="external">data模块</a>中的data方法都是挂载到原型下面的，那他们之间到底有什么关系呢？可以查看之前写的一篇文章<a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现 </a>,应该可以找到答案</strong></p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>以上是Zepto中常见的操作元素属性的方法（attr、removeAttr、prop、removeProp、html、text、val、data）解析。欢迎指正其中的问题。</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><p><a href="https://juejin.im/post/594f099ff265da6c4234d750#heading-5" target="_blank" rel="external">读Zepto源码之属性操作</a></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent" target="_blank" rel="external">textContent mdn</a></p>
+</li>
+<li><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/select" target="_blank" rel="external">multiple</a></p>
+</li>
+<li><p><a href="http://www.runoob.com/w3cnote/zepto-js-source-analysis.html" target="_blank" rel="external">zepto.js 源码解析</a></p>
+</li>
+</ol>
+<p><strong>文章记录</strong></p>
+<p><strong>ie模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/10" target="_blank" rel="external">Zepto源码分析之ie模块</a>(2017-11-03)</li>
+</ol>
+<p><strong>data模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现</a>(2017-10-03)</li>
+</ol>
+<p><strong>form模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a>(2017-10-01)</li>
+</ol>
+<p><strong>zepto模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>(2017-08-26)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">Zepto核心模块之工具方法拾遗 </a>(2017-08-30)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/8" target="_blank" rel="external">看zepto如何实现增删改查DOM </a>(2017-10-2)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/11" target="_blank" rel="external">Zepto这样操作元素属性</a>(2017-11-13)</li>
+</ol>
+<p><strong>event模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a>(2017-06-05)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a>(2017-06-07)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a>(2017-06-08)</li>
+</ol>
+<p><strong>ajax模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a>(2017-06-11)</li>
+</ol>
 
       
     </div>
@@ -703,7 +738,7 @@ attr()
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attr"><span class="nav-number">2.</span> <span class="nav-text">attr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeAttr"><span class="nav-number">3.</span> <span class="nav-text">removeAttr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prop"><span class="nav-number">4.</span> <span class="nav-text">prop()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeProp"><span class="nav-number">5.</span> <span class="nav-text">removeProp()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">6.</span> <span class="nav-text">html()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-number">7.</span> <span class="nav-text">text()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#val"><span class="nav-number">8.</span> <span class="nav-text">val</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data"><span class="nav-number">9.</span> <span class="nav-text">data</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attr"><span class="nav-number">2.</span> <span class="nav-text">attr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeAttr"><span class="nav-number">3.</span> <span class="nav-text">removeAttr()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prop"><span class="nav-number">4.</span> <span class="nav-text">prop()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#removeProp"><span class="nav-number">5.</span> <span class="nav-text">removeProp()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">6.</span> <span class="nav-text">html()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-number">7.</span> <span class="nav-text">text()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#val"><span class="nav-number">8.</span> <span class="nav-text">val</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data"><span class="nav-number">9.</span> <span class="nav-text">data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">10.</span> <span class="nav-text">结尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">11.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
         </section>
