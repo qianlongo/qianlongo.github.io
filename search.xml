@@ -169,8 +169,7 @@
 <li><p><a href="http://www.runoob.com/w3cnote/zepto-js-source-analysis.html" target="_blank" rel="external">zepto.js 源码解析</a></p>
 </li>
 </ol>
-<p><strong>文章记录</strong></p>
-<p><strong>ie模块</strong></p>
+<h2 id="文章记录"><a href="#文章记录" class="headerlink" title="文章记录"></a>文章记录</h2><p><strong>ie模块</strong></p>
 <ol>
 <li><a href="https://github.com/qianlongo/zepto-analysis/issues/10" target="_blank" rel="external">Zepto源码分析之ie模块</a>(2017-11-03)</li>
 </ol>
