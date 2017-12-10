@@ -4,6 +4,16 @@
   
     
     <entry>
+      <title><![CDATA[向Zepto学习关于偏移的那些事]]></title>
+      <url>https://qianlongo.github.io/2017/12/10/%E5%90%91Zepto%E5%AD%A6%E4%B9%A0%E5%85%B3%E4%BA%8E%E5%81%8F%E7%A7%BB%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>这篇文章准备写Zepto中是如何处理dom位置偏移的一些事情，预计本周完成</p>
+</blockquote>
+<p>ZZZ 待续</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Zepto这样操作元素属性]]></title>
       <url>https://qianlongo.github.io/2017/11/13/Zepto%E8%BF%99%E6%A0%B7%E6%93%8D%E4%BD%9C%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7%E4%B8%8E%E6%A0%B7%E5%BC%8F/</url>
       <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
