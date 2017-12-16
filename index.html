@@ -393,6 +393,18 @@
 <li><p>接下来的逻辑才是重点。首先通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect" target="_blank" rel="external">getBoundingClientRect</a>获取元素的大小及其相对于视口的位置，再通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageXOffset" target="_blank" rel="external">pageXOffset</a>、<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageYOffset" target="_blank" rel="external">pageYOffset</a>获取文档在水平和垂直方向已滚动的像素值，相加既得到我们最后想要的值。</p>
 </li>
 </ol>
+<p>再看<strong>设置操作</strong>如何实现之前，先看下面这张图，或许会有助于理解</p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20171216-225932@2x.png" alt="offset"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (coordinates) <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span>(<span class="params">index</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> $<span class="keyword">this</span> = $(<span class="keyword">this</span>),</div><div class="line">      coords = funcArg(<span class="keyword">this</span>, coordinates, index, $<span class="keyword">this</span>.offset()),</div><div class="line">      parentOffset = $<span class="keyword">this</span>.offsetParent().offset(),</div><div class="line">      props = &#123;</div><div class="line">        <span class="attr">top</span>: coords.top - parentOffset.top,</div><div class="line">        <span class="attr">left</span>: coords.left - parentOffset.left</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> ($<span class="keyword">this</span>.css(<span class="string">'position'</span>) == <span class="string">'static'</span>) props[<span class="string">'position'</span>] = <span class="string">'relative'</span></div><div class="line">  $<span class="keyword">this</span>.css(props)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>还是那个熟悉的模式，熟悉的套路，循环遍历当前元素集合，方便挨个设置，通过funcArg函数包装一下，使得入参既可以是函数，也可以是其他形式。</p>
+<p>通过上面那张图，我们应该可以很清晰的看出，如果要将子元素设置到传入的<code>coords.left</code>的位置，那其实</p>
+<ol>
+<li>父元素（假设父元素是定位元素）相对文档的左边距(parentOffset.left)</li>
+<li>子元素相对父元素的左边距(left)</li>
+<li>相加得到的就是入参<code>coords.left</code></li>
+</ol>
+<p>那再做个减法，就得到我们最终通过css方法需要设置的left和top值啦。</p>
+<p>需要注意的是如果元素的定位属性是<code>static</code>,则会将其改为<code>relative</code>定位，相对于其正常文档流来计算。</p>
 
           
         
