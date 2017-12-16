@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="zepto源码分析,javascript,zepto,源码分析," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -84,25 +84,15 @@
 
 
 
-<meta name="description" content="前言
-这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
-
-offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="向Zepto学习关于偏移的那些事">
-<meta property="og:url" content="https://qianlongo.github.io/2017/12/10/向Zepto学习关于偏移的那些事/index.html">
+<meta name="description" content="热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...">
+<meta property="og:type" content="website">
+<meta property="og:title" content="谦龙的小天地">
+<meta property="og:url" content="https://qianlongo.github.io/tags/zepto/page/3/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="前言
-这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
-
-offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
-<meta property="og:updated_time" content="2017-12-16T14:14:58.000Z">
+<meta property="og:description" content="热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="向Zepto学习关于偏移的那些事">
-<meta name="twitter:description" content="前言
-这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
-
-offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
+<meta name="twitter:title" content="谦龙的小天地">
+<meta name="twitter:description" content="热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...">
 
 
 
@@ -123,9 +113,9 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 
 
 
-  <link rel="canonical" href="https://qianlongo.github.io/2017/12/10/向Zepto学习关于偏移的那些事/"/>
+  <link rel="canonical" href="https://qianlongo.github.io/tags/zepto/page/3/"/>
 
-  <title> 向Zepto学习关于偏移的那些事 | 谦龙的小天地 </title>
+  <title> 标签: zepto | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -158,7 +148,7 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
   <!-- 设置背景canvas -->
   <div id="particles"></div>
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -270,179 +260,50 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <div id="posts" class="posts-collapse">
+    <div class="collection-title">
+      <h2 >
+        zepto
+        <small>标签</small>
+      </h2>
+    </div>
 
     
-      <header class="post-header">
+      
 
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h1 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
+            <a class="post-title-link" href="/2017/06/07/你知道如何手动触发DOM事件吗？/" itemprop="url">
               
-                向Zepto学习关于偏移的那些事
+                <span itemprop="name">向zepto.js学习如何手动触发DOM事件</span>
               
-            
-          </h1>
+            </a>
         
+      </h1>
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-12-10T23:06:15+08:00" content="2017-12-10">
-              2017-12-10
-            </time>
-          </span>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-06-07T00:07:37+08:00"
+              content="2017-06-07" >
+          06-07
+        </time>
+      </div>
 
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/12/10/向Zepto学习关于偏移的那些事/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/10/向Zepto学习关于偏移的那些事/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/12/10/向Zepto学习关于偏移的那些事/" class="leancloud_visitors" data-flag-title="向Zepto学习关于偏移的那些事">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用<code>offset</code>、<code>position</code>、<code>scrollTop</code>、<code>scrollLeft</code>等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。</p>
-</blockquote>
-<h2 id="offsetParent"><a href="#offsetParent" class="headerlink" title="offsetParent"></a>offsetParent</h2><p><strong><code>offset</code>、<code>position</code>两个api内部的实现都依赖<code>offsetParent</code>方法,我们先看一下它是怎么一回事。</strong></p>
-<blockquote>
-<p>找到第一个定位过的祖先元素，意味着它的css中的position 属性值为“relative”, “absolute” or “fixed” <a href="http://www.css88.com/doc/zeptojs_api/#offsetParent" target="_blank" rel="external">#offsetParent</a></p>
-</blockquote>
-<p>我们都知道css属性position用于指定一个元素在文档这总的定位方式，其初始值是<strong>static</strong>, css3中甚至还增加了<strong>sticky</strong>等属性，不过目前貌似浏览器几乎还未支持。</p>
-<p>看一下这个例子</p>
-<p><strong>html</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrap"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child1"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child2"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child3"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<p><strong>css</strong></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">  .wrap&#123;</div><div class="line">    width: 400px;</div><div class="line">    height: 400px;</div><div class="line">    border: solid 1px red;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  .child1&#123;</div><div class="line">    width: 300px;</div><div class="line">    height: 300px;</div><div class="line">    border: solid 1px green;</div><div class="line">    position: relative;</div><div class="line">    padding: 10px;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  .child2&#123;</div><div class="line">    width: 200px;</div><div class="line">    height: 200px;</div><div class="line">    border: solid 1px bisque;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  .child3&#123;</div><div class="line">    width: 100px;</div><div class="line">    height: 100px;</div><div class="line">    border: solid 1px goldenrod;</div><div class="line">    position: absolute;</div><div class="line">    left: 0;</div><div class="line">    top: 0;</div><div class="line">  &#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
-<p><strong>javascript</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log($(<span class="string">'.child3'</span>).offsetParent()) <span class="comment">// child1</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.querySelector(<span class="string">'.child3'</span>).offsetParent) <span class="comment">// child1</span></div></pre></td></tr></table></figure>
-<p>既然原生已经有了一个<strong>offsetParent</strong><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent" target="_blank" rel="external">mdn offsetParent</a>属性供我们使用，为什么Zepto还要自己实现一个呢？其实他们之间还是有些不同的，比如同样是上面的例子，如果child3的display属性设置为了none，原生的offsetParent返回的是null，但是Zepto返回的是包含body元素的Zepto对象。</p>
-<p><strong>源码分析</strong></p>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
-          
-            <a href="/tags/javascript/" rel="tag">#javascript</a>
-          
-            <a href="/tags/zepto/" rel="tag">#zepto</a>
-          
-            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/11/13/Zepto这样操作元素属性与样式/" rel="next" title="Zepto这样操作元素属性">
-                <i class="fa fa-chevron-left"></i> Zepto这样操作元素属性
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
-      
-        <div class="ds-share flat" data-thread-key="2017/12/10/向Zepto学习关于偏移的那些事/"
-     data-title="向Zepto学习关于偏移的那些事"
-     data-content=""
-     data-url="https://qianlongo.github.io/2017/12/10/向Zepto学习关于偏移的那些事/">
-  <div class="ds-share-inline">
-    <ul  class="ds-share-icons-16">
-
-      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
-      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
-      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-
-    </ul>
-    <div class="ds-share-icons-more">
-    </div>
+    
   </div>
-</div>
-      
-    </div>
-  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/tags/zepto/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/tags/zepto/">1</a><a class="page-number" href="/tags/zepto/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
 
 
           </div>
@@ -450,14 +311,6 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 
 
           
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2017/12/10/向Zepto学习关于偏移的那些事/"
-           data-title="向Zepto学习关于偏移的那些事" data-url="https://qianlongo.github.io/2017/12/10/向Zepto学习关于偏移的那些事/">
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -477,17 +330,8 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://sfault-avatar.b0.upaiyun.com/893/290/893290401-5621cb66a2ed6_huge256"
@@ -559,17 +403,6 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offsetParent"><span class="nav-number">2.</span> <span class="nav-text">offsetParent</span></a></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -673,10 +506,6 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
 
   
 
