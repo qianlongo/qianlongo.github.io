@@ -99,7 +99,7 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-225932@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-235212@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-235320@2x.png">
-<meta property="og:updated_time" content="2017-12-16T15:59:11.000Z">
+<meta property="og:updated_time" content="2017-12-16T16:07:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="向Zepto学习关于偏移的那些事">
 <meta name="twitter:description" content="前言
@@ -426,6 +426,21 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 <p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20171216-235212@2x.png" alt=""></p>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20171216-235320@2x.png" alt=""></p>
 <p>接下来我们来看它怎么实现的吧,come on!!!</p>
+<ol>
+<li>第一步</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> offsetParent = <span class="keyword">this</span>.offsetParent(),</div><div class="line"><span class="comment">// Get correct offsets</span></div><div class="line"><span class="comment">// 获取当前元素相对于document的位置</span></div><div class="line">offset = <span class="keyword">this</span>.offset(),</div><div class="line"><span class="comment">// 获取第一个定位祖先元素相对于document的位置，如果是根元素（html或者body）则为0， 0</span></div><div class="line">parentOffset = rootNodeRE.test(offsetParent[<span class="number">0</span>].nodeName) ? &#123; <span class="attr">top</span>: <span class="number">0</span>, <span class="attr">left</span>: <span class="number">0</span> &#125; : offsetParent.offset()</div></pre></td></tr></table></figure>
+<ol>
+<li>第二步</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 相对于第一个定位祖先元素的位置关系不应该包括margin的举例，所以减去</span></div><div class="line">offset.top -= <span class="built_in">parseFloat</span>($(elem).css(<span class="string">'margin-top'</span>)) || <span class="number">0</span></div><div class="line">offset.left -= <span class="built_in">parseFloat</span>($(elem).css(<span class="string">'margin-left'</span>)) || <span class="number">0</span></div></pre></td></tr></table></figure>
+<ol>
+<li>第三步</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 祖先定位元素加上border的宽度</span></div><div class="line">parentOffset.top += <span class="built_in">parseFloat</span>($(offsetParent[<span class="number">0</span>]).css(<span class="string">'border-top-width'</span>)) || <span class="number">0</span></div><div class="line">parentOffset.left += <span class="built_in">parseFloat</span>($(offsetParent[<span class="number">0</span>]).css(<span class="string">'border-left-width'</span>)) || <span class="number">0</span></div></pre></td></tr></table></figure>
+<p>第四步</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 相减即结果</span></div><div class="line"><span class="keyword">return</span> &#123;</div><div class="line">  <span class="attr">top</span>: offset.top - parentOffset.top,</div><div class="line">  <span class="attr">left</span>: offset.left - parentOffset.left</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>整体思路还是用当前元素相对于文档的位置减去第一个定位祖先元素相对于文档的位置，但有两点需要注意的是position这个api要计算出来的值，不应该包括父元素的<code>border</code>长度以及子元素的<code>margin</code>空间长度。所以才会有第二和第三步。</p>
 
       
     </div>
