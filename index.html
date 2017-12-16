@@ -434,6 +434,57 @@
 <p>第四步</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 相减即结果</span></div><div class="line"><span class="keyword">return</span> &#123;</div><div class="line">  <span class="attr">top</span>: offset.top - parentOffset.top,</div><div class="line">  <span class="attr">left</span>: offset.left - parentOffset.left</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>整体思路还是用当前元素相对于文档的位置减去第一个定位祖先元素相对于文档的位置，但有两点需要注意的是position这个api要计算出来的值，不应该包括父元素的<code>border</code>长度以及子元素的<code>margin</code>空间长度。所以才会有第二和第三步。</p>
+<h2 id="scrollLeft"><a href="#scrollLeft" class="headerlink" title="scrollLeft"></a>scrollLeft</h2><blockquote>
+<p>获取或设置页面上的滚动元素或者整个窗口向右滚动的滚动距离。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">scrollLeft: <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.length) <span class="keyword">return</span></div><div class="line">  <span class="keyword">var</span> hasScrollLeft = <span class="string">'scrollLeft'</span> <span class="keyword">in</span> <span class="keyword">this</span>[<span class="number">0</span>]</div><div class="line">  <span class="keyword">if</span> (value === <span class="literal">undefined</span>) <span class="keyword">return</span> hasScrollLeft ? <span class="keyword">this</span>[<span class="number">0</span>].scrollLeft : <span class="keyword">this</span>[<span class="number">0</span>].pageXOffset</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(hasScrollLeft ?</div><div class="line">    <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.scrollLeft = value &#125; :</div><div class="line">    <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.scrollTo(value, <span class="keyword">this</span>.scrollY) &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先判断当前选中的元素是否支持<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollLeft" target="_blank" rel="external">scrollLeft</a>特性。</p>
+<p>如果value没有传进来，又支持<code>hasScrollLeft</code>特性，就返回第一个元素的<code>hasScrollLeft</code>值,不支持的话返回第一个元素的<code>pageXOffset</code>值。</p>
+<p>pageXOffset是scrollX的别名，而其代表的含义是<strong>返回文档/页面水平方向滚动的像素值</strong></p>
+<p>传进来了<code>value</code>就是设置操作了，支持<code>scrollLeft</code>属性，就直接设置其值即可，反之需要用到scrollTo，当然设置水平方向的时候，垂直方向还是要和之前的保持一致，所以传入了<code>scrollY</code>作为</p>
+<h2 id="scrollTop"><a href="#scrollTop" class="headerlink" title="scrollTop"></a>scrollTop</h2><blockquote>
+<p>获取或设置页面上的滚动元素或者整个窗口向下滚动的距离。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">scrollTop: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.length) <span class="keyword">return</span></div><div class="line">  <span class="keyword">var</span> hasScrollTop = <span class="string">'scrollTop'</span> <span class="keyword">in</span> <span class="keyword">this</span>[<span class="number">0</span>]</div><div class="line">  <span class="keyword">if</span> (value === <span class="literal">undefined</span>) <span class="keyword">return</span> hasScrollTop ? <span class="keyword">this</span>[<span class="number">0</span>].scrollTop : <span class="keyword">this</span>[<span class="number">0</span>].pageYOffset</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.each(hasScrollTop ?</div><div class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.scrollTop = value &#125; :</div><div class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.scrollTo(<span class="keyword">this</span>.scrollX, value) &#125;)</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>可以看出基本原理和模式与<code>scrollLeft</code>一致，就不再一一解析。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><blockquote>
+<p>以上就是Zepto中与”偏移”相关的几个api的解析，欢迎指出其中的问题和有错误的地方。</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/yeyuqiudeng/reading-zepto/blob/master/src/%E8%AF%BBZepto%E6%BA%90%E7%A0%81%E4%B9%8B%E5%B1%9E%E6%80%A7%E6%93%8D%E4%BD%9C.md" target="_blank" rel="external">读Zepto源码之属性操作</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/scrollTo" target="_blank" rel="external">scrollTo</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollLeft" target="_blank" rel="external">scrollLeft</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageXOffset" target="_blank" rel="external">pageXOffset</a></p>
+<p>…</p>
+<h2 id="文章记录"><a href="#文章记录" class="headerlink" title="文章记录"></a>文章记录</h2><p><strong>ie模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/10" target="_blank" rel="external">Zepto源码分析之ie模块</a>(2017-11-03)</li>
+</ol>
+<p><strong>data模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/9" target="_blank" rel="external">Zepto中数据缓存原理与实现</a>(2017-10-03)</li>
+</ol>
+<p><strong>form模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/7" target="_blank" rel="external">zepto源码分析之form模块</a>(2017-10-01)</li>
+</ol>
+<p><strong>zepto模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/5" target="_blank" rel="external">这些Zepto中实用的方法集</a>(2017-08-26)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/6" target="_blank" rel="external">Zepto核心模块之工具方法拾遗 </a>(2017-08-30)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/8" target="_blank" rel="external">看zepto如何实现增删改查DOM </a>(2017-10-2)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/11" target="_blank" rel="external">Zepto这样操作元素属性</a>(2017-11-13)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/12" target="_blank" rel="external">向Zepto学习关于”偏移”的那些事</a>(2017-12-10)</li>
+</ol>
+<p><strong>event模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/1" target="_blank" rel="external">mouseenter与mouseover为何这般纠缠不清？</a>(2017-06-05)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/2" target="_blank" rel="external">向zepto.js学习如何手动触发DOM事件</a>(2017-06-07)</li>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/3" target="_blank" rel="external">谁说你只是”会用”jQuery?</a>(2017-06-08)</li>
+</ol>
+<p><strong>ajax模块</strong></p>
+<ol>
+<li><a href="https://github.com/qianlongo/zepto-analysis/issues/4" target="_blank" rel="external">原来你是这样的jsonp(原理与具体实现细节)</a>(2017-06-11)</li>
+</ol>
 
           
         
