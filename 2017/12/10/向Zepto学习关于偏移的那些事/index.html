@@ -96,7 +96,7 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
 
 offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
-<meta property="og:updated_time" content="2017-12-16T14:29:39.000Z">
+<meta property="og:updated_time" content="2017-12-16T14:47:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="向Zepto学习关于偏移的那些事">
 <meta name="twitter:description" content="前言
@@ -354,7 +354,7 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 <blockquote>
 <p>找到第一个定位过的祖先元素，意味着它的css中的position 属性值为“relative”, “absolute” or “fixed” <a href="http://www.css88.com/doc/zeptojs_api/#offsetParent" target="_blank" rel="external">#offsetParent</a></p>
 </blockquote>
-<p>我们都知道css属性position用于指定一个元素在文档这总的定位方式，其初始值是<strong>static</strong>, css3中甚至还增加了<strong>sticky</strong>等属性，不过目前貌似浏览器几乎还未支持。</p>
+<p>我们都知道css属性position用于指定一个元素在文档中的定位方式，其初始值是<strong>static</strong>, css3中甚至还增加了<strong>sticky</strong>等属性，不过目前貌似浏览器几乎还未支持。</p>
 <p>看一下这个例子</p>
 <p><strong>html</strong></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrap"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child1"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child2"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child3"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
@@ -373,6 +373,28 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 <li>parent元素存在</li>
 <li>parent元素不是<code>html</code>或者<code>body</code>元素</li>
 <li>parent元素的display属性是<code>static</code>,则再次获取parent属性的<code>offsetParent</code>再次循环。</li>
+</ol>
+<h2 id="offset"><a href="#offset" class="headerlink" title="offset"></a>offset</h2><blockquote>
+<p>获得当前元素相对于document的位置。返回一个对象含有： top, left, width和height</p>
+<p>当给定一个含有left和top属性对象时，使用这些值来对集合中每一个元素进行相对于document的定位。</p>
+</blockquote>
+<ol>
+<li>offset()   ⇒ object</li>
+<li>offset(coordinates)   ⇒ self v1.0+</li>
+<li>offset(function(index, oldOffset){ … })   ⇒ </li>
+</ol>
+<p><a href="http://www.css88.com/doc/zeptojs_api/#offset" target="_blank" rel="external">#offset</a></p>
+<p><strong>源码</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">offset: <span class="function"><span class="keyword">function</span> (<span class="params">coordinates</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (coordinates) <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params">index</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> $<span class="keyword">this</span> = $(<span class="keyword">this</span>),</div><div class="line">      coords = funcArg(<span class="keyword">this</span>, coordinates, index, $<span class="keyword">this</span>.offset()),</div><div class="line">      parentOffset = $<span class="keyword">this</span>.offsetParent().offset(),</div><div class="line">      props = &#123;</div><div class="line">        <span class="attr">top</span>: coords.top - parentOffset.top,</div><div class="line">        <span class="attr">left</span>: coords.left - parentOffset.left</div><div class="line">      &#125;</div><div class="line">    <span class="keyword">if</span> ($<span class="keyword">this</span>.css(<span class="string">'position'</span>) == <span class="string">'static'</span>) props[<span class="string">'position'</span>] = <span class="string">'relative'</span></div><div class="line">    $<span class="keyword">this</span>.css(props)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.length) <span class="keyword">return</span> <span class="literal">null</span></div><div class="line">  <span class="keyword">if</span> (<span class="built_in">document</span>.documentElement !== <span class="keyword">this</span>[<span class="number">0</span>] &amp;&amp; !$.contains(<span class="built_in">document</span>.documentElement, <span class="keyword">this</span>[<span class="number">0</span>]))</div><div class="line">    <span class="keyword">return</span> &#123; <span class="attr">top</span>: <span class="number">0</span>, <span class="attr">left</span>: <span class="number">0</span> &#125;</div><div class="line">  <span class="keyword">var</span> obj = <span class="keyword">this</span>[<span class="number">0</span>].getBoundingClientRect()</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">left</span>: obj.left + <span class="built_in">window</span>.pageXOffset,</div><div class="line">    <span class="attr">top</span>: obj.top + <span class="built_in">window</span>.pageYOffset,</div><div class="line">    <span class="attr">width</span>: <span class="built_in">Math</span>.round(obj.width),</div><div class="line">    <span class="attr">height</span>: <span class="built_in">Math</span>.round(obj.height)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和Zepto中的其他api类似遵循<code>get one, set all</code>原则，我们先来看看获取操作是如何实现的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (!<span class="keyword">this</span>.length) <span class="keyword">return</span> <span class="literal">null</span></div><div class="line"><span class="keyword">if</span> (<span class="built_in">document</span>.documentElement !== <span class="keyword">this</span>[<span class="number">0</span>] &amp;&amp; !$.contains(<span class="built_in">document</span>.documentElement, <span class="keyword">this</span>[<span class="number">0</span>]))</div><div class="line">  <span class="keyword">return</span> &#123; <span class="attr">top</span>: <span class="number">0</span>, <span class="attr">left</span>: <span class="number">0</span> &#125;</div><div class="line"><span class="keyword">var</span> obj = <span class="keyword">this</span>[<span class="number">0</span>].getBoundingClientRect()</div><div class="line"><span class="keyword">return</span> &#123;</div><div class="line">  <span class="attr">left</span>: obj.left + <span class="built_in">window</span>.pageXOffset,</div><div class="line">  <span class="attr">top</span>: obj.top + <span class="built_in">window</span>.pageYOffset,</div><div class="line">  <span class="attr">width</span>: <span class="built_in">Math</span>.round(obj.width),</div><div class="line">  <span class="attr">height</span>: <span class="built_in">Math</span>.round(obj.height)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li><p><code>!this.length</code>如果当前没有选中元素，自然就没有往下走的必要了，直接return掉</p>
+</li>
+<li><p>当前选中的集合中不是<code>html</code>元素，并且也不是<code>html</code>节点子元素。直接返回<code>{ top: 0, left: 0 }</code></p>
+</li>
+<li><p>接下来的逻辑才是重点。首先通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect" target="_blank" rel="external">getBoundingClientRect</a>获取元素的大小及其相对于视口的位置，再通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageXOffset" target="_blank" rel="external">pageXOffset</a>、<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageYOffset" target="_blank" rel="external">pageYOffset</a>获取文档在水平和垂直方向已滚动的像素值，相加既得到我们最后想要的值。</p>
+</li>
 </ol>
 
       
@@ -576,7 +598,7 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offsetParent"><span class="nav-number">2.</span> <span class="nav-text">offsetParent</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offsetParent"><span class="nav-number">2.</span> <span class="nav-text">offsetParent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offset"><span class="nav-number">3.</span> <span class="nav-text">offset</span></a></li></ol></div>
             
           </div>
         </section>
