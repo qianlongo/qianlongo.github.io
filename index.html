@@ -361,6 +361,16 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log($(<span class="string">'.child3'</span>).offsetParent()) <span class="comment">// child1</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.querySelector(<span class="string">'.child3'</span>).offsetParent) <span class="comment">// child1</span></div></pre></td></tr></table></figure>
 <p>既然原生已经有了一个<strong>offsetParent</strong><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent" target="_blank" rel="external">mdn offsetParent</a>属性供我们使用，为什么Zepto还要自己实现一个呢？其实他们之间还是有些不同的，比如同样是上面的例子，如果child3的display属性设置为了none，原生的offsetParent返回的是null，但是Zepto返回的是包含body元素的Zepto对象。</p>
 <p><strong>源码分析</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">offsetParent: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.map(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> parent = <span class="keyword">this</span>.offsetParent || <span class="built_in">document</span>.body</div><div class="line">    <span class="keyword">while</span> (parent &amp;&amp; !rootNodeRE.test(parent.nodeName) &amp;&amp; $(parent).css(<span class="string">"position"</span>) == <span class="string">"static"</span>)</div><div class="line">      parent = parent.offsetParent</div><div class="line">    <span class="keyword">return</span> parent</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现逻辑还是比较简单，通过<code>map</code>方法遍历当前选中的元素集合，结果是一个数组，每个项即是元素的最近的定位祖先元素。</p>
+<p>首先通过<code>offsetParent</code>原生DOM属性去获取定位元素，如果没有默认是body节点，这里其实就能解释前面的child3设置为<code>display:none</code>,原生返回null，但是Zepto得到的是body了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> parent = <span class="keyword">this</span>.offsetParent || <span class="built_in">document</span>.body</div></pre></td></tr></table></figure>
+<p>再通过一个<code>while</code>循环如果</p>
+<ol>
+<li>parent元素存在</li>
+<li>parent元素不是<code>html</code>或者<code>body</code>元素</li>
+<li>parent元素的display属性是<code>static</code>,则再次获取parent属性的<code>offsetParent</code>再次循环。</li>
+</ol>
 
           
         
