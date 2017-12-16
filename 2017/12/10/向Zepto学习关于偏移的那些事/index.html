@@ -87,7 +87,8 @@
 <meta name="description" content="前言
 这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
 
-offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
+原文链接
+源码仓库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="向Zepto学习关于偏移的那些事">
 <meta property="og:url" content="https://qianlongo.github.io/2017/12/10/向Zepto学习关于偏移的那些事/index.html">
@@ -95,18 +96,21 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
 <meta property="og:description" content="前言
 这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
 
-offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
+原文链接
+源码仓库">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/javascript-code-web-development.jpg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-225932@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-235212@2x.png">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-235320@2x.png">
-<meta property="og:updated_time" content="2017-12-16T16:30:02.000Z">
+<meta property="og:updated_time" content="2017-12-16T16:34:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="向Zepto学习关于偏移的那些事">
 <meta name="twitter:description" content="前言
 这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用offset、position、scrollTop、scrollLeft等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。
 
-offsetParentoffset、position两个api内部的实现都依赖offsetParent方法,我们先看一下它是怎么一回事。">
-<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20171216-225932@2x.png">
+原文链接
+源码仓库">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/javascript-code-web-development.jpg">
 
 
 
@@ -354,6 +358,10 @@ offsetParentoffset、position两个api内部的实现都依赖offsetParent方法
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
 <p>这篇文章主要想说一下Zepto中与”偏移”相关的一些事，很久很久以前，我们经常会使用<code>offset</code>、<code>position</code>、<code>scrollTop</code>、<code>scrollLeft</code>等方式去改变元素的位置，他们之间有什么区别，是怎么实现的呢？接下来我们一点点去扒开他们的面纱。</p>
 </blockquote>
+<p><a href="https://github.com/qianlongo/zepto-analysis/issues/12" target="_blank" rel="external">原文链接</a></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">源码仓库</a></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/javascript-code-web-development.jpg" alt=""></p>
+<a id="more"></a>
 <h2 id="offsetParent"><a href="#offsetParent" class="headerlink" title="offsetParent"></a>offsetParent</h2><p><strong><code>offset</code>、<code>position</code>两个api内部的实现都依赖<code>offsetParent</code>方法,我们先看一下它是怎么一回事。</strong></p>
 <blockquote>
 <p>找到第一个定位过的祖先元素，意味着它的css中的position 属性值为“relative”, “absolute” or “fixed” <a href="http://www.css88.com/doc/zeptojs_api/#offsetParent" target="_blank" rel="external">#offsetParent</a></p>
