@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="zepto源码分析,javascript,zepto,源码分析,网络请求,touch," />
 
 
 
@@ -84,16 +84,30 @@
 
 
 
-<meta name="description" content="热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://qianlongo.github.io/tags/index.html">
+<meta name="description" content="前言
+移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。
+
+源码仓库
+原文链接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何实现swipe、tap、longTap等自定义事件">
+<meta property="og:url" content="https://qianlongo.github.io/2017/12/22/从touch-js学习手势操作/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
-<meta property="og:description" content="热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...">
-<meta property="og:updated_time" content="2016-10-07T08:49:16.000Z">
+<meta property="og:description" content="前言
+移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。
+
+源码仓库
+原文链接">
+<meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg">
+<meta property="og:updated_time" content="2018-02-04T13:35:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="热爱生活，热爱编程，刚入门的一名前端小码农，在这里，写自己想说的话，读过的书，爱的人...">
+<meta name="twitter:title" content="如何实现swipe、tap、longTap等自定义事件">
+<meta name="twitter:description" content="前言
+移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。
+
+源码仓库
+原文链接">
+<meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg">
 
 
 
@@ -114,15 +128,9 @@
 
 
 
-  <link rel="canonical" href="https://qianlongo.github.io/tags/"/>
+  <link rel="canonical" href="https://qianlongo.github.io/2017/12/22/从touch-js学习手势操作/"/>
 
-  <title>
-  
-
-  
-    标签 | 谦龙的小天地
-  
-</title>
+  <title> 如何实现swipe、tap、longTap等自定义事件 | 谦龙的小天地 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -155,7 +163,7 @@
   <!-- 设置背景canvas -->
   <div id="particles"></div>
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -269,16 +277,169 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-      <div class="tag-cloud">
-        <div class="tag-cloud-title">
-            目前共计 29 个标签
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何实现swipe、tap、longTap等自定义事件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-12-22T00:10:10+08:00" content="2017-12-22">
+              2017-12-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/12/22/从touch-js学习手势操作/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/22/从touch-js学习手势操作/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/12/22/从touch-js学习手势操作/" class="leancloud_visitors" data-flag-title="如何实现swipe、tap、longTap等自定义事件">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
         </div>
-        <div class="tag-cloud-tags">
-          <a href="/tags/Promise/" style="font-size: 12px; color: #ccc">Promise</a> <a href="/tags/canvas/" style="font-size: 12px; color: #ccc">canvas</a> <a href="/tags/css/" style="font-size: 16.5px; color: #9d9d9d">css</a> <a href="/tags/emmet/" style="font-size: 12px; color: #ccc">emmet</a> <a href="/tags/es6/" style="font-size: 12px; color: #ccc">es6</a> <a href="/tags/es6-webpack2-前端/" style="font-size: 12px; color: #ccc">es6 webpack2 前端</a> <a href="/tags/jQuery/" style="font-size: 12px; color: #ccc">jQuery</a> <a href="/tags/jQuery源码解读/" style="font-size: 12px; color: #ccc">jQuery源码解读</a> <a href="/tags/javascript/" style="font-size: 30px; color: #111">javascript</a> <a href="/tags/koa/" style="font-size: 12px; color: #ccc">koa</a> <a href="/tags/react/" style="font-size: 12px; color: #ccc">react</a> <a href="/tags/this/" style="font-size: 12px; color: #ccc">this</a> <a href="/tags/touch/" style="font-size: 12px; color: #ccc">touch</a> <a href="/tags/underscore源码分析系列/" style="font-size: 18.75px; color: #868686">underscore源码分析系列</a> <a href="/tags/zepto/" style="font-size: 23.25px; color: #575757">zepto</a> <a href="/tags/zepto源码分析/" style="font-size: 25.5px; color: #404040">zepto源码分析</a> <a href="/tags/前端/" style="font-size: 14.25px; color: #b5b5b5">前端</a> <a href="/tags/大学青春回想/" style="font-size: 14.25px; color: #b5b5b5">大学青春回想</a> <a href="/tags/性能优化/" style="font-size: 12px; color: #ccc">性能优化</a> <a href="/tags/总结/" style="font-size: 12px; color: #ccc">总结</a> <a href="/tags/模版引擎/" style="font-size: 12px; color: #ccc">模版引擎</a> <a href="/tags/源码分析/" style="font-size: 27.75px; color: #282828">源码分析</a> <a href="/tags/爬虫/" style="font-size: 12px; color: #ccc">爬虫</a> <a href="/tags/碎语闲言/" style="font-size: 12px; color: #ccc">碎语闲言</a> <a href="/tags/组件/" style="font-size: 12px; color: #ccc">组件</a> <a href="/tags/网络请求/" style="font-size: 21px; color: #6f6f6f">网络请求</a> <a href="/tags/读书笔记/" style="font-size: 12px; color: #ccc">读书笔记</a> <a href="/tags/随笔/" style="font-size: 12px; color: #ccc">随笔</a> <a href="/tags/［工具-vscode］/" style="font-size: 12px; color: #ccc">［工具, vscode］</a>
-        </div>
-      </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>移动端原生支持<code>touchstart</code>、<code>touchmove</code>、<code>touchend</code>等事件，但是在平常业务中我们经常需要使用<code>swipe</code>、<code>tap</code>、<code>doubleTap</code>、<code>longTap</code>等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从<code>Zepto.js</code>的<code>touch</code>模块去分析其原理。</p>
+</blockquote>
+<p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">源码仓库</a></p>
+<p><a href="https://github.com/qianlongo/zepto-analysis/issues/13" target="_blank" rel="external">原文链接</a></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg" alt="touch"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zepto源码分析/" rel="tag">#zepto源码分析</a>
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+            <a href="/tags/zepto/" rel="tag">#zepto</a>
+          
+            <a href="/tags/源码分析/" rel="tag">#源码分析</a>
+          
+            <a href="/tags/网络请求/" rel="tag">#网络请求</a>
+          
+            <a href="/tags/touch/" rel="tag">#touch</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/10/向Zepto学习关于偏移的那些事/" rel="next" title="向Zepto学习关于偏移的那些事">
+                <i class="fa fa-chevron-left"></i> 向Zepto学习关于偏移的那些事
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/12/22/从touch-js学习手势操作/"
+     data-title="如何实现swipe、tap、longTap等自定义事件"
+     data-content=""
+     data-url="https://qianlongo.github.io/2017/12/22/从touch-js学习手势操作/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
   </div>
 
 
@@ -289,8 +450,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="tags/index.html"
-           data-title="tags" data-url="https://qianlongo.github.io/tags/index.html">
+      <div class="ds-thread" data-thread-key="2017/12/22/从touch-js学习手势操作/"
+           data-title="如何实现swipe、tap、longTap等自定义事件" data-url="https://qianlongo.github.io/2017/12/22/从touch-js学习手势操作/">
       </div>
     
   </div>
@@ -314,8 +475,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://sfault-avatar.b0.upaiyun.com/893/290/893290401-5621cb66a2ed6_huge256"
@@ -387,6 +557,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -490,6 +671,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
