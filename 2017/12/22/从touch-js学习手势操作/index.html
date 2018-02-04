@@ -85,28 +85,37 @@
 
 
 <meta name="description" content="前言
-移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。
+移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。您也可以直接查看touch.js源码注释
 
 源码仓库
-原文链接">
+原文链接
+
+事件简述
+Zepto的touch模块实现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何实现swipe、tap、longTap等自定义事件">
 <meta property="og:url" content="https://qianlongo.github.io/2017/12/22/从touch-js学习手势操作/index.html">
 <meta property="og:site_name" content="谦龙的小天地">
 <meta property="og:description" content="前言
-移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。
+移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。您也可以直接查看touch.js源码注释
 
 源码仓库
-原文链接">
+原文链接
+
+事件简述
+Zepto的touch模块实现">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg">
-<meta property="og:updated_time" content="2018-02-04T13:35:23.000Z">
+<meta property="og:updated_time" content="2018-02-04T14:04:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何实现swipe、tap、longTap等自定义事件">
 <meta name="twitter:description" content="前言
-移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。
+移动端原生支持touchstart、touchmove、touchend等事件，但是在平常业务中我们经常需要使用swipe、tap、doubleTap、longTap等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从Zepto.js的touch模块去分析其原理。您也可以直接查看touch.js源码注释
 
 源码仓库
-原文链接">
+原文链接
+
+事件简述
+Zepto的touch模块实现">
 <meta name="twitter:image" content="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg">
 
 
@@ -353,12 +362,69 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>移动端原生支持<code>touchstart</code>、<code>touchmove</code>、<code>touchend</code>等事件，但是在平常业务中我们经常需要使用<code>swipe</code>、<code>tap</code>、<code>doubleTap</code>、<code>longTap</code>等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从<code>Zepto.js</code>的<code>touch</code>模块去分析其原理。</p>
+<p>移动端原生支持<code>touchstart</code>、<code>touchmove</code>、<code>touchend</code>等事件，但是在平常业务中我们经常需要使用<code>swipe</code>、<code>tap</code>、<code>doubleTap</code>、<code>longTap</code>等事件去实现想要的效果，对于这种自定义事件他们底层是如何实现的呢？让我们从<code>Zepto.js</code>的<code>touch</code>模块去分析其原理。您也可以直接查看<a href="https://github.com/qianlongo/zepto-analysis/blob/master/src/touch.js" target="_blank" rel="external">touch.js源码注释</a></p>
 </blockquote>
 <p><a href="https://github.com/qianlongo/zepto-analysis" target="_blank" rel="external">源码仓库</a></p>
 <p><a href="https://github.com/qianlongo/zepto-analysis/issues/13" target="_blank" rel="external">原文链接</a></p>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg" alt="touch"></p>
-
+<h2 id="事件简述"><a href="#事件简述" class="headerlink" title="事件简述"></a>事件简述</h2><blockquote>
+<p>Zepto的touch模块实现了很多与手势相关的自定义事件，分别是<code>swipe</code>, <code>swipeLeft</code>, <code>swipeRight</code>, <code>swipeUp</code>, <code>swipeDown</code>,<code>doubleTap</code>, <code>tap</code>, <code>singleTap</code>, <code>longTap</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>事件名称</th>
+<th>事件描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>swipe</td>
+<td>滑动事件</td>
+</tr>
+<tr>
+<td>swipeLeft</td>
+<td>←左滑事件</td>
+</tr>
+<tr>
+<td>swipeRight</td>
+<td>→右滑事件</td>
+</tr>
+<tr>
+<td>swipeUp</td>
+<td>↑上滑事件</td>
+</tr>
+<tr>
+<td>swipeDown</td>
+<td>↓下滑事件</td>
+</tr>
+<tr>
+<td>doubleTap</td>
+<td>双击事件</td>
+</tr>
+<tr>
+<td>tap</td>
+<td>点击事件(非原生click事件)</td>
+</tr>
+<tr>
+<td>singleTap</td>
+<td>单击事件</td>
+</tr>
+<tr>
+<td>longTap</td>
+<td>长按事件</td>
+</tr>
+</tbody>
+</table>
+<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><blockquote>
+<p>在开始分析这些事件如何实现之前，我们先了解一些前置条件</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> touch = &#123;&#125;,</div><div class="line">    touchTimeout, tapTimeout, swipeTimeout, longTapTimeout,</div><div class="line">    <span class="comment">// 长按事件定时器时间</span></div><div class="line">    longTapDelay = <span class="number">750</span>,</div><div class="line">    gesture</div></pre></td></tr></table></figure>
+<p><code>touch</code>: 用以存储手指操作的相关信息，例如手指按下时的位置，离开时的坐标等。</p>
+<p><code>touchTimeout</code>,<code>tapTimeout</code>, <code>swipeTimeout</code>,<code>longTapTimeout</code>分别存储singleTap、tap、swipe、longTap事件的定时器。</p>
+<p><code>longTapDelay</code>:longTap事件定时器延时时间</p>
+<p><code>gesture</code>: 存储ieGesture事件对象</p>
+<h3 id="滑动方向判断"><a href="#滑动方向判断" class="headerlink" title="滑动方向判断"></a>滑动方向判断</h3>
       
     </div>
 
@@ -564,7 +630,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件简述"><span class="nav-number">2.</span> <span class="nav-text">事件简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说在前面"><span class="nav-number">3.</span> <span class="nav-text">说在前面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#滑动方向判断"><span class="nav-number">3.1.</span> <span class="nav-text">滑动方向判断</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
