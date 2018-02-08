@@ -106,7 +106,7 @@ Zepto的touch模块实现">
 Zepto的touch模块实现">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20180204-221816@2x.png">
-<meta property="og:updated_time" content="2018-02-04T14:21:39.000Z">
+<meta property="og:updated_time" content="2018-02-08T14:40:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何实现swipe、tap、longTap等自定义事件">
 <meta name="twitter:description" content="前言
@@ -417,7 +417,9 @@ Zepto的touch模块实现">
 </tr>
 </tbody>
 </table>
-<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">;[<span class="string">'swipe'</span>, <span class="string">'swipeLeft'</span>, <span class="string">'swipeRight'</span>, <span class="string">'swipeUp'</span>, <span class="string">'swipeDown'</span>, <span class="string">'doubleTap'</span>, <span class="string">'tap'</span>, <span class="string">'singleTap'</span>, <span class="string">'longTap'</span>].forEach(<span class="function"><span class="keyword">function</span>(<span class="params">eventName</span>)</span>&#123;</div><div class="line">  $.fn[eventName] = <span class="function"><span class="keyword">function</span>(<span class="params">callback</span>)</span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>.on(eventName, callback) &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p><strong>可以看到Zepto把这些方法都挂载到了原型上，这意味着，你可以直接用简写的方式例如<code>$(&#39;body&#39;).tap(callback)</code></strong></p>
+<h2 id="前端条件"><a href="#前端条件" class="headerlink" title="前端条件"></a>前端条件</h2><blockquote>
 <p>在开始分析这些事件如何实现之前，我们先了解一些前置条件</p>
 </blockquote>
 <ul>
@@ -431,9 +433,10 @@ Zepto的touch模块实现">
 <ul>
 <li><strong>滑动方向判断(swipeDirection)</strong></li>
 </ul>
-<p>我们根据下图以及对应的代码来理解滑动的时候方向是如何判定的。需要注意的是浏览器中的“坐标系”和数学中的Y轴还是不太一样，有点反过来的意思。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 判断移动的方向,结果是Left, Right, Up, Down中的一个</div><div class="line">  * @param  &#123;&#125; x1 起点的横坐标</div><div class="line">  * @param  &#123;&#125; x2 终点的横坐标</div><div class="line">  * @param  &#123;&#125; y1 起点的纵坐标</div><div class="line">  * @param  &#123;&#125; y2 终点的纵坐标</div><div class="line">  */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">swipeDirection</span>(<span class="params">x1, x2, y1, y2</span>) </span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">    * 1. 第一个三元运算符得到如果x轴滑动的距离比y轴大，那么是左右滑动，否则是上下滑动</div><div class="line">    * 2. 如果是左右滑动，起点比终点大那么往左滑动</div><div class="line">    * 3. 如果是上下滑动，起点比终点大那么往上滑动</div><div class="line">    * 需要注意的是这里的坐标和数学中的有些不一定 纵坐标有点反过来的意思</div><div class="line">    */</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.abs(x1 - x2) &gt;=</div><div class="line">    <span class="built_in">Math</span>.abs(y1 - y2) ? (x1 - x2 &gt; <span class="number">0</span> ? <span class="string">'Left'</span> : <span class="string">'Right'</span>) : (y1 - y2 &gt; <span class="number">0</span> ? <span class="string">'Up'</span> : <span class="string">'Down'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们根据下图以及对应的代码来理解滑动的时候方向是如何判定的。需要注意的是浏览器中的“坐标系”和数学中的坐标系还是不太一样，Y轴有点反过来的意思。</p>
 <p><img src="http://odssgnnpf.bkt.clouddn.com/QQ20180204-221816@2x.png" alt="手机屏幕坐标图"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 判断移动的方向,结果是Left, Right, Up, Down中的一个</div><div class="line">  * @param  &#123;&#125; x1 起点的横坐标</div><div class="line">  * @param  &#123;&#125; x2 终点的横坐标</div><div class="line">  * @param  &#123;&#125; y1 起点的纵坐标</div><div class="line">  * @param  &#123;&#125; y2 终点的纵坐标</div><div class="line">  */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">swipeDirection</span>(<span class="params">x1, x2, y1, y2</span>) </span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">    * 1. 第一个三元运算符得到如果x轴滑动的距离比y轴大，那么是左右滑动，否则是上下滑动</div><div class="line">    * 2. 如果是左右滑动，起点比终点大那么往左滑动</div><div class="line">    * 3. 如果是上下滑动，起点比终点大那么往上滑动</div><div class="line">    * 需要注意的是这里的坐标和数学中的有些不一定 纵坐标有点反过来的意思</div><div class="line">    */</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.abs(x1 - x2) &gt;=</div><div class="line">    <span class="built_in">Math</span>.abs(y1 - y2) ? (x1 - x2 &gt; <span class="number">0</span> ? <span class="string">'Left'</span> : <span class="string">'Right'</span>) : (y1 - y2 &gt; <span class="number">0</span> ? <span class="string">'Up'</span> : <span class="string">'Down'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
 
       
     </div>
@@ -640,7 +643,7 @@ Zepto的touch模块实现">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件简述"><span class="nav-number">2.</span> <span class="nav-text">事件简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说在前面"><span class="nav-number">3.</span> <span class="nav-text">说在前面</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件简述"><span class="nav-number">2.</span> <span class="nav-text">事件简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端条件"><span class="nav-number">3.</span> <span class="nav-text">前端条件</span></a></li></ol></div>
             
           </div>
         </section>
