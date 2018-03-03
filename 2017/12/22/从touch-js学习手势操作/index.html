@@ -106,7 +106,7 @@ Zepto的touch模块实现">
 Zepto的touch模块实现">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/31d0d03000317ad19148f0b65090748b.jpg">
 <meta property="og:image" content="http://odssgnnpf.bkt.clouddn.com/QQ20180204-221816@2x.png">
-<meta property="og:updated_time" content="2018-03-03T14:44:53.000Z">
+<meta property="og:updated_time" content="2018-03-03T15:01:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何实现swipe、tap、longTap等自定义事件">
 <meta name="twitter:description" content="前言
@@ -453,6 +453,14 @@ Zepto的touch模块实现">
 <p><strong>触摸点信息兼容处理</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果是pointerdown事件则firstTouch保存为e，否则是e.touches第一个</span></div><div class="line">firstTouch = _isPointerType ? e : e.touches[<span class="number">0</span>]</div></pre></td></tr></table></figure>
 <p>这里只清楚<code>e.touches[0]</code>的处理逻辑，另一种不太明白，望有知晓的同学告知一下，感谢感谢。</p>
+<p><strong>复原终点坐标</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 一般情况下，在touchend或者cancel的时候，会将其清除，如果用户调阻止了默认事件，则有可能清空不了,但是为什么要将终点坐标清除呢？</span></div><div class="line"><span class="keyword">if</span> (e.touches &amp;&amp; e.touches.length === <span class="number">1</span> &amp;&amp; touch.x2) &#123;</div><div class="line">  <span class="comment">// Clear out touch movement data if we have it sticking around</span></div><div class="line">  <span class="comment">// This can occur if touchcancel doesn't fire due to preventDefault, etc.</span></div><div class="line">  touch.x2 = <span class="literal">undefined</span></div><div class="line">  touch.y2 = <span class="literal">undefined</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>存储触摸点部分信息</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 保存当前时间</span></div><div class="line">now = <span class="built_in">Date</span>.now()</div><div class="line"><span class="comment">// 保存两次点击时候的时间间隔，主要用作双击事件</span></div><div class="line">delta = now - (touch.last || now)</div><div class="line"><span class="comment">// touch.el 保存目标节点</span></div><div class="line"><span class="comment">// 不是标签节点则使用该节点的父节点，注意有伪元素</span></div><div class="line">touch.el = $(<span class="string">'tagName'</span> <span class="keyword">in</span> firstTouch.target ?</div><div class="line">  firstTouch.target : firstTouch.target.parentNode)</div><div class="line"><span class="comment">// touchTimeout 存在则清除之，可以避免重复触发</span></div><div class="line">touchTimeout &amp;&amp; clearTimeout(touchTimeout)</div><div class="line"><span class="comment">// （x1, y1）（x轴，y轴）</span></div><div class="line">touch.x1 = firstTouch.pageX</div><div class="line">touch.y1 = firstTouch.pageY</div></pre></td></tr></table></figure>
+<p><strong>判断双击事件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 两次点击的时间间隔 &gt; 0 且 &lt; 250 毫秒，则当做doubleTap事件处理</span></div><div class="line"><span class="keyword">if</span> (delta &gt; <span class="number">0</span> &amp;&amp; delta &lt;= <span class="number">250</span>) touch.isDoubleTap = <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p><strong>处理长按事件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 将now设置为touch.last，方便上面可以计算两次点击的时间差</span></div><div class="line">touch.last = now</div><div class="line"><span class="comment">// longTapDelay(750毫秒)后触发长按事件</span></div><div class="line">longTapTimeout = setTimeout(longTap, longTapDelay)</div></pre></td></tr></table></figure>
 
       
     </div>
