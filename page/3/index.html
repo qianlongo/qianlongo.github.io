@@ -284,6 +284,243 @@
             
               
                 
+                <a class="post-title-link" href="/2017/09/01/嗨，你真的懂Promise吗？原理与源码实现/" itemprop="url">
+                  嗨，你真的懂Promise吗(原理与源码实现)？
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-01T00:24:18+08:00" content="2017-09-01">
+              2017-09-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/01/嗨，你真的懂Promise吗？原理与源码实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/01/嗨，你真的懂Promise吗？原理与源码实现/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/09/01/嗨，你真的懂Promise吗？原理与源码实现/" class="leancloud_visitors" data-flag-title="嗨，你真的懂Promise吗(原理与源码实现)？">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>着手写一篇Promise源码实现的文章</p>
+</blockquote>
+<h2 id="问题集锦"><a href="#问题集锦" class="headerlink" title="问题集锦"></a>问题集锦</h2><ol>
+<li>能够注册多个回调函数</li>
+<li>返回值包括两个函数，一个注册观察者，一个通知观察者执行的执行代码</li>
+<li>只可以resolve一次</li>
+<li>需要能够链式调用</li>
+<li>在下一个回调函数中需要能够接受上一个回调函数的值</li>
+<li>每个then方法都需要返回一个promise</li>
+<li></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/30/Zepto核心模块之工具方法拾遗/" itemprop="url">
+                  Zepto核心模块之工具方法拾遗
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-30T14:59:46+08:00" content="2017-08-30">
+              2017-08-30
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/08/30/Zepto核心模块之工具方法拾遗/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/30/Zepto核心模块之工具方法拾遗/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/08/30/Zepto核心模块之工具方法拾遗/" class="leancloud_visitors" data-flag-title="Zepto核心模块之工具方法拾遗">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>平时开发过程中经常会用类似<code>each</code>、<code>map</code>、<code>forEach</code>之类的方法，Zepto本身也把这些方法挂载到<code>$</code>函数身上，作为静态方法存在，既可以给Zepto的实例使用，也能给普通的js对象使用。今天我们主要针对其提供的这些api做一些源码实现分析。</p>
+</blockquote>
+<p><a href="https://github.com/qianlongo/zepto-analysis">源码仓库</a><br><a href="https://github.com/qianlongo/zepto-analysis/issues/6">原文链接</a></p>
+<p><img src="http://odssgnnpf.bkt.clouddn.com/facebook.png" alt=""></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/08/30/Zepto核心模块之工具方法拾遗/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/08/26/这些Zepto中实用的内部方法/" itemprop="url">
                   这些Zepto中实用的方法集
                 </a>
@@ -625,241 +862,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/07/你知道如何手动触发DOM事件吗？/" itemprop="url">
-                  向zepto.js学习如何手动触发DOM事件
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-07T00:07:37+08:00" content="2017-06-07">
-              2017-06-07
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/06/07/你知道如何手动触发DOM事件吗？/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/07/你知道如何手动触发DOM事件吗？/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/06/07/你知道如何手动触发DOM事件吗？/" class="leancloud_visitors" data-flag-title="向zepto.js学习如何手动触发DOM事件">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>前端在最近几年实在火爆异常，vue、react、angular各路框架层出不穷，咱们要是不知道个双向数据绑定，不晓得啥是虚拟DOM，也许就被鄙视了。火热的背后往往也是无尽的浮躁，学习这些先进流行的类库或者框架可以让我们走的更快，但是静下心来回归基础，把基石打牢固，却可以让我们走的更稳，更远。</p>
-</blockquote>
-<p>最近一直在看zepto的源码，希望通过学习它掌握一些框架设计的技巧，也将很久不再拾起的js基础重新温习巩固一遍。如果你对这个系列感兴趣，欢迎点击下方地址<code>watch</code>,随时关注动态。这篇文章主要想说一下zepto中事件模块(event.js)的<code>trigger</code>实现原理。</p>
-<p><a href="https://github.com/qianlongo/zepto-analysis/issues/2">原文地址</a></p>
-<p><a href="https://github.com/qianlongo/zepto-analysis">仓库地址</a></p>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/11111.jpg" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/07/你知道如何手动触发DOM事件吗？/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/05/mouseenter与mouseover为何这般纠缠不清？/" itemprop="url">
-                  mouseenter与mouseover为何这般纠缠不清？
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-05T00:55:13+08:00" content="2017-06-05">
-              2017-06-05
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/06/05/mouseenter与mouseover为何这般纠缠不清？/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/05/mouseenter与mouseover为何这般纠缠不清？/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/06/05/mouseenter与mouseover为何这般纠缠不清？/" class="leancloud_visitors" data-flag-title="mouseenter与mouseover为何这般纠缠不清？">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="https://github.com/qianlongo/zepto-analysis/issues/1">原文地址</a></p>
-<p><a href="https://github.com/qianlongo/zepto-analysis">项目地址</a></p>
-<blockquote>
-<p>不知道大家在面试或者工作过程中有没有被<code>mouseover</code>和<code>mouseenter</code>(对应的是<code>mouseout</code>和<code>mouseleave</code>)事件所困扰。自己之前在面试的时候就有被问到诸如mouseover和mouseenter事件的异同之类的问题？当时没有答出来，一直也对这两个事件有点模糊不清，趁着最近正在读<a href="https://github.com/qianlongo/zepto-analysis">zepto源码</a>，准备写一篇这方面的文章，如果有错误，请大家指正。</p>
-</blockquote>
-<p><img src="http://odssgnnpf.bkt.clouddn.com/-98ezXklczmayCw28gIX.png" alt=""></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/05/mouseenter与mouseover为何这般纠缠不清？/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -905,7 +907,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-count">60</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
